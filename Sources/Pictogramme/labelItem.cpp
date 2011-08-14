@@ -1,5 +1,6 @@
 #include "labelItem.hpp"
 #include <QPainter>
+#include <QDebug>
 
 LabelItem::LabelItem( const QString& texte,
                       const int maxWidth,
@@ -40,7 +41,6 @@ void LabelItem::paint( QPainter *painter, const QStyleOptionGraphicsItem *option
                            label_.second, height_,
                            Qt::TextWordWrap | Qt::AlignCenter,
                            label_.first );
-
 }
 
 QRectF LabelItem::boundingRect() const {
@@ -50,8 +50,9 @@ QRectF LabelItem::boundingRect() const {
 
 void LabelItem::setLabel( const QString& texte ){
 
-        prepareGeometryChange();
+
         label_.first = texte.isEmpty() ? "?" : texte;
+        prepareGeometryChange();
         label_.second = calculLargeurTexte();
         posBottomAnchor_.setX( label_.second / 2 );
         posBottomAnchor_.setY( height_ );

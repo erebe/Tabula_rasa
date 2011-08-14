@@ -21,6 +21,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect( scene_, SIGNAL(modeChanged(AlgorithmeScene::Mode)), this, SLOT(setMode(AlgorithmeScene::Mode)));
     scene_->setBackgroundBrush( Qt::white );
     ui->graphicsView->setScene( scene_ );
+    scene_->setFont( QFont( "Cantarell,11,-1,5,50,0,0,0,0,0" ) );
 
     ui->graphicsView->setResizeAnchor( QGraphicsView::NoAnchor );
     ui->graphicsView->setTransformationAnchor( QGraphicsView::NoAnchor );
@@ -105,6 +106,7 @@ void MainWindow::on_actionSortie_triggered( bool checked ){
 void MainWindow::on_actionEnregistrer_triggered(){
 
 
+        scene_->setSceneRect(0, 0, 500, 500);
         QString fichier = QFileDialog::getSaveFileName(this, "Enregistrer l'algorithme", QString("algo.png"), "Images (*.png *.gif *.jpg *.jpeg)");
         QPixmap image( scene_->width(), scene_->height() );
 

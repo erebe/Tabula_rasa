@@ -12,6 +12,11 @@ PictoProcedure::PictoProcedure( QString titre,
     labels_ << new LabelItem( preCondition, 150, 15, 50, this, scene );
     labels_ << new LabelItem( titre, 200, 50, 50, this, scene );
     labels_ << new LabelItem( postCondition, 150, 15, 50, this, scene );
+
+    posBottomAnchor_.setY( 55 );
+    posUpAnchor_.setY( 5 );
+    updateDimension();
+
     actions_["Details"] = contexteMenu_.addAction( tr("Afficher/Masquer les détails") );
 }
 
@@ -20,24 +25,21 @@ void PictoProcedure::paint( QPainter *painter, const QStyleOptionGraphicsItem *o
     Q_UNUSED( option );
     Q_UNUSED( widget );
 
-    pos_ = drawDetails( painter, labels_.at( 0 ), 5 );
+    int pos = drawDetails( painter, labels_.at( 0 ), 5 );
 
-    posBottomAnchor_ = QPoint( pos_ + ( labels_.at( 1 )->width() +20 ) / 2, 55 );
-    posUpAnchor_ = QPoint( pos_ + ( labels_.at( 1 )->width() +20 ) / 2, 5 );
-
-    painter->drawRect( pos_, 5,
+    painter->drawRect( pos, 5,
                        labels_.at( 1 )->width() + 20, 50 );
-    pos_ += 10;
-    painter->drawLine( pos_, 5,
-                       pos_, 55 );
-    painter->drawLine( pos_ + labels_.at( 1 )->width(), 5,
-                       pos_ + labels_.at( 1 )->width(), 55 );
+    pos += 10;
+    painter->drawLine( pos, 5,
+                       pos, 55 );
+    painter->drawLine( pos + labels_.at( 1 )->width(), 5,
+                       pos + labels_.at( 1 )->width(), 55 );
 
-    labels_.at( 1 )->setPos( pos_, 5 );
+    labels_.at( 1 )->setPos( pos, 5 );
 
-    pos_ += labels_.at( 1 )->width() + 25;
+    pos += labels_.at( 1 )->width() + 25;
 
-    pos_ = drawDetails( painter, labels_.at( 2 ), pos_ );
+    pos = drawDetails( painter, labels_.at( 2 ), pos );
 
 
     Pictogramme::paint( painter, option, widget );
@@ -82,10 +84,33 @@ void PictoProcedure::processAction( QAction* action, QGraphicsSceneContextMenuEv
 
 
         if( action == actions_["Details"] ){
-                prepareGeometryChange();
-                pos_ += labels_.at( 0 )->width() + labels_.at( 2 )->width() + 100;
                 detail_ = !detail_;
+                prepareGeometryChange();
+                updateDimension();
         }else{
                 Pictogramme::processAction( action, event );
         }
+}
+
+void PictoProcedure::updateDimension() {
+
+    qreal posAncre;
+    pos_ = labels_.at( 1 )->width() + 30;
+
+    if( detail() ){
+
+            pos_ += labels_.at( 0 )->width() + 45;
+            pos_ += labels_.at( 2 )->width() + 45;
+
+            posAncre =  labels_.at( 0 )->width() + 60
+                        + ( labels_.at( 1 )->width() / 2 );
+    }else{
+            posAncre = ( labels_.at( 1 )->width() / 2 ) + 15 ;
+    }
+
+
+    posBottomAnchor_.setX( posAncre );
+    posUpAnchor_.setX( posAncre );
+    updateLink();
+
 }

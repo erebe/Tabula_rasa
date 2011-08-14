@@ -33,3 +33,8 @@ QRectF PictoSortie::boundingRect() const {
 
         return QRectF( 0, 0, 50, 50 );
 }
+
+void PictoSortie::updateDimension() {
+
+
+}

@@ -16,6 +16,7 @@ class PictoProcedure : public Pictogramme
 
          void paint( QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget );
          QRectF boundingRect() const;
+         void updateDimension();
 
          inline QString label() const { return labels_.at( 0 )->label(); }
          inline QString preCondition() const { return labels_.at( 1 )->label();; }

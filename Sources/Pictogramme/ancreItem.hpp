@@ -1,6 +1,8 @@
 #ifndef ANCREITEM_HPP
 #define ANCREITEM_HPP
 #include "liaisonItem.hpp"
+#include <QDebug>
+#include <QEvent>
 
 class AncreItem: public QGraphicsItem
 {

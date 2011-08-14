@@ -15,6 +15,7 @@ public:
 
     void paint( QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget );
     QRectF boundingRect() const;
+    void updateDimension();
 
     //void setLabel( const QString& titre );
     inline QString label() const {  return labels_.at( 0 )->label(); }

@@ -25,7 +25,7 @@ public:
     inline QString postCondition() const { return labels_.at( 2 )->label(); }
     inline bool detail() const { return detail_; }
     virtual int type() const { return Type; }
-    unsigned int width();
+    void updateDimension();
 
     //void setLabel( const QString& titre );
     //void setPreCondition( const QString& preCondition );

@@ -6,7 +6,7 @@ TEMPLATE = app
 TARGET = tabula_Rasa
 DEPENDPATH += . Interface Ressources
 INCLUDEPATH += . Interface
-QMAKE_CXXFLAGS += -std=c++0x
+#QMAKE_CXXFLAGS += -std=c++0x
 CONFIG += debug
 
 # Input
