@@ -105,9 +105,39 @@ void MainWindow::on_actionSortie_triggered( bool checked ){
 
 void MainWindow::on_actionEnregistrer_triggered(){
 
-
-        scene_->setSceneRect(0, 0, 500, 500);
         QString fichier = QFileDialog::getSaveFileName(this, "Enregistrer l'algorithme", QString("algo.png"), "Images (*.png *.gif *.jpg *.jpeg)");
+
+        qreal maxX, maxY, minX, minY;
+        maxX = maxY = 0;
+        minX = scene_->width();
+        minY = scene_->height();
+
+        QGraphicsItem* item;
+        QPointF point;
+
+        foreach( item, scene_->items() ){
+
+                if( qgraphicsitem_cast<LiaisonItem*>(item) )
+                        continue;
+
+                point = item->scenePos();
+
+                if( maxX < ( point.x() + static_cast<Pictogramme*>(item)->width() ) )
+                        maxX = point.x() + static_cast<Pictogramme*>(item)->width();
+
+                if( maxY < point.y() )
+                        maxY = point.y();
+
+                if( minX > point.x() )
+                        minX = point.x();
+
+                if( minY > point.y() )
+                        minY = point.y();
+        }
+
+        QRectF sceneSize = scene_->sceneRect();
+        scene_->setSceneRect( minX - 50, minY - 50, maxX - minX + 100, maxY - minY + 150 );
+
         QPixmap image( scene_->width(), scene_->height() );
 
         QPainter painter( &image );
@@ -115,6 +145,7 @@ void MainWindow::on_actionEnregistrer_triggered(){
         scene_->render( &painter );
 
         image.save( fichier );
+        scene_->setSceneRect( sceneSize );
 }
 
 void MainWindow::selectQAction( AlgorithmeScene::Mode mode ){

@@ -9,6 +9,7 @@ PictoSortie::PictoSortie( QGraphicsItem* parent,
         posBottomAnchor_.setY( 50 );
         posUpAnchor_.setX( 25 );
         posUpAnchor_.setY( 0 );
+        pos_ = 50;
 }
 
 
