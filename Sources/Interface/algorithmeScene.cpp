@@ -45,7 +45,6 @@ void AlgorithmeScene::mousePressEvent( QGraphicsSceneMouseEvent *mouseEvent )
 
 }
 
-
 void AlgorithmeScene::mouseMoveEvent( QGraphicsSceneMouseEvent *mouseEvent ){
 
     mouseEvent->accept();

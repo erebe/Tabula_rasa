@@ -13,6 +13,7 @@ PictoIteration::PictoIteration( QString titre, QGraphicsItem* parent, QGraphicsS
 
         posBottomAnchor_ = QPoint( 27, 55 );
         posUpAnchor_ = QPoint( 27, 0 );
+        updateDimension();
 }
 
 
@@ -21,16 +22,16 @@ void PictoIteration::paint( QPainter *painter, const QStyleOptionGraphicsItem *o
         Q_UNUSED( option );
         Q_UNUSED( widget );
 
-        pos_ = 55;
+        int pos = 55;
 
-        painter->drawEllipse( 0, 0, pos_, 55 );
+        painter->drawEllipse( 0, 0, pos, 55 );
         painter->setBrush( Qt::SolidPattern );
         painter->drawPolygon( points_, 3 );
         painter->setBrush( Qt::NoBrush );
 
 
-        labels_.at( 0 )->setPos( pos_, 0 );
-        pos_ += labels_.at( 0 )->width();
+        labels_.at( 0 )->setPos( pos, 0 );
+        labels_.at( 0 )->width();
 
 
         Pictogramme::paint( painter, option, widget );
@@ -41,3 +42,8 @@ QRectF PictoIteration::boundingRect() const {
         return QRectF( 0, 0, pos_ , 55 );
 }
 
+void PictoIteration::updateDimension() {
+
+    pos_ = labels_.at( 0 )->width() + 55;
+
+}

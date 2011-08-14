@@ -32,6 +32,10 @@ void AncreItem::updateLink(){
 
         if( liaison_ )
                 liaison_->updatePath();
+
+        AncreItem* ancre;
+        foreach( ancre, children_ )
+               ancre->liaison_->updatePath();
 }
 
 QVariant AncreItem::itemChange( GraphicsItemChange change, const QVariant &value ){

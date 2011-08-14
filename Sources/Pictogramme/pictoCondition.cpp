@@ -9,6 +9,7 @@ PictoCondition::PictoCondition( const QString& label,
         labels_ << new LabelItem( label, 150, 25, 50, this, scene );
         labels_ << new LabelItem( "Sinon", 150, 25, 50, this, scene );
         posUpAnchor_.setY( 0 );
+        updateDimension();
 }
 
 void PictoCondition::paint( QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget ) {
@@ -16,35 +17,33 @@ void PictoCondition::paint( QPainter *painter, const QStyleOptionGraphicsItem *o
         Q_UNUSED( option );
         Q_UNUSED( widget );
 
-        pos_ = 0;
+        int pos = 0;
 
         //On dessine "<"
-        painter->drawLine( pos_, 25, 20, 0 );
-        painter->drawLine( pos_, 25, 20, 50 );
+        painter->drawLine( pos, 25, 20, 0 );
+        painter->drawLine( pos, 25, 20, 50 );
 
         labels_.at( 0 )->setPos( 25, 0 );
-        pos_ += labels_.at( 0 )->width() + 35;
+        pos += labels_.at( 0 )->width() + 35;
 
-
-        //on dessine la barre supérieure
-        painter->drawLine( 20, 0, pos_ + 60, 0 );
-
-        //On dessine la barre inférieure
-        painter->drawLine( 20, 50, pos_ + 60, 50 );
 
         //On dessine la barre vecticale
-        painter->drawLine( pos_, 0, pos_, 50 );
-        posUpAnchor_.setX( pos_ );
+        painter->drawLine( pos, 0, pos, 50 );
 
-        pos_ += 10;
-        labels_.at( 1 )->setPos( pos_, 0 );
-        pos_ += 50;
+        labels_.at( 1 )->setPos( pos + 10, 0 );
+        pos += labels_.at( 1 )->width() + 10;
+
+        //on dessine la barre supérieure
+        painter->drawLine( 20, 0, pos, 0 );
+
+        //On dessine la barre inférieure
+        painter->drawLine( 20, 50, pos, 50 );
 
         //On dessine ">"
-        painter->drawLine( pos_, 0, pos_ + 20, 25 );
-        painter->drawLine( pos_, 50, pos_ + 20, 25 );
+        painter->drawLine( pos, 0, pos + 20, 25 );
+        painter->drawLine( pos, 50, pos + 20, 25 );
 
-        pos_ += 20;
+        pos += 20;
 
         Pictogramme::paint( painter, option, widget );
 }
@@ -66,4 +65,24 @@ QVariant PictoCondition::itemChange( GraphicsItemChange change, const QVariant &
          }
 
          return value;
+}
+
+
+void PictoCondition::updateDimension() {
+
+    qreal posAncre;
+    pos_ = labels_.at( 1 )->width()
+           + labels_.at( 0 )->width() + 65;
+
+    posAncre = ( pos_ / 2 );
+
+    posBottomAnchor_.setX( posAncre );
+    posUpAnchor_.setX( posAncre );
+    updateLink();
+
+    AncreItem* item;
+
+    foreach( item, labels_ )
+            item->updateLink();
+
 }

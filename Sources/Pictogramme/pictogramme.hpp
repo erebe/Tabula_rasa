@@ -15,7 +15,8 @@ public:
    virtual ~Pictogramme();
 
    virtual void paint( QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget );
-   //virtual unsigned int width();
+   virtual void updateDimension() = 0;
+   inline unsigned int width() const { return pos_; }
 
 
 

@@ -10,13 +10,11 @@ Pictogramme::Pictogramme( QGraphicsItem* parent, QGraphicsScene* scene ):
         AncreItem( parent, scene ), pos_(0)
 {
     setFlags( QGraphicsItem::ItemIsMovable |
-              QGraphicsItem::ItemIsFocusable |
               QGraphicsItem::ItemIsSelectable |
               QGraphicsItem::ItemSendsGeometryChanges );
 
     actions_["Supprimer"] = contexteMenu_.addAction( tr("Supprimer") );
     actions_["Detacher"] = contexteMenu_.addAction( tr("Detacher") );
-
 }
 
 Pictogramme::~Pictogramme(){
@@ -42,26 +40,26 @@ void Pictogramme::paint( QPainter *painter, const QStyleOptionGraphicsItem *opti
 
 void Pictogramme::mouseDoubleClickEvent( QGraphicsSceneMouseEvent *event ){
 
-        event->accept();
-
         LabelItem* label;
         foreach( label, labels_ ){
                 if( label->contains( event->pos() - label->pos() ) && label->isVisible() ){
+                        ungrabMouse();
                         emit doubleClick( label );
                         prepareGeometryChange();
+                        updateDimension();
                         break;
                  }
         }
-        QGraphicsItem::mouseDoubleClickEvent( event );
-
 }
 
  void Pictogramme::contextMenuEvent( QGraphicsSceneContextMenuEvent *event ){
 
          event->accept();
 
+         scene()->clearSelection();
+         setSelected( true );
+         ungrabMouse();
          QAction* selectedAction = contexteMenu_.exec( event->screenPos() );
-         setSelected( false );
 
          processAction( selectedAction, event );
 
@@ -84,5 +82,3 @@ void Pictogramme::mouseDoubleClickEvent( QGraphicsSceneMouseEvent *event ){
                      item->detach();
      }
  }
-
-
