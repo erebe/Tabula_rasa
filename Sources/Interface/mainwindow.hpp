@@ -1,3 +1,20 @@
+/*
+ * =====================================================================================
+ *
+ *       Filename:  mainwindow.hpp
+ *
+ *    Description:  Tabula Rasa : Classe gérant l'interface de l'application
+ *
+ *        Version:  1.0
+ *        Created:  15/08/2011 02:19:41
+ *       Revision:  none
+ *       Compiler:  gcc
+ *
+ *         Author:  Erebe (), erebe@erebe.eu
+ *        Company:  Erebe corporation
+ *
+ * =====================================================================================
+ */
 #ifndef MAINWINDOW_HPP
 #define MAINWINDOW_HPP
 
@@ -6,49 +23,47 @@
 #include "Pictogramme/labelItem.hpp"
 #include "algorithmeScene.hpp"
 
-
 namespace Ui {
-    class MainWindow;
+class MainWindow;
 }
 
-class MainWindow : public QMainWindow
-{
-    Q_OBJECT
 
-public:
-    explicit MainWindow(QWidget *parent = 0);
-    ~MainWindow();
+class MainWindow : public QMainWindow {
+          Q_OBJECT
 
-private:
-    Ui::MainWindow *ui;
-    AlgorithmeScene* scene_;
-    void selectQAction( AlgorithmeScene::Mode mode );
+     public:
+          explicit MainWindow( QWidget* parent = 0 );
+          ~MainWindow();
 
-private slots:
-    void on_action_Ouvrir_triggered();
-    void on_actionMode_Edition_triggered( bool checked );
-    void on_actionMode_Insertion_triggered( bool checked );
-    void on_actionEnregistrer_triggered();
-    void on_actionAction_triggered( bool checked );
-    void on_actionIteration_triggered( bool checked );
-    void on_actionProcedure_triggered( bool checked );
-    void on_actionCondition_triggered( bool checked );
-    void on_actionConditionMultiple_triggered( bool checked );
-    void on_actionSortie_triggered( bool checked );
+     private:
+          Ui::MainWindow* ui;
+          AlgorithmeScene* scene_;
+          void selectQAction( AlgorithmeScene::Mode mode );
 
-public slots:
-    void setMode( AlgorithmeScene::Mode mode );
+     private slots:
+          void on_action_Ouvrir_triggered();
+          void on_actionMode_Edition_triggered( bool checked );
+          void on_actionMode_Insertion_triggered( bool checked );
+          void on_actionEnregistrer_triggered();
+          void on_actionAction_triggered( bool checked );
+          void on_actionIteration_triggered( bool checked );
+          void on_actionProcedure_triggered( bool checked );
+          void on_actionCondition_triggered( bool checked );
+          void on_actionConditionMultiple_triggered( bool checked );
+          void on_actionSortie_triggered( bool checked );
 
-    void changeLabel( LabelItem* item ){
+     public slots:
+          void setMode( AlgorithmeScene::Mode mode );
 
-        bool ok;
-        QString test = QInputDialog::getText( this, "Changer le label", "Nouvel intitulé", QLineEdit::Normal, item->label(), &ok );
+          void changeLabel( LabelItem* item ) {
 
-        if( ok )
-                item->setLabel( test );
+               bool ok;
+               QString test = QInputDialog::getText( this, "Changer le label", "Nouvel intitulé", QLineEdit::Normal, item->label(), &ok );
 
-    }
+               if( ok )
+                    { item->setLabel( test ); }
+
+          }
 
 };
-
-#endif // MAINWINDOW_HPP
+#endif                           // MAINWINDOW_HPP
