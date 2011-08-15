@@ -69,8 +69,8 @@ void AlgorithmeScene::mouseReleaseEvent( QGraphicsSceneMouseEvent *mouseEvent ){
 
         if( line_ != 0 && mode_ == EditLink ){
 
-            QList<QGraphicsItem *> startItems = items( line_->line().p1() );
-            QList<QGraphicsItem *> endItems = items( line_->line().p2() );
+            QList<QGraphicsItem *> startItems = items( line_->line().p2() );
+            QList<QGraphicsItem *> endItems = items( line_->line().p1() );
 
             if( startItems.count() && startItems.first() == line_ )
                 startItems.removeFirst();
