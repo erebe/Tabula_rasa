@@ -89,7 +89,7 @@ void Pictogramme::contextMenuEvent( QGraphicsSceneContextMenuEvent* event )
 
 void Pictogramme::processAction( QAction* action, QGraphicsSceneContextMenuEvent* event )
 {
-     Q_UNUSED( event );
+    Q_UNUSED( event );
 
      if( actions_["Supprimer"] == action ) {
 
