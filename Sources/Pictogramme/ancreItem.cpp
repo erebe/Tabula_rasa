@@ -89,13 +89,14 @@ void AncreItem::deleteLink()
 
 }
 
-void AncreItem::deleteChildren() {
+void AncreItem::deleteChildren()
+{
 
-    AncreItem* child;
+     AncreItem* child;
 
-    foreach( child, children_ )
-        child->deleteLink();
+     foreach( child, children_ )
+     child->deleteLink();
 
-    children_.clear();
+     children_.clear();
 
 }
