@@ -310,36 +310,36 @@ void MainWindow::on_actionFermer_l_onglet_triggered()
 void MainWindow::resizeScene( int width, int height )
 {
 
-    AlgorithmeScene* scene = static_cast<TabWidget*>( ui->tabWidget->currentWidget() )
-                             ->scene();
-    QGraphicsView* view = static_cast<TabWidget*>( ui->tabWidget->currentWidget() )
-                          ->view();
+     AlgorithmeScene* scene = static_cast<TabWidget*>( ui->tabWidget->currentWidget() )
+                              ->scene();
+     QGraphicsView* view = static_cast<TabWidget*>( ui->tabWidget->currentWidget() )
+                           ->view();
 
-    width = ( width < view->width() ) ? view->width() : width;
-    height = ( height < view->height() ) ? view->height() : height;
+     width = ( width < view->width() ) ? view->width() : width;
+     height = ( height < view->height() ) ? view->height() : height;
 
-    scene->setSceneRect(0, 0, width, height );
-    delete dialog;
-    dialog = 0;
+     scene->setSceneRect( 0, 0, width, height );
+     delete dialog;
+     dialog = 0;
 
 }
 
 void MainWindow::on_actionRedimensionner_l_Algorithme_triggered()
 {
-    AlgorithmeScene* scene = static_cast<TabWidget*>( ui->tabWidget->currentWidget() )
-                             ->scene();
+     AlgorithmeScene* scene = static_cast<TabWidget*>( ui->tabWidget->currentWidget() )
+                              ->scene();
 
 
-    dialog = new ResizeDialog( scene->sceneRect().width(),
-                               scene->sceneRect().height(),
-                               this );
-    dialog->show();
-    connect( dialog, SIGNAL(requestSizeChange(int,int)), this, SLOT(resizeScene(int,int)));
+     dialog = new ResizeDialog( scene->sceneRect().width(),
+                                scene->sceneRect().height(),
+                                this );
+     dialog->show();
+     connect( dialog, SIGNAL( requestSizeChange( int, int ) ), this, SLOT( resizeScene( int, int ) ) );
 }
 
 void MainWindow::on_actionA_propos_de_Tabula_Rasa_triggered()
 {
-   about_ = new AboutDialog(this);
-   about_->exec();
-   delete about_;
+     about_ = new AboutDialog( this );
+     about_->exec();
+     delete about_;
 }

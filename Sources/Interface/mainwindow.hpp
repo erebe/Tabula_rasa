@@ -63,7 +63,7 @@ class MainWindow : public QMainWindow {
 
           void on_actionA_propos_de_Tabula_Rasa_triggered();
 
-public slots:
+     public slots:
           void setMode( AlgorithmeScene::Mode mode );
           void resizeScene( int width, int height );
 
