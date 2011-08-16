@@ -19,6 +19,7 @@
 #include "ancreItem.hpp"
 #include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
+#include <QDebug>
 
 AncreItem::AncreItem( QGraphicsItem* parent, QGraphicsScene* scene ):
      QGraphicsItem( parent, scene ), parent_( 0 ), liaison_( 0 )
@@ -32,12 +33,9 @@ AncreItem::~AncreItem()
 
 void AncreItem::setParent( AncreItem* parent )
 {
-
+     deleteLink();
      parent_ = parent;
      parent_->addChild( this );
-
-     if( liaison_ )
-          { delete liaison_; }
 
      liaison_ = new LiaisonItem( parent_, this );
      scene()->addItem( liaison_ );
@@ -75,16 +73,8 @@ QVariant AncreItem::itemChange( GraphicsItemChange change, const QVariant& value
 
 void AncreItem::detach()
 {
-
      deleteLink();
-
-     AncreItem* tmp;
-     foreach( tmp, children_ )
-     tmp->deleteLink();
-
-     children_.clear();
-
-
+     deleteChildren();
 }
 
 void AncreItem::deleteLink()
@@ -96,5 +86,16 @@ void AncreItem::deleteLink()
           liaison_ = 0;
           parent_ = 0;
      }
+
+}
+
+void AncreItem::deleteChildren() {
+
+    AncreItem* child;
+
+    foreach( child, children_ )
+        child->deleteLink();
+
+    children_.clear();
 
 }

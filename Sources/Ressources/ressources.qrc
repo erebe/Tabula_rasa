@@ -18,5 +18,6 @@
         <file>ada.jpg</file>
         <file>icone_rename.png</file>
         <file>icone_resize.png</file>
+        <file>qt.png</file>
     </qresource>
 </RCC>

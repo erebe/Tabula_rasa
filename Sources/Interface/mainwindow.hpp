@@ -22,6 +22,9 @@
 #include <QInputDialog>
 #include "Pictogramme/labelItem.hpp"
 #include "algorithmeScene.hpp"
+#include "aboutDialog.hpp"
+
+class ResizeDialog;
 
 namespace Ui {
 class MainWindow;
@@ -37,6 +40,8 @@ class MainWindow : public QMainWindow {
 
      private:
           Ui::MainWindow* ui;
+          ResizeDialog* dialog;
+          AboutDialog* about_;
           void selectQAction( AlgorithmeScene::Mode mode );
 
      private slots:
@@ -51,13 +56,16 @@ class MainWindow : public QMainWindow {
           void on_tabWidget_tabCloseRequested( int index );
           void on_actionNouveau_triggered();
           void on_actionExporter_vers_une_image_triggered();
-
           void on_actionRenommer_l_algorithme_triggered();
-
           void on_actionFermer_l_onglet_triggered();
 
-     public slots:
+          void on_actionRedimensionner_l_Algorithme_triggered();
+
+          void on_actionA_propos_de_Tabula_Rasa_triggered();
+
+public slots:
           void setMode( AlgorithmeScene::Mode mode );
+          void resizeScene( int width, int height );
 
           void itemAdded( Pictogramme* item ) {
                connect( item, SIGNAL( doubleClick( LabelItem* ) ), this, SLOT( changeLabel( LabelItem* ) ) );

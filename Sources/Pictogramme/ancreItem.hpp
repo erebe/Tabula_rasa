@@ -38,6 +38,7 @@ class AncreItem: public QGraphicsItem {
           virtual QVariant itemChange( GraphicsItemChange change, const QVariant& value );
           void deleteLink();
           void detach();
+          void deleteChildren();
 
      protected:
           QPointF posBottomAnchor_;
