@@ -28,6 +28,7 @@ class TabWidget : public QWidget {
      public:
           TabWidget();
           inline AlgorithmeScene* scene() const { return scene_; }
+          inline QGraphicsView* view() const { return vue_; }
 
      private:
           AlgorithmeScene* scene_;

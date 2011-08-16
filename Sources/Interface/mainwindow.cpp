@@ -20,6 +20,7 @@
 #include "Pictogramme/pictoSortie.hpp"
 #include "algorithmeScene.hpp"
 #include "tabWidget.hpp"
+#include "resizeDialog.hpp"
 
 #include <QFileDialog>
 #include <QtGui>
@@ -292,7 +293,8 @@ void MainWindow::on_actionExporter_vers_une_image_triggered()
 void MainWindow::on_actionRenommer_l_algorithme_triggered()
 {
      bool ok;
-     QString titre = QInputDialog::getText( this, tr( "Titre de l'agorithme" ), tr( "Quel est le titre de l'algorithme ?" ), QLineEdit::Normal, "", &ok );
+     QString titre = QInputDialog::getText( this, tr( "Titre de l'agorithme" ), tr( "Quel est le titre de l'algorithme ?" ), QLineEdit::Normal,
+                                            ui->tabWidget->tabText( ui->tabWidget->currentIndex() ), &ok );
 
      if( !ok )
           { return; }
@@ -303,4 +305,41 @@ void MainWindow::on_actionRenommer_l_algorithme_triggered()
 void MainWindow::on_actionFermer_l_onglet_triggered()
 {
      on_tabWidget_tabCloseRequested( ui->tabWidget->currentIndex() );
+}
+
+void MainWindow::resizeScene( int width, int height )
+{
+
+    AlgorithmeScene* scene = static_cast<TabWidget*>( ui->tabWidget->currentWidget() )
+                             ->scene();
+    QGraphicsView* view = static_cast<TabWidget*>( ui->tabWidget->currentWidget() )
+                          ->view();
+
+    width = ( width < view->width() ) ? view->width() : width;
+    height = ( height < view->height() ) ? view->height() : height;
+
+    scene->setSceneRect(0, 0, width, height );
+    delete dialog;
+    dialog = 0;
+
+}
+
+void MainWindow::on_actionRedimensionner_l_Algorithme_triggered()
+{
+    AlgorithmeScene* scene = static_cast<TabWidget*>( ui->tabWidget->currentWidget() )
+                             ->scene();
+
+
+    dialog = new ResizeDialog( scene->sceneRect().width(),
+                               scene->sceneRect().height(),
+                               this );
+    dialog->show();
+    connect( dialog, SIGNAL(requestSizeChange(int,int)), this, SLOT(resizeScene(int,int)));
+}
+
+void MainWindow::on_actionA_propos_de_Tabula_Rasa_triggered()
+{
+   about_ = new AboutDialog(this);
+   about_->exec();
+   delete about_;
 }

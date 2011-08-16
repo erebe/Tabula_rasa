@@ -23,8 +23,13 @@ HEADERS += Interface/mainwindow.hpp \
     Interface/algorithmeScene.hpp \
     Pictogramme/pictoSortie.hpp \
     Pictogramme/pictoConditionMultiple.hpp \
-    Interface/tabWidget.hpp
-FORMS += Interface/mainwindow.ui
+    Interface/tabWidget.hpp \
+    Interface/resizeDialog.hpp \
+    aboutDialog.hpp \
+    Interface/aboutDialog.hpp
+FORMS += Interface/mainwindow.ui \
+    Interface/resizeDialog.ui \
+    aboutDialog.ui
 SOURCES += main.cpp Interface/mainwindow.cpp \
     Pictogramme/pictogramme.cpp \
     Pictogramme/pictoAction.cpp \
@@ -37,5 +42,9 @@ SOURCES += main.cpp Interface/mainwindow.cpp \
     Interface/algorithmeScene.cpp \
     Pictogramme/pictoSortie.cpp \
     Pictogramme/pictoConditionMultiple.cpp \
-    Interface/tabWidget.cpp
+    Interface/tabWidget.cpp \
+    Interface/resizeDialog.cpp \
+    aboutDialog.cpp
 RESOURCES += Ressources/ressources.qrc
+
+OTHER_FILES +=

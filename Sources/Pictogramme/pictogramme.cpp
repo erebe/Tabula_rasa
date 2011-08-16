@@ -30,7 +30,9 @@ Pictogramme::Pictogramme( QGraphicsItem* parent, QGraphicsScene* scene ):
                QGraphicsItem::ItemSendsGeometryChanges );
 
      actions_["Supprimer"] = contexteMenu_.addAction( tr( "Supprimer" ) );
-     actions_["Detacher"] = contexteMenu_.addAction( tr( "Detacher" ) );
+     actions_["DelierP"] = contexteMenu_.addAction( tr( "Délier du parent" ) );
+     actions_["DelierE"] = contexteMenu_.addAction( tr( "Délier des enfants" ) );
+     actions_["Delier"] = contexteMenu_.addAction( tr( "Délier de tous" ) );
 }
 
 Pictogramme::~Pictogramme()
@@ -96,11 +98,19 @@ void Pictogramme::processAction( QAction* action, QGraphicsSceneContextMenuEvent
           static_cast<AlgorithmeScene*>( scene() )->deleteItem( this );
           return;
 
-     } else if( actions_["Detacher"] == action ) {
+     } else if( actions_["Delier"] == action ) {
 
           detach();
           LabelItem* item;
           foreach( item, labels_ )
           item->detach();
+
+     } else if( actions_["DelierE"] == action ) {
+
+             deleteChildren();
+
+     } else if( actions_["DelierP"] == action ) {
+
+             deleteLink();
      }
 }

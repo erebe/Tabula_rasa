@@ -103,7 +103,7 @@
    <value key="ProjectExplorer.Target.DeployConfigurationCount" type="int">1</value>
    <valuemap key="ProjectExplorer.Target.RunConfiguration.0" type="QVariantMap">
     <valuelist key="Analyzer.Valgrind.AddedSupressionFiles" type="QVariantList"/>
-    <value key="Analyzer.Valgrind.FilterExternalIssues" type="bool">false</value>
+    <value key="Analyzer.Valgrind.FilterExternalIssues" type="bool">true</value>
     <value key="Analyzer.Valgrind.NumCallers" type="int">25</value>
     <valuelist key="Analyzer.Valgrind.RemovedSupressionFiles" type="QVariantList"/>
     <value key="Analyzer.Valgrind.TrackOrigins" type="bool">true</value>
