@@ -19,6 +19,10 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="../Ressources/ressources.qrc">
+    <normaloff>:/Icones/icone_Application.png</normaloff>:/Icones/icone_Application.png</iconset>
+  </property>
   <widget class="QWidget" name="centralWidget">
    <property name="sizePolicy">
     <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
@@ -30,7 +34,7 @@
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>-1</number>
       </property>
       <property name="tabsClosable">
        <bool>true</bool>
@@ -38,22 +42,6 @@
       <property name="movable">
        <bool>true</bool>
       </property>
-      <widget class="QWidget" name="tab">
-       <attribute name="title">
-        <string>Algorithme</string>
-       </attribute>
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
-        <property name="spacing">
-         <number>0</number>
-        </property>
-        <property name="margin">
-         <number>0</number>
-        </property>
-        <item>
-         <widget class="QGraphicsView" name="graphicsView"/>
-        </item>
-       </layout>
-      </widget>
      </widget>
     </item>
    </layout>
@@ -71,43 +59,49 @@
     <property name="title">
      <string>&amp;Fichier</string>
     </property>
-    <addaction name="action_Ouvrir"/>
-    <addaction name="actionEnregistrer_vers_une_image"/>
-    <addaction name="actionEnregistrer_vers_XML"/>
+    <addaction name="actionNouveau"/>
+    <addaction name="actionOuvrir"/>
+    <addaction name="actionEnregistrer"/>
+    <addaction name="actionExporter_vers_une_image"/>
+    <addaction name="separator"/>
+    <addaction name="actionFermer_l_onglet"/>
+    <addaction name="actionQuitter"/>
    </widget>
    <widget class="QMenu" name="menuEdition">
     <property name="title">
      <string>Edition</string>
     </property>
+    <addaction name="actionRedimensionner_l_Algorithme"/>
+    <addaction name="actionRenommer_l_algorithme"/>
    </widget>
    <widget class="QMenu" name="menuG_n_rer">
     <property name="title">
      <string>Générer</string>
     </property>
+    <addaction name="actionVers_Ada"/>
+    <addaction name="actionVers_Java"/>
+    <addaction name="actionVers_C_C"/>
    </widget>
    <widget class="QMenu" name="menuA_propos">
     <property name="title">
      <string>Aide</string>
     </property>
+    <addaction name="actionManuel"/>
+    <addaction name="separator"/>
     <addaction name="actionA_propos_de_Tabula_Rasa"/>
+    <addaction name="actionA_propos_de_Qt"/>
+   </widget>
+   <widget class="QMenu" name="menuAnalyse">
+    <property name="title">
+     <string>Analyse</string>
+    </property>
+    <addaction name="actionV_rifier_les_cycles"/>
    </widget>
    <addaction name="menu_Fichier"/>
    <addaction name="menuEdition"/>
+   <addaction name="menuAnalyse"/>
    <addaction name="menuG_n_rer"/>
    <addaction name="menuA_propos"/>
-  </widget>
-  <widget class="QToolBar" name="mainToolBar">
-   <property name="movable">
-    <bool>false</bool>
-   </property>
-   <attribute name="toolBarArea">
-    <enum>TopToolBarArea</enum>
-   </attribute>
-   <attribute name="toolBarBreak">
-    <bool>false</bool>
-   </attribute>
-   <addaction name="action_Ouvrir"/>
-   <addaction name="actionEnregistrer"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <widget class="QToolBar" name="toolBar">
@@ -133,11 +127,24 @@
    <addaction name="actionConditionMultiple"/>
    <addaction name="separator"/>
   </widget>
-  <action name="action_Ouvrir">
-   <property name="text">
-    <string>&amp;Ouvrir un XML</string>
+  <widget class="QToolBar" name="toolBar_2">
+   <property name="windowTitle">
+    <string>toolBar_2</string>
    </property>
-  </action>
+   <property name="movable">
+    <bool>false</bool>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionNouveau"/>
+   <addaction name="actionOuvrir"/>
+   <addaction name="actionEnregistrer"/>
+   <addaction name="actionExporter_vers_une_image"/>
+  </widget>
   <action name="actionMode_Insertion">
    <property name="checkable">
     <bool>true</bool>
@@ -169,14 +176,6 @@
    </property>
    <property name="toolTip">
     <string>Permet de créer une hiérarchie entre les éléments</string>
-   </property>
-  </action>
-  <action name="actionEnregistrer">
-   <property name="text">
-    <string>Enregistrer</string>
-   </property>
-   <property name="toolTip">
-    <string>Permet d'enregistrer vers une Image</string>
    </property>
   </action>
   <action name="actionIteration">
@@ -272,21 +271,6 @@
     <string>Un roi pour les gouverner tous</string>
    </property>
   </action>
-  <action name="actionEnregistrer_vers_une_image">
-   <property name="text">
-    <string>Enregistrer vers une image</string>
-   </property>
-  </action>
-  <action name="actionEnregistrer_vers_XML">
-   <property name="text">
-    <string>Enregistrer vers XML</string>
-   </property>
-  </action>
-  <action name="actionA_propos_de_Tabula_Rasa">
-   <property name="text">
-    <string>A propos de Tabula Rasa</string>
-   </property>
-  </action>
   <action name="actionSortie">
    <property name="checkable">
     <bool>true</bool>
@@ -300,6 +284,128 @@
    </property>
    <property name="toolTip">
     <string>Permet d'insérer une action de sortie</string>
+   </property>
+  </action>
+  <action name="actionNouveau">
+   <property name="text">
+    <string>Nouveau</string>
+   </property>
+  </action>
+  <action name="actionOuvrir">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Ouvrir</string>
+   </property>
+  </action>
+  <action name="actionEnregistrer">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Enregistrer</string>
+   </property>
+  </action>
+  <action name="actionExporter_vers_une_image">
+   <property name="icon">
+    <iconset resource="../Ressources/ressources.qrc">
+     <normaloff>:/Icones/exporter_Image.png</normaloff>:/Icones/exporter_Image.png</iconset>
+   </property>
+   <property name="text">
+    <string>Exporter vers une image</string>
+   </property>
+  </action>
+  <action name="actionFermer_l_onglet">
+   <property name="icon">
+    <iconset resource="../Ressources/ressources.qrc">
+     <normaloff>:/Icones/fermer_Onglet.png</normaloff>:/Icones/fermer_Onglet.png</iconset>
+   </property>
+   <property name="text">
+    <string>Fermer l'onglet</string>
+   </property>
+  </action>
+  <action name="actionQuitter">
+   <property name="icon">
+    <iconset resource="../Ressources/ressources.qrc">
+     <normaloff>:/Icones/fermer_Application.png</normaloff>:/Icones/fermer_Application.png</iconset>
+   </property>
+   <property name="text">
+    <string>Quitter</string>
+   </property>
+  </action>
+  <action name="actionRedimensionner_l_Algorithme">
+   <property name="icon">
+    <iconset resource="../Ressources/ressources.qrc">
+     <normaloff>:/Icones/icone_resize.png</normaloff>:/Icones/icone_resize.png</iconset>
+   </property>
+   <property name="text">
+    <string>Redimensionner l'Algorithme</string>
+   </property>
+  </action>
+  <action name="actionV_rifier_les_cycles">
+   <property name="text">
+    <string>Vérifier les cycles</string>
+   </property>
+  </action>
+  <action name="actionVers_Ada">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../Ressources/ressources.qrc">
+     <normaloff>:/Icones/ada.jpg</normaloff>:/Icones/ada.jpg</iconset>
+   </property>
+   <property name="text">
+    <string>Vers Ada</string>
+   </property>
+  </action>
+  <action name="actionVers_Java">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../Ressources/ressources.qrc">
+     <normaloff>:/Icones/java.png</normaloff>:/Icones/java.png</iconset>
+   </property>
+   <property name="text">
+    <string>Vers Java</string>
+   </property>
+  </action>
+  <action name="actionVers_C_C">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../Ressources/ressources.qrc">
+     <normaloff>:/Icones/c.png</normaloff>:/Icones/c.png</iconset>
+   </property>
+   <property name="text">
+    <string>Vers C/C++</string>
+   </property>
+  </action>
+  <action name="actionA_propos_de_Tabula_Rasa">
+   <property name="text">
+    <string>A propos de Tabula Rasa</string>
+   </property>
+  </action>
+  <action name="actionA_propos_de_Qt">
+   <property name="text">
+    <string>A propos de Qt</string>
+   </property>
+  </action>
+  <action name="actionManuel">
+   <property name="text">
+    <string>Manuel</string>
+   </property>
+  </action>
+  <action name="actionRenommer_l_algorithme">
+   <property name="icon">
+    <iconset resource="../Ressources/ressources.qrc">
+     <normaloff>:/Icones/icone_rename.png</normaloff>:/Icones/icone_rename.png</iconset>
+   </property>
+   <property name="text">
+    <string>Renommer l'algorithme</string>
    </property>
   </action>
  </widget>

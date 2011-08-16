@@ -9,5 +9,14 @@
         <file>vignette_conditionMultiple.png</file>
         <file>vignette_roi.png</file>
         <file>vignette_sortie.png</file>
+        <file>exporter_Image.png</file>
+        <file>icone_Application.png</file>
+        <file>fermer_Application.png</file>
+        <file>fermer_Onglet.png</file>
+        <file>c.png</file>
+        <file>java.png</file>
+        <file>ada.jpg</file>
+        <file>icone_rename.png</file>
+        <file>icone_resize.png</file>
     </qresource>
 </RCC>

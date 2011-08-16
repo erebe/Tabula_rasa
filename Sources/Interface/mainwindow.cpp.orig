@@ -30,22 +30,22 @@ MainWindow::MainWindow( QWidget* parent )
      ui->setupUi( this );
 
      ui->actionOuvrir->setIcon( QApplication::style()->standardIcon(
-                                     QStyle::SP_DialogOpenButton ) );
+                                      QStyle::SP_DialogOpenButton ) );
 
      ui->actionEnregistrer->setIcon( QApplication::style()->standardIcon(
                                           QStyle::SP_DialogSaveButton ) );
 
      ui->actionNouveau->setIcon( QApplication::style()->standardIcon(
-                                      QStyle::SP_FileIcon ) );
+                                          QStyle::SP_FileIcon ) );
 
      TabWidget* tab = new TabWidget();
      connect( tab->scene(), SIGNAL( modeChanged( AlgorithmeScene::Mode ) ), this, SLOT( setMode( AlgorithmeScene::Mode ) ) );
-     connect( tab->scene(), SIGNAL( itemAdded( Pictogramme* ) ), this, SLOT( itemAdded( Pictogramme* ) ) );
+     connect( tab->scene(), SIGNAL( itemAdded(Pictogramme*) ), this, SLOT( itemAdded(Pictogramme*) ) );
      ui->tabWidget->addTab( tab, "Algorithme" );
 
 
-     connect( ui->actionA_propos_de_Qt, SIGNAL( triggered() ), qApp, SLOT( aboutQt() ) );
-     connect( ui->actionQuitter, SIGNAL( triggered() ), qApp, SLOT( quit() ) );
+     connect( ui->actionA_propos_de_Qt, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
+     connect( ui->actionQuitter, SIGNAL(triggered()), qApp, SLOT(quit()));
 
 }
 
@@ -53,9 +53,8 @@ MainWindow::MainWindow( QWidget* parent )
 MainWindow::~MainWindow()
 {
      delete ui;
-
-     for( int i = 0; i < ui->tabWidget->count(); i++ )
-          { delete ui->tabWidget->widget( i ); }
+        for(int i = 0; i < ui->tabWidget->count(); i++)
+                delete ui->tabWidget->widget(i);
 }
 
 
@@ -154,9 +153,9 @@ void MainWindow::on_actionSortie_triggered( bool checked )
 void MainWindow::selectQAction( AlgorithmeScene::Mode mode )
 {
 
-     AlgorithmeScene* scene = static_cast<TabWidget*>( ui->tabWidget->currentWidget() )
-                              ->scene();
-     scene->setMode( mode );
+        AlgorithmeScene* scene = static_cast<TabWidget*>(ui->tabWidget->currentWidget())
+                                                        ->scene();
+        scene->setMode( mode );
 
      if( mode != AlgorithmeScene::InsertAction ) {
           ui->actionAction->setChecked( false );
@@ -202,105 +201,104 @@ void MainWindow::setMode( AlgorithmeScene::Mode mode )
      selectQAction( mode );
 }
 
-void MainWindow::on_tabWidget_tabCloseRequested( int index )
+void MainWindow::on_tabWidget_tabCloseRequested(int index)
 {
-     delete ui->tabWidget->widget( index );
+    delete ui->tabWidget->widget( index );
 
-     if( ui->tabWidget->count() == 0 ) {
-          TabWidget* tab = new TabWidget();
-          connect( tab->scene(), SIGNAL( modeChanged( AlgorithmeScene::Mode ) ), this, SLOT( setMode( AlgorithmeScene::Mode ) ) );
-          connect( tab->scene(), SIGNAL( itemAdded( Pictogramme* ) ), this, SLOT( itemAdded( Pictogramme* ) ) );
-          ui->tabWidget->addTab( tab, "Algorithme" );
-     }
+    if( ui->tabWidget->count() == 0 ){
+        TabWidget* tab = new TabWidget();
+        connect( tab->scene(), SIGNAL( modeChanged( AlgorithmeScene::Mode ) ), this, SLOT( setMode( AlgorithmeScene::Mode ) ) );
+        connect( tab->scene(), SIGNAL( itemAdded(Pictogramme*) ), this, SLOT( itemAdded(Pictogramme*) ) );
+        ui->tabWidget->addTab( tab, "Algorithme" );
+    }
 }
 
 void MainWindow::on_actionNouveau_triggered()
 {
-     bool ok;
-     QString titre = QInputDialog::getText( this, tr( "Titre de l'agorithme" ), tr( "Quel est le titre de l'algorithme ?" ), QLineEdit::Normal, "", &ok );
+    bool ok;
+    QString titre = QInputDialog::getText( this, tr("Titre de l'agorithme"), tr("Quel est le titre de l'algorithme ?"), QLineEdit::Normal, "", &ok );
 
-     if( !ok )
-          { return; }
+    if( !ok )
+            return;
 
-     TabWidget* tab = new TabWidget();
+    TabWidget* tab = new TabWidget();
 
-     connect( tab->scene(), SIGNAL( modeChanged( AlgorithmeScene::Mode ) ), this, SLOT( setMode( AlgorithmeScene::Mode ) ) );
-     connect( tab->scene(), SIGNAL( itemAdded( Pictogramme* ) ), this, SLOT( itemAdded( Pictogramme* ) ) );
+    connect( tab->scene(), SIGNAL( modeChanged( AlgorithmeScene::Mode ) ), this, SLOT( setMode( AlgorithmeScene::Mode ) ) );
+    connect( tab->scene(), SIGNAL( itemAdded(Pictogramme*) ), this, SLOT( itemAdded(Pictogramme*) ) );
 
 
-     ui->tabWidget->addTab( tab, titre );
+    ui->tabWidget->addTab( tab, titre);
 
 
 }
 
 void MainWindow::on_actionExporter_vers_une_image_triggered()
 {
-     QString fichier = QFileDialog::getSaveFileName( this, "Enregistrer l'algorithme", QString( "algo.png" ), "Images (*.png *.gif *.jpg *.jpeg)" );
+    QString fichier = QFileDialog::getSaveFileName( this, "Enregistrer l'algorithme", QString( "algo.png" ), "Images (*.png *.gif *.jpg *.jpeg)" );
+    if( fichier.isEmpty() )
+            return;
 
-     if( fichier.isEmpty() )
-          { return; }
+    AlgorithmeScene* scene = static_cast<TabWidget*>(ui->tabWidget->currentWidget())
+                                                    ->scene();
 
-     AlgorithmeScene* scene = static_cast<TabWidget*>( ui->tabWidget->currentWidget() )
-                              ->scene();
+    qreal maxX, maxY, minX, minY;
+    maxX = maxY = 0;
+    minX = scene->width();
+    minY = scene->height();
 
-     qreal maxX, maxY, minX, minY;
-     maxX = maxY = 0;
-     minX = scene->width();
-     minY = scene->height();
+    QGraphicsItem* item;
+    QPointF point;
 
-     QGraphicsItem* item;
-     QPointF point;
+    foreach( item, scene->items() ) {
 
-     foreach( item, scene->items() ) {
+         if( qgraphicsitem_cast<LiaisonItem*>( item ) ) {
+              continue;
+         }
 
-          if( qgraphicsitem_cast<LiaisonItem*>( item ) ) {
-               continue;
-          }
+         point = item->scenePos();
 
-          point = item->scenePos();
+         if( maxX < ( point.x() + static_cast<Pictogramme*>( item )->width() ) ) {
+              maxX = point.x() + static_cast<Pictogramme*>( item )->width();
+         }
 
-          if( maxX < ( point.x() + static_cast<Pictogramme*>( item )->width() ) ) {
-               maxX = point.x() + static_cast<Pictogramme*>( item )->width();
-          }
+         if( maxY < point.y() ) {
+              maxY = point.y();
+         }
 
-          if( maxY < point.y() ) {
-               maxY = point.y();
-          }
+         if( minX > point.x() ) {
+              minX = point.x();
+         }
 
-          if( minX > point.x() ) {
-               minX = point.x();
-          }
+         if( minY > point.y() ) {
+              minY = point.y();
+         }
+    }
 
-          if( minY > point.y() ) {
-               minY = point.y();
-          }
-     }
+    QRectF sceneSize = scene->sceneRect();
+    scene->setSceneRect( minX - 50, minY - 50, maxX - minX + 100, maxY - minY + 150 );
 
-     QRectF sceneSize = scene->sceneRect();
-     scene->setSceneRect( minX - 50, minY - 50, maxX - minX + 100, maxY - minY + 150 );
+    QPixmap image( scene->width(), scene->height() );
 
-     QPixmap image( scene->width(), scene->height() );
+    QPainter painter( &image );
+    painter.setRenderHint( QPainter::Antialiasing );
+    scene->render( &painter );
 
-     QPainter painter( &image );
-     painter.setRenderHint( QPainter::Antialiasing );
-     scene->render( &painter );
-
-     image.save( fichier );
-     scene->setSceneRect( sceneSize );
+    image.save( fichier );
+    scene->setSceneRect( sceneSize );
 }
 
 void MainWindow::on_actionRenommer_l_algorithme_triggered()
 {
-     bool ok;
-     QString titre = QInputDialog::getText( this, tr( "Titre de l'agorithme" ), tr( "Quel est le titre de l'algorithme ?" ), QLineEdit::Normal, "", &ok );
+    bool ok;
+    QString titre = QInputDialog::getText( this, tr("Titre de l'agorithme"), tr("Quel est le titre de l'algorithme ?"), QLineEdit::Normal, "", &ok );
 
-     if( !ok )
-          { return; }
+    if( !ok )
+            return;
 
-     ui->tabWidget->setTabText( ui->tabWidget->currentIndex(), titre );
+    ui->tabWidget->setTabText( ui->tabWidget->currentIndex(), titre );
 }
 
 void MainWindow::on_actionFermer_l_onglet_triggered()
 {
-     on_tabWidget_tabCloseRequested( ui->tabWidget->currentIndex() );
+    on_tabWidget_tabCloseRequested( ui->tabWidget->currentIndex() );
 }
