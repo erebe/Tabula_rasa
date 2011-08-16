@@ -19,5 +19,7 @@
         <file>icone_rename.png</file>
         <file>icone_resize.png</file>
         <file>qt.png</file>
+        <file>newFile.png</file>
+        <file>ouvrir.png</file>
     </qresource>
 </RCC>

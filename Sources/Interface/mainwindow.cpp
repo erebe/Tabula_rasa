@@ -30,14 +30,11 @@ MainWindow::MainWindow( QWidget* parent )
 {
      ui->setupUi( this );
 
-     ui->actionOuvrir->setIcon( QApplication::style()->standardIcon(
-                                     QStyle::SP_DialogOpenButton ) );
+//     ui->actionOuvrir->setIcon( QApplication::style()->standardIcon(
+//                                     QStyle::SP_DialogOpenButton ) );
 
      ui->actionEnregistrer->setIcon( QApplication::style()->standardIcon(
                                           QStyle::SP_DialogSaveButton ) );
-
-     ui->actionNouveau->setIcon( QApplication::style()->standardIcon(
-                                      QStyle::SP_FileIcon ) );
 
      TabWidget* tab = new TabWidget();
      connect( tab->scene(), SIGNAL( modeChanged( AlgorithmeScene::Mode ) ), this, SLOT( setMode( AlgorithmeScene::Mode ) ) );
@@ -236,7 +233,8 @@ void MainWindow::on_actionNouveau_triggered()
 
 void MainWindow::on_actionExporter_vers_une_image_triggered()
 {
-     QString fichier = QFileDialog::getSaveFileName( this, "Enregistrer l'algorithme", QString( "algo.png" ), "Images (*.png *.gif *.jpg *.jpeg)" );
+     QString fichier = QFileDialog::getSaveFileName( this, "Enregistrer l'algorithme",
+                                                     QString( "algo.png" ), "Images (*.png *.gif *.jpg *.jpeg)" );
 
      if( fichier.isEmpty() )
           { return; }
@@ -284,6 +282,7 @@ void MainWindow::on_actionExporter_vers_une_image_triggered()
 
      QPainter painter( &image );
      painter.setRenderHint( QPainter::Antialiasing );
+     scene->clearSelection();
      scene->render( &painter );
 
      image.save( fichier );

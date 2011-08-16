@@ -52,7 +52,7 @@
      <x>0</x>
      <y>0</y>
      <width>938</width>
-     <height>28</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_Fichier">
@@ -69,14 +69,14 @@
    </widget>
    <widget class="QMenu" name="menuEdition">
     <property name="title">
-     <string>Edition</string>
+     <string>&amp;Edition</string>
     </property>
-    <addaction name="actionRedimensionner_l_Algorithme"/>
     <addaction name="actionRenommer_l_algorithme"/>
+    <addaction name="actionRedimensionner_l_Algorithme"/>
    </widget>
    <widget class="QMenu" name="menuG_n_rer">
     <property name="title">
-     <string>Générer</string>
+     <string>&amp;Générer</string>
     </property>
     <addaction name="actionVers_Ada"/>
     <addaction name="actionVers_Java"/>
@@ -84,7 +84,7 @@
    </widget>
    <widget class="QMenu" name="menuA_propos">
     <property name="title">
-     <string>Aide</string>
+     <string>&amp;Aide</string>
     </property>
     <addaction name="actionManuel"/>
     <addaction name="separator"/>
@@ -93,7 +93,7 @@
    </widget>
    <widget class="QMenu" name="menuAnalyse">
     <property name="title">
-     <string>Analyse</string>
+     <string>&amp;Analyse</string>
     </property>
     <addaction name="actionV_rifier_les_cycles"/>
    </widget>
@@ -287,16 +287,30 @@
    </property>
   </action>
   <action name="actionNouveau">
+   <property name="icon">
+    <iconset resource="../Ressources/ressources.qrc">
+     <normaloff>:/Icones/newFile.png</normaloff>:/Icones/newFile.png</iconset>
+   </property>
    <property name="text">
     <string>Nouveau</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
    </property>
   </action>
   <action name="actionOuvrir">
    <property name="enabled">
     <bool>false</bool>
    </property>
+   <property name="icon">
+    <iconset resource="../Ressources/ressources.qrc">
+     <normaloff>:/Icones/ouvrir.png</normaloff>:/Icones/ouvrir.png</iconset>
+   </property>
    <property name="text">
     <string>Ouvrir</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
    </property>
   </action>
   <action name="actionEnregistrer">
@@ -305,6 +319,9 @@
    </property>
    <property name="text">
     <string>Enregistrer</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
    </property>
   </action>
   <action name="actionExporter_vers_une_image">
@@ -315,6 +332,9 @@
    <property name="text">
     <string>Exporter vers une image</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+S</string>
+   </property>
   </action>
   <action name="actionFermer_l_onglet">
    <property name="icon">
@@ -323,6 +343,9 @@
    </property>
    <property name="text">
     <string>Fermer l'onglet</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+W</string>
    </property>
   </action>
   <action name="actionQuitter">
@@ -333,6 +356,9 @@
    <property name="text">
     <string>Quitter</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
+   </property>
   </action>
   <action name="actionRedimensionner_l_Algorithme">
    <property name="icon">
@@ -341,6 +367,9 @@
    </property>
    <property name="text">
     <string>Redimensionner l'Algorithme</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+R</string>
    </property>
   </action>
   <action name="actionV_rifier_les_cycles">
@@ -417,6 +446,9 @@
    </property>
    <property name="text">
     <string>Renommer l'algorithme</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+R</string>
    </property>
   </action>
  </widget>
