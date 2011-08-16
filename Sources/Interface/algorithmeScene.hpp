@@ -38,6 +38,7 @@ class AlgorithmeScene: public QGraphicsScene {
 
      signals:
           void modeChanged( AlgorithmeScene::Mode mode );
+          void itemAdded( Pictogramme* picto );
 
      private:
           Mode mode_;

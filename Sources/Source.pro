@@ -8,6 +8,7 @@ DEPENDPATH += . Interface Ressources
 INCLUDEPATH += . Interface
 #QMAKE_CXXFLAGS += -std=c++0x
 CONFIG += debug
+RC_FILE = iconSetter.rc
 
 # Input
 HEADERS += Interface/mainwindow.hpp \
@@ -21,7 +22,8 @@ HEADERS += Interface/mainwindow.hpp \
     Pictogramme/pictoCondition.hpp \
     Interface/algorithmeScene.hpp \
     Pictogramme/pictoSortie.hpp \
-    Pictogramme/pictoConditionMultiple.hpp
+    Pictogramme/pictoConditionMultiple.hpp \
+    Interface/tabWidget.hpp
 FORMS += Interface/mainwindow.ui
 SOURCES += main.cpp Interface/mainwindow.cpp \
     Pictogramme/pictogramme.cpp \
@@ -34,5 +36,6 @@ SOURCES += main.cpp Interface/mainwindow.cpp \
     Pictogramme/pictoCondition.cpp \
     Interface/algorithmeScene.cpp \
     Pictogramme/pictoSortie.cpp \
-    Pictogramme/pictoConditionMultiple.cpp
+    Pictogramme/pictoConditionMultiple.cpp \
+    Interface/tabWidget.cpp
 RESOURCES += Ressources/ressources.qrc

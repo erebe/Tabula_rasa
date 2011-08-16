@@ -175,12 +175,8 @@ void AlgorithmeScene::mouseReleaseEvent( QGraphicsSceneMouseEvent* mouseEvent )
 
                picto->setPos( mouseEvent->scenePos().x() - ( size.width() / 2 ),
                               mouseEvent->scenePos().y() - ( size.height() / 2 ) );
-               picto->update();
-               connect( picto, SIGNAL( doubleClick( LabelItem* ) ),
-                        this->parent(), SLOT( changeLabel( LabelItem* ) ) );
-
+               emit itemAdded( picto );
                items_.push_back( picto );
-               update();
 
                if( mouseEvent->modifiers() != Qt::ControlModifier ) {
                     setMode( AlgorithmeScene::MoveItem );

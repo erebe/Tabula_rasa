@@ -48,7 +48,7 @@ class MainWindow : public QMainWindow {
           void on_actionCondition_triggered( bool checked );
           void on_actionConditionMultiple_triggered( bool checked );
           void on_actionSortie_triggered( bool checked );
-          void on_tabWidget_tabCloseRequested( int index );
+          void on_tabWidget_tabCloseRequested(int index);
           void on_actionNouveau_triggered();
           void on_actionExporter_vers_une_image_triggered();
 
@@ -56,11 +56,11 @@ class MainWindow : public QMainWindow {
 
           void on_actionFermer_l_onglet_triggered();
 
-     public slots:
+public slots:
           void setMode( AlgorithmeScene::Mode mode );
 
           void itemAdded( Pictogramme* item ) {
-               connect( item, SIGNAL( doubleClick( LabelItem* ) ), this, SLOT( changeLabel( LabelItem* ) ) );
+                  connect( item, SIGNAL(doubleClick(LabelItem*)), this, SLOT( changeLabel( LabelItem* ) ) );
           }
 
           void changeLabel( LabelItem* item ) {
