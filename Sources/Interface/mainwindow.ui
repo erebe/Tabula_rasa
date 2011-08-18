@@ -52,7 +52,7 @@
      <x>0</x>
      <y>0</y>
      <width>938</width>
-     <height>26</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_Fichier">
@@ -258,7 +258,7 @@
     <bool>true</bool>
    </property>
    <property name="enabled">
-    <bool>true</bool>
+    <bool>false</bool>
    </property>
    <property name="icon">
     <iconset resource="../Ressources/ressources.qrc">
@@ -373,8 +373,11 @@
    </property>
   </action>
   <action name="actionV_rifier_les_cycles">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
-    <string>Vérifier les cycles</string>
+    <string>Rechercher Incohérences</string>
    </property>
   </action>
   <action name="actionVers_Ada">
@@ -437,6 +440,9 @@
    </property>
    <property name="text">
     <string>Manuel</string>
+   </property>
+   <property name="shortcut">
+    <string>F1</string>
    </property>
   </action>
   <action name="actionRenommer_l_algorithme">
