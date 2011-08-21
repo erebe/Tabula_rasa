@@ -7,7 +7,7 @@ TARGET = tabula_Rasa
 DEPENDPATH += . Interface Ressources
 INCLUDEPATH += . Interface
 #QMAKE_CXXFLAGS += -std=c++0x
-CONFIG += debug
+#CONFIG += debug
 RC_FILE = iconSetter.rc
 
 # Input
