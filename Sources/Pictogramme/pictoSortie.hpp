@@ -22,17 +22,19 @@
 
 class PictoSortie: public Pictogramme {
 
-     public:
-          enum { Type = UserType + 6 };
-          PictoSortie( QGraphicsItem* parent = 0,
-                       QGraphicsScene* scene = 0 );
+public:
+    enum { Type = UserType + 6 };
+    PictoSortie( QGraphicsItem* parent = 0,
+                 QGraphicsScene* scene = 0 );
 
 
-          void paint( QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget );
-          QRectF boundingRect() const;
-          void updateDimension();
+    void paint( QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget );
+    QRectF boundingRect() const;
+    void updateDimension();
 
-          virtual int type() const { return Type; }
+    virtual int type() const {
+        return Type;
+    }
 };
 
 #endif // PICTOSORTIE_HPP

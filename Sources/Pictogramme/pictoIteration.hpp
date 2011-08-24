@@ -21,28 +21,32 @@
 #include <QGraphicsItem>
 
 class PictoIteration : public Pictogramme {
-    
-     public:
-          enum { Type = UserType + 4 };
 
-          PictoIteration( QString titre,
-                          QGraphicsItem* parent,
-                          QGraphicsScene* scene );
+public:
+    enum { Type = UserType + 4 };
 
-          void paint( QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget );
-          QRectF boundingRect() const;
-          void updateDimension();
+    PictoIteration( QString titre,
+                    QGraphicsItem* parent,
+                    QGraphicsScene* scene );
 
-          void processAction( QAction* action, QGraphicsSceneContextMenuEvent* event );
+    void paint( QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget );
+    QRectF boundingRect() const;
+    void updateDimension();
 
-          //void setLabel( const QString& titre );
-          inline QString label() const {  return labels_.at( 0 )->label(); }
-          virtual int type() const { return Type; }
+    void processAction( QAction* action, QGraphicsSceneContextMenuEvent* event );
+
+    //void setLabel( const QString& titre );
+    inline QString label() const {
+        return labels_.at( 0 )->label();
+    }
+    virtual int type() const {
+        return Type;
+    }
 
 
-     private:
-          QPointF points_[3];
-          bool isNumberedLoop_;
+private:
+    QPointF points_[3];
+    bool isNumberedLoop_;
 
 };
 
