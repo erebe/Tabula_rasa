@@ -29,17 +29,17 @@
 #include <QGraphicsLineItem>
 
 AlgorithmeScene::AlgorithmeScene( qreal x, qreal y, qreal width, qreal height, QObject* parent ):
-     QGraphicsScene( x, y, width, height, parent ), mode_( MoveItem ), line_( 0 )
+    QGraphicsScene( x, y, width, height, parent ), mode_( MoveItem ), line_( 0 )
 {
 }
 
 AlgorithmeScene::~AlgorithmeScene()
 {
 
-     Pictogramme* picto;
+    Pictogramme* picto;
 
-     foreach( picto, items_ )
-     delete picto;
+    foreach( picto, items_ )
+    delete picto;
 
 }
 
@@ -48,32 +48,32 @@ AlgorithmeScene::~AlgorithmeScene()
 void AlgorithmeScene::mousePressEvent( QGraphicsSceneMouseEvent* mouseEvent )
 {
 
-     mouseEvent->accept();
+    mouseEvent->accept();
 
-     if ( mouseEvent->button() == Qt::LeftButton && mode_ == EditLink ) {
+    if ( mouseEvent->button() == Qt::LeftButton && mode_ == EditLink ) {
 
-          line_ = new QGraphicsLineItem( QLineF( mouseEvent->scenePos(),
-                                                 mouseEvent->scenePos() ) );
+        line_ = new QGraphicsLineItem( QLineF( mouseEvent->scenePos(),
+                                               mouseEvent->scenePos() ) );
 
-          QGraphicsScene::addItem( line_ );
-     }
+        QGraphicsScene::addItem( line_ );
+    }
 
-     QGraphicsScene::mousePressEvent( mouseEvent );
+    QGraphicsScene::mousePressEvent( mouseEvent );
 
 }
 
 void AlgorithmeScene::mouseMoveEvent( QGraphicsSceneMouseEvent* mouseEvent )
 {
 
-     mouseEvent->accept();
+    mouseEvent->accept();
 
-     if ( mode_ == EditLink && line_ != 0 ) {
-          QLineF newLine( line_->line().p1(), mouseEvent->scenePos() );
-          line_->setLine( newLine );
+    if ( mode_ == EditLink && line_ != 0 ) {
+        QLineF newLine( line_->line().p1(), mouseEvent->scenePos() );
+        line_->setLine( newLine );
 
-     } else if ( mode_ == MoveItem ) {
-          QGraphicsScene::mouseMoveEvent( mouseEvent );
-     }
+    } else if ( mode_ == MoveItem ) {
+        QGraphicsScene::mouseMoveEvent( mouseEvent );
+    }
 
 }
 
@@ -81,119 +81,135 @@ void AlgorithmeScene::mouseMoveEvent( QGraphicsSceneMouseEvent* mouseEvent )
 void AlgorithmeScene::mouseReleaseEvent( QGraphicsSceneMouseEvent* mouseEvent )
 {
 
-     mouseEvent->accept();
+    mouseEvent->accept();
 
-     if( mouseEvent->button() != Qt::LeftButton )
-          { return; }
+    if( mouseEvent->button() != Qt::LeftButton )
+    {
+        return;
+    }
 
-     if( line_ != 0 && mode_ == EditLink ) {
+    if( line_ != 0 && mode_ == EditLink ) {
 
-          QList<QGraphicsItem*> startItems = items( line_->line().p2() );
-          QList<QGraphicsItem*> endItems = items( line_->line().p1() );
+        QList<QGraphicsItem*> startItems = items( line_->line().p2() );
+        QList<QGraphicsItem*> endItems = items( line_->line().p1() );
 
-          if( startItems.count() && startItems.first() == line_ )
-               { startItems.removeFirst(); }
+        if( startItems.count() && startItems.first() == line_ )
+        {
+            startItems.removeFirst();
+        }
 
-          if( endItems.count() && endItems.first() == line_ )
-               { endItems.removeFirst(); }
+        if( endItems.count() && endItems.first() == line_ )
+        {
+            endItems.removeFirst();
+        }
 
-          removeItem( line_ );
-          delete line_;
-          line_ = 0;
+        removeItem( line_ );
+        delete line_;
+        line_ = 0;
 
-          QGraphicsItem* item;
+        QGraphicsItem* item;
 
-          foreach( item, startItems ) {
-               if( qgraphicsitem_cast<LiaisonItem*>( item ) )
-                    { startItems.removeOne( item ); }
-          }
+        foreach( item, startItems ) {
+            if( qgraphicsitem_cast<LiaisonItem*>( item ) )
+            {
+                startItems.removeOne( item );
+            }
+        }
 
-          foreach( item, endItems ) {
-               if( qgraphicsitem_cast<LiaisonItem*>( item ) )
-                    { endItems.removeOne( item ); }
-          }
-
-
-          if( startItems.count() && endItems.count() ) {
-
-               AncreItem* enfant, *parent;
-               enfant = parent = 0;
-
-               if( startItems.first()->parentItem() != 0 )
-                    { enfant =  static_cast<AncreItem*>( startItems.first()->parentItem() ); }
-
-               else
-                    { enfant = static_cast<AncreItem*>( startItems.first() ); }
+        foreach( item, endItems ) {
+            if( qgraphicsitem_cast<LiaisonItem*>( item ) )
+            {
+                endItems.removeOne( item );
+            }
+        }
 
 
-               if( endItems.first()->parentItem() != 0 &&
-                   !qgraphicsitem_cast<PictoCondition*>( endItems.first()->parentItem() )
-                   && !qgraphicsitem_cast<PictoConditionMultiple*>( endItems.first()->parentItem() ) ) {
+        if( startItems.count() && endItems.count() ) {
 
-                    parent = static_cast<AncreItem*>( endItems.first()->parentItem() );
+            AncreItem* enfant, *parent;
+            enfant = parent = 0;
 
-               } else if( !qgraphicsitem_cast<PictoCondition*>( endItems.first() )
-                          && !qgraphicsitem_cast<PictoConditionMultiple*>( endItems.first() ) ) {
+            if( startItems.first()->parentItem() != 0 )
+            {
+                enfant =  static_cast<AncreItem*>( startItems.first()->parentItem() );
+            }
 
-                    parent = static_cast<AncreItem*>( endItems.first() );
-               }
-
-               if( ( parent != 0 ) && ( enfant != parent ) )
-                    { enfant->setParent( parent ); }
-
-          }
-
-     }
+            else
+            {
+                enfant = static_cast<AncreItem*>( startItems.first() );
+            }
 
 
-     if( ( mode_ != EditLink ) && ( mode_ != MoveItem ) ) {
+            if( endItems.first()->parentItem() != 0 &&
+                    !qgraphicsitem_cast<PictoCondition*>( endItems.first()->parentItem() )
+                    && !qgraphicsitem_cast<PictoConditionMultiple*>( endItems.first()->parentItem() ) ) {
 
-          Pictogramme* picto = 0;
+                parent = static_cast<AncreItem*>( endItems.first()->parentItem() );
 
-          if( mode_ == InsertAction ) {
-               picto = new PictoAction( "", "", "", 0, this );
+            } else if( !qgraphicsitem_cast<PictoCondition*>( endItems.first() )
+                       && !qgraphicsitem_cast<PictoConditionMultiple*>( endItems.first() ) ) {
 
-          } else if( mode_ == InsertLoop ) {
-               picto = new PictoIteration( "", 0, this );
+                parent = static_cast<AncreItem*>( endItems.first() );
+            }
 
-          } else if( mode_ == InsertProcedure ) {
-               picto = new PictoProcedure( "", "", "", 0, this );
+            if( ( parent != 0 ) && ( enfant != parent ) )
+            {
+                enfant->setParent( parent );
+            }
 
-          } else if( mode_ == InsertCondition ) {
-               picto = new PictoCondition( "", 0, this );
+        }
 
-          } else if( mode_ == InsertExit ) {
-               picto = new PictoSortie( 0, this );
-
-          } else if( mode_ == InsertMultiCondition ) {
-               picto = new PictoConditionMultiple( "", 0, this );
-
-          }
-
-          if( picto ) {
-               QRectF size = picto->boundingRect();
-
-               picto->setPos( mouseEvent->scenePos().x() - ( size.width() / 2 ),
-                              mouseEvent->scenePos().y() - ( size.height() / 2 ) );
-               emit itemAdded( picto );
-               items_.push_back( picto );
-
-               if( mouseEvent->modifiers() != Qt::ControlModifier ) {
-                    setMode( AlgorithmeScene::MoveItem );
-                    emit modeChanged( AlgorithmeScene::MoveItem );
-               }
+    }
 
 
-          }
-     }
+    if( ( mode_ != EditLink ) && ( mode_ != MoveItem ) ) {
 
-     QGraphicsScene::mouseReleaseEvent( mouseEvent );
+        Pictogramme* picto = 0;
+
+        if( mode_ == InsertAction ) {
+            picto = new PictoAction( "", "", "", 0, this );
+
+        } else if( mode_ == InsertLoop ) {
+            picto = new PictoIteration( "", 0, this );
+
+        } else if( mode_ == InsertProcedure ) {
+            picto = new PictoProcedure( "", "", "", 0, this );
+
+        } else if( mode_ == InsertCondition ) {
+            picto = new PictoCondition( "", 0, this );
+
+        } else if( mode_ == InsertExit ) {
+            picto = new PictoSortie( 0, this );
+
+        } else if( mode_ == InsertMultiCondition ) {
+            picto = new PictoConditionMultiple( "", 0, this );
+
+        }
+
+        if( picto ) {
+            QRectF size = picto->boundingRect();
+
+            picto->setPos( mouseEvent->scenePos().x() - ( size.width() / 2 ),
+                           mouseEvent->scenePos().y() - ( size.height() / 2 ) );
+            emit itemAdded( picto );
+            items_.push_back( picto );
+
+            if( mouseEvent->modifiers() != Qt::ControlModifier ) {
+                setMode( AlgorithmeScene::MoveItem );
+                emit modeChanged( AlgorithmeScene::MoveItem );
+            }
+
+
+        }
+    }
+
+    QGraphicsScene::mouseReleaseEvent( mouseEvent );
 }
 
 void AlgorithmeScene::deleteItem( Pictogramme* item )
 {
 
-     items_.removeOne( item );
-     removeItem( item );
-     delete item;
+    items_.removeOne( item );
+    removeItem( item );
+    delete item;
 }

@@ -23,17 +23,17 @@
 
 TabWidget::TabWidget()
 {
-     scene_ = new AlgorithmeScene( 0, 0, 2000, 2000, this );
-     scene_->setBackgroundBrush( Qt::white );
+    scene_ = new AlgorithmeScene( 0, 0, 2000, 2000, this );
+    scene_->setBackgroundBrush( Qt::white );
 
-     vue_ = new QGraphicsView( this );
-     vue_->setResizeAnchor( QGraphicsView::NoAnchor );
-     vue_->setTransformationAnchor( QGraphicsView::NoAnchor );
-     vue_->setRenderHint( QPainter::Antialiasing );
-     vue_->setScene( scene_ );
+    vue_ = new QGraphicsView( this );
+    vue_->setResizeAnchor( QGraphicsView::NoAnchor );
+    vue_->setTransformationAnchor( QGraphicsView::NoAnchor );
+    vue_->setRenderHint( QPainter::Antialiasing );
+    vue_->setScene( scene_ );
 
-     layout_ = new QHBoxLayout( this );
-     layout_->addWidget( vue_ );
-     layout_->setMargin( 0 );
+    layout_ = new QHBoxLayout( this );
+    layout_->addWidget( vue_ );
+    layout_->setMargin( 0 );
 
 }

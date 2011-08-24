@@ -25,15 +25,19 @@ class QHBoxLayout;
 
 class TabWidget : public QWidget {
 
-     public:
-          TabWidget();
-          inline AlgorithmeScene* scene() const { return scene_; }
-          inline QGraphicsView* view() const { return vue_; }
+public:
+    TabWidget();
+    inline AlgorithmeScene* scene() const {
+        return scene_;
+    }
+    inline QGraphicsView* view() const {
+        return vue_;
+    }
 
-     private:
-          AlgorithmeScene* scene_;
-          QGraphicsView* vue_;
-          QHBoxLayout* layout_;
+private:
+    AlgorithmeScene* scene_;
+    QGraphicsView* vue_;
+    QHBoxLayout* layout_;
 };
 
 #endif // TABWIDGET_HPP
