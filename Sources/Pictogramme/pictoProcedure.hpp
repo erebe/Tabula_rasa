@@ -48,6 +48,7 @@ class PictoProcedure : public Pictogramme {
 
      private:
           bool detail_;
+          bool emptyDetail_;
 
           int drawDetails( QPainter* painter, LabelItem* texte, int pos ) const;
           void processAction( QAction* action, QGraphicsSceneContextMenuEvent* event );

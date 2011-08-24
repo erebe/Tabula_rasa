@@ -24,7 +24,7 @@ PictoProcedure::PictoProcedure( QString titre,
                                 QString postCondition,
                                 QGraphicsItem* parent,
                                 QGraphicsScene* scene ) :
-     Pictogramme( parent, scene ), detail_( true )
+    Pictogramme( parent, scene ), detail_( true ), emptyDetail_( true )
 {
      labels_ << new LabelItem( preCondition, 150, 15, 50, this, scene );
      labels_ << new LabelItem( titre, 200, 50, 50, this, scene );
@@ -34,7 +34,11 @@ PictoProcedure::PictoProcedure( QString titre,
      posUpAnchor_.setY( 5 );
      updateDimension();
 
-     actions_["Details"] = contexteMenu_.addAction( tr( "Afficher/Masquer les détails" ) );
+     actions_["Details"] = contexteMenu_.addAction( tr( "Masquer les assertions" ) );
+     actions_["Details"]->setCheckable( true );
+     actions_["EmptyDetails"] = contexteMenu_.addAction( tr( "Masquer les assertions vides" ) );
+     actions_["EmptyDetails"]->setCheckable( true );
+
 }
 
 void PictoProcedure::paint( QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget )
@@ -66,7 +70,8 @@ void PictoProcedure::paint( QPainter* painter, const QStyleOptionGraphicsItem* o
 int PictoProcedure::drawDetails( QPainter* painter, LabelItem* texte, int pos ) const
 {
 
-     if( detail() ) {
+     if( detail() &&
+         ( emptyDetail_ || ( !emptyDetail_ && !texte->isEmpty() ) ) ) {
           //Accolade gauche
           painter->drawArc( pos, 5, 10, 25, 90 * 16, 179 * 16 );
           painter->drawArc( pos - 6, 30, 15, 2, 90 * 16, 180 * 16 );
@@ -110,6 +115,11 @@ void PictoProcedure::processAction( QAction* action, QGraphicsSceneContextMenuEv
           prepareGeometryChange();
           updateDimension();
 
+     } else if ( action == actions_["EmptyDetails"] ) {
+         emptyDetail_ = !emptyDetail_;
+         prepareGeometryChange();
+         updateDimension();
+
      } else {
           Pictogramme::processAction( action, event );
      }
@@ -123,14 +133,26 @@ void PictoProcedure::updateDimension()
 
      if( detail() ) {
 
-          pos_ += labels_.at( 0 )->width() + 45;
-          pos_ += labels_.at( 2 )->width() + 45;
+         posAncre = ( labels_.at( 1 )->width() / 2 ) + 15;
 
-          posAncre =  labels_.at( 0 )->width() + 60
-                      + ( labels_.at( 1 )->width() / 2 );
+         if( emptyDetail_ ||
+             ( !emptyDetail_ && !labels_.at( 0 )->isEmpty() ) ) {
+
+            pos_ += labels_.at( 0 )->width() + 45;
+            posAncre =  labels_.at( 0 )->width() + 60
+                                 + ( labels_.at( 1 )->width() / 2 );
+         }
+
+         if( emptyDetail_ ||
+             ( !emptyDetail_ && !labels_.at( 2 )->isEmpty() ) ) {
+
+            pos_ += labels_.at( 2 )->width() + 45;
+         }
+
+
 
      } else {
-          posAncre = ( labels_.at( 1 )->width() / 2 ) + 15 ;
+          posAncre = ( labels_.at( 1 )->width() / 2 ) + 15;
      }
 
 

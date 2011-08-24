@@ -83,3 +83,11 @@ void LabelItem::setLabel( const QString& texte )
      posUpAnchor_.setX( label_.second / 2 );
      posUpAnchor_.setY( 0 );
 }
+
+bool LabelItem::isEmpty() const {
+
+    if( label_.first.isEmpty() || label_.first == "?" )
+        return true;
+    else
+        return false;
+}

@@ -63,9 +63,12 @@ class MainWindow : public QMainWindow {
 
           void on_actionA_propos_de_Tabula_Rasa_triggered();
 
-     public slots:
+          void on_actionImprimer_triggered();
+
+public slots:
           void setMode( AlgorithmeScene::Mode mode );
           void resizeScene( int width, int height );
+          void print( QPrinter* device );
 
           void itemAdded( Pictogramme* item ) {
                connect( item, SIGNAL( doubleClick( LabelItem* ) ), this, SLOT( changeLabel( LabelItem* ) ) );

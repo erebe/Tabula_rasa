@@ -37,7 +37,9 @@ class LabelItem : public AncreItem {
           void setLabel( const QString& texte );
           inline QString label() const { return label_.first; }
           inline unsigned int width() const { return label_.second; }
+          bool isEmpty() const;
           virtual int type() const { return Type; }
+
 
      protected:
           QPair<QString, unsigned int> label_;

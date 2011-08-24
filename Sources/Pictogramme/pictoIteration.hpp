@@ -33,6 +33,8 @@ class PictoIteration : public Pictogramme {
           QRectF boundingRect() const;
           void updateDimension();
 
+          void processAction( QAction* action, QGraphicsSceneContextMenuEvent* event );
+
           //void setLabel( const QString& titre );
           inline QString label() const {  return labels_.at( 0 )->label(); }
           virtual int type() const { return Type; }
@@ -40,6 +42,7 @@ class PictoIteration : public Pictogramme {
 
      private:
           QPointF points_[3];
+          bool isNumberedLoop_;
 
 };
 

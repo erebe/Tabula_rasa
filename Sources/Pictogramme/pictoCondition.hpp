@@ -36,9 +36,14 @@ class PictoCondition : public Pictogramme {
           QVariant itemChange( GraphicsItemChange change, const QVariant& value );
           virtual int type() const { return Type; }
 
+          void processAction( QAction* action, QGraphicsSceneContextMenuEvent* event );
+
 
           //inline void setLabel( const QString& titre );
           inline QString label() const { return labels_.at( 0 )->label(); }
+
+        private :
+          bool isForeverAlone_;
 
 
 };
