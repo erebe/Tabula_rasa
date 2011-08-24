@@ -63,6 +63,7 @@
     <addaction name="actionOuvrir"/>
     <addaction name="actionEnregistrer"/>
     <addaction name="actionExporter_vers_une_image"/>
+    <addaction name="actionImprimer"/>
     <addaction name="separator"/>
     <addaction name="actionFermer_l_onglet"/>
     <addaction name="actionQuitter"/>
@@ -144,6 +145,7 @@
    <addaction name="actionOuvrir"/>
    <addaction name="actionEnregistrer"/>
    <addaction name="actionExporter_vers_une_image"/>
+   <addaction name="actionImprimer"/>
   </widget>
   <action name="actionMode_Insertion">
    <property name="checkable">
@@ -455,6 +457,21 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+R</string>
+   </property>
+  </action>
+  <action name="actionImprimer">
+   <property name="icon">
+    <iconset resource="../Ressources/ressources.qrc">
+     <normaloff>:/Icones/icone_imprimante.png</normaloff>:/Icones/icone_imprimante.png</iconset>
+   </property>
+   <property name="text">
+    <string>Imprimer</string>
+   </property>
+   <property name="toolTip">
+    <string>Imprimer l'algorithme</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+P</string>
    </property>
   </action>
  </widget>

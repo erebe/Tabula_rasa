@@ -65,7 +65,7 @@ QVariant AncreItem::itemChange( GraphicsItemChange change, const QVariant& value
           updateLink();
           AncreItem* ancre;
           foreach( ancre, children_ )
-          ancre->updateLink();
+              ancre->updateLink();
      }
 
      return value;
@@ -95,7 +95,7 @@ void AncreItem::deleteChildren()
      AncreItem* child;
 
      foreach( child, children_ )
-     child->deleteLink();
+         child->deleteLink();
 
      children_.clear();
 

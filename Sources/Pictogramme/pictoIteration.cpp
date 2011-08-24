@@ -20,7 +20,7 @@
 #include <QPainter>
 
 PictoIteration::PictoIteration( QString titre, QGraphicsItem* parent, QGraphicsScene* scene ):
-     Pictogramme( parent, scene )
+    Pictogramme( parent, scene ), isNumberedLoop_( true )
 {
      labels_ << new LabelItem( titre, 150, 50, 50, this, scene );
      points_[0].setX( 50 );
@@ -33,6 +33,9 @@ PictoIteration::PictoIteration( QString titre, QGraphicsItem* parent, QGraphicsS
      posBottomAnchor_ = QPoint( 27, 55 );
      posUpAnchor_ = QPoint( 27, 0 );
      updateDimension();
+
+     actions_["InfiniteLoop"] = contexteMenu_.addAction( tr( "Iteration non fixe" ) );
+     actions_["InfiniteLoop"]->setCheckable( true );
 }
 
 
@@ -50,9 +53,14 @@ void PictoIteration::paint( QPainter* painter, const QStyleOptionGraphicsItem* o
      painter->setBrush( Qt::NoBrush );
 
 
-     labels_.at( 0 )->setPos( pos, 0 );
-     labels_.at( 0 )->width();
-
+     if( isNumberedLoop_ ) {
+         labels_.at( 0 )->setEnabled( true );
+         labels_.at( 0 )->setVisible( true );
+         labels_.at( 0 )->setPos( pos, 0 );
+     } else {
+         labels_.at( 0 )->setEnabled( false );
+         labels_.at( 0 )->setVisible( false );
+     }
 
      Pictogramme::paint( painter, option, widget );
 }
@@ -66,6 +74,19 @@ QRectF PictoIteration::boundingRect() const
 void PictoIteration::updateDimension()
 {
 
-     pos_ = labels_.at( 0 )->width() + 55;
+    if( isNumberedLoop_ )
+        pos_ = labels_.at( 0 )->width() + 55;
+    else
+        pos_ = 60;
+}
 
+void PictoIteration::processAction( QAction* action, QGraphicsSceneContextMenuEvent* event ){
+
+    if( action == actions_["InfiniteLoop"] ) {
+         isNumberedLoop_ = !isNumberedLoop_;
+         prepareGeometryChange();
+         updateDimension();
+    } else {
+              Pictogramme::processAction( action, event );
+   }
 }

@@ -21,12 +21,15 @@
 PictoCondition::PictoCondition( const QString& label,
                                 QGraphicsItem* parent,
                                 QGraphicsScene* scene ) :
-     Pictogramme( parent, scene )
+    Pictogramme( parent, scene ), isForeverAlone_( false )
 {
      labels_ << new LabelItem( label, 150, 25, 50, this, scene );
      labels_ << new LabelItem( "Sinon", 150, 25, 50, this, scene );
      posUpAnchor_.setY( 0 );
      updateDimension();
+
+     actions_["SingleOne"] = contexteMenu_.addAction( tr( "Condition unique" ) );
+     actions_["SingleOne"]->setCheckable( true );
 }
 
 void PictoCondition::paint( QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget )
@@ -45,11 +48,19 @@ void PictoCondition::paint( QPainter* painter, const QStyleOptionGraphicsItem* o
      pos += labels_.at( 0 )->width() + 35;
 
 
-     //On dessine la barre vecticale
-     painter->drawLine( pos, 0, pos, 50 );
 
-     labels_.at( 1 )->setPos( pos + 10, 0 );
-     pos += labels_.at( 1 )->width() + 10;
+
+     if( !isForeverAlone_ ) {
+        //On dessine la barre vecticale
+        painter->drawLine( pos, 0, pos, 50 );
+        labels_.at( 1 )->setPos( pos + 10, 0 );
+        pos += labels_.at( 1 )->width() + 10;
+        labels_.at( 1 )->setEnabled( true );
+        labels_.at( 1 )->setVisible( true );
+     } else {
+        labels_.at( 1 )->setEnabled( false );
+        labels_.at( 1 )->setVisible( false );
+     }
 
      //on dessine la barre supérieure
      painter->drawLine( 20, 0, pos, 0 );
@@ -92,9 +103,13 @@ void PictoCondition::updateDimension()
 {
 
      qreal posAncre;
-     pos_ = labels_.at( 1 )->width()
-            + labels_.at( 0 )->width() + 65;
+     if( !isForeverAlone_ ) {
+         pos_ = labels_.at( 1 )->width()
+                + labels_.at( 0 )->width() + 65;
+    }else {
+        pos_ = labels_.at( 0 )->width() + 55;
 
+    }
      posAncre = ( pos_ / 2 );
 
      posBottomAnchor_.setX( posAncre );
@@ -106,4 +121,17 @@ void PictoCondition::updateDimension()
      foreach( item, labels_ )
      item->updateLink();
 
+}
+
+void PictoCondition::processAction( QAction* action, QGraphicsSceneContextMenuEvent* event )
+{
+
+     if( action == actions_["SingleOne"] ) {
+          isForeverAlone_ = !isForeverAlone_;
+          prepareGeometryChange();
+          updateDimension();
+
+     } else {
+          Pictogramme::processAction( action, event );
+     }
 }

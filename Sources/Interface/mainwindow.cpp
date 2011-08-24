@@ -342,3 +342,65 @@ void MainWindow::on_actionA_propos_de_Tabula_Rasa_triggered()
      about_->exec();
      delete about_;
 }
+
+void MainWindow::on_actionImprimer_triggered()
+{
+    QPrinter printer( QPrinter::HighResolution );
+    QPrintPreviewDialog  preview( &printer, this );
+    connect( &preview, SIGNAL(paintRequested(QPrinter*)), SLOT(print(QPrinter*)) );
+    preview.exec();
+}
+
+
+void MainWindow::print( QPrinter *printer ){
+
+    AlgorithmeScene* scene = static_cast<TabWidget*>( ui->tabWidget->currentWidget() )
+                                  ->scene();
+
+         qreal maxX, maxY, minX, minY;
+         maxX = maxY = 0;
+         minX = scene->width();
+         minY = scene->height();
+
+         QGraphicsItem* item;
+         QPointF point;
+
+         foreach( item, scene->items() ) {
+
+              if( qgraphicsitem_cast<LiaisonItem*>( item ) ) {
+                   continue;
+              }
+
+              point = item->scenePos();
+
+              if( maxX < ( point.x() + static_cast<Pictogramme*>( item )->width() ) ) {
+                   maxX = point.x() + static_cast<Pictogramme*>( item )->width();
+              }
+
+              if( maxY < point.y() ) {
+                   maxY = point.y();
+              }
+
+              if( minX > point.x() ) {
+                   minX = point.x();
+              }
+
+              if( minY > point.y() ) {
+                   minY = point.y();
+              }
+         }
+
+         //QRectF sceneSize(0,0, printer->pageRect().width(), printer->pageRect().height() );
+         QRectF sceneSize = scene->sceneRect();
+         scene->setSceneRect( minX - 50, minY - 50, maxX - minX + 100, maxY - minY + 150 );
+
+         QPainter painter( printer );
+         painter.setRenderHint( QPainter::Antialiasing );
+         QFont font = painter.font();
+         font.setPixelSize( ( printer->pageRect().width() + printer->pageRect().height() ) / 2000 );
+         painter.setFont( font );
+
+         scene->clearSelection();
+         scene->render( &painter );
+         scene->setSceneRect( sceneSize );
+}

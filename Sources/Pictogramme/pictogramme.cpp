@@ -30,9 +30,11 @@ Pictogramme::Pictogramme( QGraphicsItem* parent, QGraphicsScene* scene ):
                QGraphicsItem::ItemSendsGeometryChanges );
 
      actions_["Supprimer"] = contexteMenu_.addAction( tr( "Supprimer" ) );
+     contexteMenu_.addSeparator();
      actions_["DelierP"] = contexteMenu_.addAction( tr( "Délier du parent" ) );
      actions_["DelierE"] = contexteMenu_.addAction( tr( "Délier des enfants" ) );
      actions_["Delier"] = contexteMenu_.addAction( tr( "Délier de tous" ) );
+     contexteMenu_.addSeparator();
 }
 
 Pictogramme::~Pictogramme()

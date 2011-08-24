@@ -1,7 +1,6 @@
 <RCC>
     <qresource prefix="/Icones" lang="Francais">
         <file>pointer.png</file>
-        <file>linepointer.png</file>
         <file>vignette_action.png</file>
         <file>vignette_boucle.png</file>
         <file>vignette_condition.png</file>
@@ -21,5 +20,7 @@
         <file>qt.png</file>
         <file>newFile.png</file>
         <file>ouvrir.png</file>
+        <file>linepointer.png</file>
+        <file>icone_imprimante.png</file>
     </qresource>
 </RCC>
