@@ -5,18 +5,19 @@
 
 Tabula rasa est un editeur d'algorithme conçu pour répondre aux spécifications de l'IUT de Bayonne
 
+Installation pour Windows :
+	+ Se rendre sur https://github.com/erebe/Tabula_rasa
+	+ Cliquer sur le bouton "Download" en haut à droite
+	+ Télécharger la package "Tabula_Rasa-V0.1.zip"
+	+ Extraire tous les fichiers et lancer l'executable
 
 
-Installation :
-
-	+ Pour Linux : 
-		Dans le même répertoire que ce fichier lancez la commande "chmod +x install.sh"
-		puis "./install.sh"
-		Vous pouvez démarrer le programme en tapant "./tabula_Rasa"
-
-	+ Pour Windows : 
-		Il vous faut installer le SDK de Qt, puis ouvrir le fichier .pro se trouvant 
-		dans le dossier "Sources" pour compiler vous même le projet
+Installation pour Linux (Nécessite Qt d'installé et git) :
+	+ Ouvrez un terminal et tapez "git clone git://github.com/erebe/Tabula_rasa.git"
+	+ cd Tabula_rasa
+	+ chmod +x install.sh
+	+ ./install.sh
+	+ ./tabula_Rasa
 
 
 Fonctionnalités prévues :
