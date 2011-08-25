@@ -161,3 +161,45 @@ void PictoProcedure::updateDimension()
     updateLink();
 
 }
+
+
+void PictoProcedure::toXml( QDomDocument& doc, QDomNode& node ) const {
+
+    QDomElement item = doc.createElement( "Procedure" );
+    node.appendChild( item );
+
+    QDomElement position = doc.createElement( "Position" );
+    position.appendChild( doc.createTextNode( QString("%1;%2").arg( scenePos().x())
+                          .arg( scenePos().y() )));
+    item.appendChild( position );
+
+    QDomElement preAssertion = doc.createElement("PreAssertion");
+    preAssertion.appendChild( doc.createTextNode( labels_.at( 0 )->label() ) );
+    item.appendChild( preAssertion );
+
+    QDomElement postAssertion = doc.createElement("PostAssertion");
+    postAssertion.appendChild( doc.createTextNode( labels_.at( 2 )->label() ) );
+    item.appendChild( postAssertion );
+
+    QDomElement titre = doc.createElement( "Titre" );
+    titre.appendChild( doc.createTextNode( labels_.at( 1 )->label() ) );
+    item.appendChild( titre );
+
+
+    QDomElement details = doc.createElement( "DetailsVisible" );
+    details.appendChild( doc.createTextNode( detail_ ? "1" : "0" ));
+    item.appendChild( details );
+
+    QDomElement detailsVide = doc.createElement( "DetailsVideVisible");
+    detailsVide.appendChild( doc.createTextNode( emptyDetail_ ? "1" : "0"));
+    item.appendChild( detailsVide );
+
+    QDomElement enfants = doc.createElement( "Enfants" );
+    item.appendChild( enfants );
+
+    AncreItem* picto;
+    foreach( picto, children_ )
+    static_cast<Pictogramme*>(picto)->toXml( doc, enfants );
+
+
+}

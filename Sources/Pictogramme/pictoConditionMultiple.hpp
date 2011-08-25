@@ -37,6 +37,8 @@ public:
         return Type;
     }
 
+    void toXml( QDomDocument& doc, QDomNode& node ) const;
+
 
 protected:
     void processAction( QAction* action, QGraphicsSceneContextMenuEvent* event );

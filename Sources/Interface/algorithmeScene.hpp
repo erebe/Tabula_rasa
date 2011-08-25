@@ -21,6 +21,9 @@
 #include <QGraphicsScene>
 #include "Pictogramme/pictogramme.hpp"
 
+class QTextStream;
+
+
 class AlgorithmeScene: public QGraphicsScene {
 
     Q_OBJECT
@@ -37,6 +40,10 @@ public:
         mode_ = mode;
     }
     void deleteItem( Pictogramme* item );
+    void saveToXml( QTextStream& out ) const;
+    void setName( QString& name ) {
+        name_ = name;
+    }
 
 signals:
     void modeChanged( AlgorithmeScene::Mode mode );
@@ -46,6 +53,8 @@ private:
     Mode mode_;
     QGraphicsLineItem* line_;
     QList<Pictogramme*> items_;
+    Pictogramme* root_;
+    QString name_;
 
     void mousePressEvent( QGraphicsSceneMouseEvent* mouseEvent );
     void mouseMoveEvent( QGraphicsSceneMouseEvent* mouseEvent );

@@ -9,6 +9,7 @@ INCLUDEPATH += . Interface
 #QMAKE_CXXFLAGS += -std=c++0x
 CONFIG += debug
 RC_FILE = iconSetter.rc
+QT += xml
 
 # Input
 HEADERS += Interface/mainwindow.hpp \

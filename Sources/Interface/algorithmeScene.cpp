@@ -27,9 +27,11 @@
 #include <QInputDialog>
 #include <QGraphicsSceneMouseEvent>
 #include <QGraphicsLineItem>
+#include <QtXml>
 
 AlgorithmeScene::AlgorithmeScene( qreal x, qreal y, qreal width, qreal height, QObject* parent ):
-    QGraphicsScene( x, y, width, height, parent ), mode_( MoveItem ), line_( 0 )
+    QGraphicsScene( x, y, width, height, parent ), mode_( MoveItem ), line_( 0 ), root_( 0 ),
+    name_("Algorithme")
 {
 }
 
@@ -212,4 +214,32 @@ void AlgorithmeScene::deleteItem( Pictogramme* item )
     items_.removeOne( item );
     removeItem( item );
     delete item;
+}
+
+void AlgorithmeScene::saveToXml( QTextStream& out ) const {
+
+    QDomDocument doc("Tabula_Rasa");
+    QDomNode noeud = doc.createProcessingInstruction("xml","version=\"1.0\"");
+    doc.insertBefore(noeud,doc.firstChild());
+
+    QDomElement root = doc.createElement("Algorithme");
+    doc.appendChild(root);
+
+    QDomElement name = doc.createElement("nom");
+    name.appendChild( doc.createTextNode( name_ ) );
+    root.appendChild( name );
+
+    QDomElement date = doc.createElement("date_creation");
+    date.appendChild( doc.createTextNode( QDateTime::currentDateTime().toString("d/M/yyyy hh:mm") ) );
+    root.appendChild( date );
+
+    QDomElement elements = doc.createElement("Elements");
+
+
+    items_.at( 0 )->toXml(doc, elements);
+
+
+    root.appendChild(elements);
+    doc.save(out, 2);
+
 }

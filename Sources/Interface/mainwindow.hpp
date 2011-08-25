@@ -65,6 +65,8 @@ private slots:
 
     void on_actionImprimer_triggered();
 
+    void on_actionEnregistrer_triggered();
+
 public slots:
     void setMode( AlgorithmeScene::Mode mode );
     void resizeScene( int width, int height );

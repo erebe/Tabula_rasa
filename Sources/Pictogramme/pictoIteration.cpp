@@ -90,3 +90,31 @@ void PictoIteration::processAction( QAction* action, QGraphicsSceneContextMenuEv
         Pictogramme::processAction( action, event );
     }
 }
+
+void PictoIteration::toXml( QDomDocument& doc, QDomNode& node ) const {
+
+    QDomElement item = doc.createElement( "Iteration" );
+    node.appendChild( item );
+
+    QDomElement position = doc.createElement( "Position" );
+    position.appendChild( doc.createTextNode( QString("%1;%2").arg( scenePos().x())
+                          .arg( scenePos().y() )));
+    item.appendChild( position );
+
+    QDomElement titre = doc.createElement( "Titre" );
+    titre.appendChild( doc.createTextNode( labels_.at( 0 )->label() ) );
+    item.appendChild( titre );
+
+
+    QDomElement loop = doc.createElement( "IterationFixe" );
+    loop.appendChild( doc.createTextNode( isNumberedLoop_ ? "1" : "0" ) );
+    item.appendChild( loop );
+
+    QDomElement enfants = doc.createElement( "Enfants" );
+    item.appendChild( enfants );
+
+    AncreItem* picto;
+    foreach( picto, children_ )
+    static_cast<Pictogramme*>(picto)->toXml( doc, enfants );
+
+}

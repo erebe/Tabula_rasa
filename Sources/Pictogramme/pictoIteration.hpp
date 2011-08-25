@@ -34,8 +34,9 @@ public:
     void updateDimension();
 
     void processAction( QAction* action, QGraphicsSceneContextMenuEvent* event );
+    void toXml( QDomDocument& doc, QDomNode& node ) const;
 
-    //void setLabel( const QString& titre );
+
     inline QString label() const {
         return labels_.at( 0 )->label();
     }
