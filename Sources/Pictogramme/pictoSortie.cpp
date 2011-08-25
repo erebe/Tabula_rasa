@@ -54,7 +54,17 @@ QRectF PictoSortie::boundingRect() const
 }
 
 void PictoSortie::updateDimension()
-{
+{}
 
+void PictoSortie::toXml( QDomDocument& doc, QDomNode& node ) const {
+
+    QDomElement item = doc.createElement( "Sortie" );
+    node.appendChild( item );
+
+
+    QDomElement position = doc.createElement( "Position" );
+    position.appendChild( doc.createTextNode( QString("%1;%2").arg( scenePos().x())
+                          .arg( scenePos().y() )));
+    item.appendChild( position );
 
 }

@@ -45,6 +45,9 @@ public:
     void deleteLink();
     void detach();
     void deleteChildren();
+    QList<AncreItem*> childrenList() const {
+        return children_;
+    }
 
 protected:
     QPointF posBottomAnchor_;

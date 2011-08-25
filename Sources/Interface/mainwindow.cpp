@@ -25,6 +25,7 @@
 #include <QFileDialog>
 #include <QtGui>
 
+
 MainWindow::MainWindow( QWidget* parent )
     : QMainWindow( parent ), ui( new Ui::MainWindow )
 {
@@ -307,6 +308,7 @@ void MainWindow::on_actionRenommer_l_algorithme_triggered()
     }
 
     ui->tabWidget->setTabText( ui->tabWidget->currentIndex(), titre );
+    static_cast<TabWidget*>( ui->tabWidget->currentWidget() )->scene()->setName( titre );
 }
 
 void MainWindow::on_actionFermer_l_onglet_triggered()
@@ -411,4 +413,18 @@ void MainWindow::print( QPrinter *printer ) {
     scene->clearSelection();
     scene->render( &painter );
     scene->setSceneRect( sceneSize );
+}
+
+void MainWindow::on_actionEnregistrer_triggered()
+{
+
+    QFile file("mydocument.xml");
+    if (!file.open(QIODevice::Truncate | QIODevice::WriteOnly ))
+        return;
+    QTextStream out(&file);
+    AlgorithmeScene* scene = static_cast<TabWidget*>( ui->tabWidget->currentWidget() )
+                             ->scene();
+    scene->saveToXml( out );
+    file.close();
+
 }

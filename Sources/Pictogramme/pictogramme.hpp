@@ -20,6 +20,8 @@
 
 #include <QGraphicsItem>
 #include <QMenu>
+#include <QtXml>
+
 #include "labelItem.hpp"
 #include "ancreItem.hpp"
 
@@ -36,6 +38,7 @@ public:
     inline unsigned int width() const {
         return pos_;
     }
+    virtual void toXml( QDomDocument& doc, QDomNode& node ) const = 0;
 
 
 

@@ -51,13 +51,8 @@ public:
         return Type;
     }
 
-    //void setLabel( const QString& titre );
-    //void setPreCondition( const QString& preCondition );
-    //void setPostCondition( const QString& postCondition );
-    inline void setDetail( const bool detail ) {
-        detail_ = detail;
-        update();
-    }
+    void toXml( QDomDocument& doc, QDomNode& node ) const;
+
 
 private:
     bool detail_;

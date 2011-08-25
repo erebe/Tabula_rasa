@@ -116,3 +116,4 @@ void Pictogramme::processAction( QAction* action, QGraphicsSceneContextMenuEvent
         deleteLink();
     }
 }
+

@@ -135,3 +135,45 @@ void PictoCondition::processAction( QAction* action, QGraphicsSceneContextMenuEv
         Pictogramme::processAction( action, event );
     }
 }
+
+void PictoCondition::toXml( QDomDocument& doc, QDomNode& node ) const {
+
+    QDomElement item = doc.createElement( "Condition" );
+    node.appendChild( item );
+
+    QDomElement position = doc.createElement( "Position" );
+    position.appendChild( doc.createTextNode( QString("%1;%2").arg( scenePos().x())
+                          .arg( scenePos().y() )));
+    item.appendChild( position );
+
+    QDomElement unique = doc.createElement( "estUnique" );
+    unique.appendChild( doc.createTextNode( isForeverAlone_ ? "1" : "0" ));
+    item.appendChild( unique );
+
+    QDomElement operations = doc.createElement( "operationsLogiques" );
+    item.appendChild( operations );
+
+    LabelItem* label;
+    foreach( label, labels_ ) {
+
+        QDomElement condition = doc.createElement( "operation" );
+        operations.appendChild( condition );
+
+        QDomElement titre = doc.createElement( "Titre" );
+        titre.appendChild( doc.createTextNode( label->label() ));
+        condition.appendChild(titre);
+
+        QDomElement enfants = doc.createElement( "Enfants" );
+        condition.appendChild(enfants);
+
+        AncreItem* picto;
+        foreach( picto, label->childrenList() ) {
+            static_cast<Pictogramme*>(picto)->toXml( doc, enfants );
+
+        }
+
+
+
+    }
+
+}
