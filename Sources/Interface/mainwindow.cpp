@@ -417,8 +417,15 @@ void MainWindow::print( QPrinter *printer ) {
 
 void MainWindow::on_actionEnregistrer_triggered()
 {
+    QString fichier = QFileDialog::getSaveFileName( this, "Enregistrer l'algorithme",
+                      QString( "algo.tbr" ), "Tabula Rasa (*.tbr *.xml  )" );
 
-    QFile file("mydocument.xml");
+    if( fichier.isEmpty() )
+    {
+        return;
+    }
+
+    QFile file(fichier);
     if (!file.open(QIODevice::Truncate | QIODevice::WriteOnly ))
         return;
     QTextStream out(&file);
