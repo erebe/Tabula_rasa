@@ -28,47 +28,47 @@ class QTextStream;
 
 class AlgorithmeScene: public QGraphicsScene {
 
-    Q_OBJECT
+          Q_OBJECT
 
-public:
-    enum Mode { MoveItem, EditLink, SetRoot,
-                InsertAction, InsertProcedure, InsertLoop,
-                InsertCondition, InsertMultiCondition, InsertExit
-              };
+     public:
+          enum Mode { MoveItem, EditLink, SetRoot,
+                      InsertAction, InsertProcedure, InsertLoop,
+                      InsertCondition, InsertMultiCondition, InsertExit
+                    };
 
-    AlgorithmeScene( qreal x, qreal y, qreal width, qreal height, QObject* parent = 0 );
-    ~AlgorithmeScene();
-    inline void setMode( Mode mode ) {
-        mode_ = mode;
-    }
-    void deleteItem( Pictogramme* item );
-    void saveToXml( QTextStream& out ) const;
-    void newItem(Pictogramme*);
-    void setName( const QString& name ) {
-        name_ = name;
-    }
-    void loadFromXml( const QDomDocument& doc );
+          AlgorithmeScene( qreal x, qreal y, qreal width, qreal height, QObject* parent = 0 );
+          ~AlgorithmeScene();
+          inline void setMode( Mode mode ) {
+               mode_ = mode;
+          }
+          void deleteItem( Pictogramme* item );
+          void saveToXml( QTextStream& out ) const;
+          void newItem( Pictogramme* );
+          void setName( const QString& name ) {
+               name_ = name;
+          }
+          void loadFromXml( const QDomDocument& doc );
 
-signals:
-    void modeChanged( AlgorithmeScene::Mode mode );
-    void itemAdded( Pictogramme* picto );
-
-
-
-private:
-    Mode mode_;
-    QGraphicsLineItem* line_;
-    QList<Pictogramme*> items_;
-    Pictogramme* root_;
-    QString name_;
-    QGraphicsPixmapItem* crown_;
-    QPixmap icoCrown_;
+     signals:
+          void modeChanged( AlgorithmeScene::Mode mode );
+          void itemAdded( Pictogramme* picto );
 
 
 
-    void mousePressEvent( QGraphicsSceneMouseEvent* mouseEvent );
-    void mouseMoveEvent( QGraphicsSceneMouseEvent* mouseEvent );
-    void mouseReleaseEvent( QGraphicsSceneMouseEvent* mouseEvent );
+     private:
+          Mode mode_;
+          QGraphicsLineItem* line_;
+          QList<Pictogramme*> items_;
+          Pictogramme* root_;
+          QString name_;
+          QGraphicsPixmapItem* crown_;
+          QPixmap icoCrown_;
+
+
+
+          void mousePressEvent( QGraphicsSceneMouseEvent* mouseEvent );
+          void mouseMoveEvent( QGraphicsSceneMouseEvent* mouseEvent );
+          void mouseReleaseEvent( QGraphicsSceneMouseEvent* mouseEvent );
 };
 
 #endif // ALGORITHMESCENE_HPP

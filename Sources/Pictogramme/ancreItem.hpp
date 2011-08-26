@@ -23,41 +23,41 @@
 
 class AncreItem: public QGraphicsItem {
 
-public:
-    AncreItem( QGraphicsItem* parent = 0, QGraphicsScene* scene = 0 );
-    virtual ~AncreItem();
-    QPointF positionAncreBasse() const {
-        return posBottomAnchor_;
-    }
-    QPointF positionAncreHaute() const {
-        return posUpAnchor_;
-    }
+     public:
+          AncreItem( QGraphicsItem* parent = 0, QGraphicsScene* scene = 0 );
+          virtual ~AncreItem();
+          QPointF positionAncreBasse() const {
+               return posBottomAnchor_;
+          }
+          QPointF positionAncreHaute() const {
+               return posUpAnchor_;
+          }
 
 
-    virtual void setParent( AncreItem* parent );
+          virtual void setParent( AncreItem* parent );
 
-    virtual void updateLink();
-    virtual int type() const {
-        return Type;
-    }
+          virtual void updateLink();
+          virtual int type() const {
+               return Type;
+          }
 
-    virtual QVariant itemChange( GraphicsItemChange change, const QVariant& value );
-    void deleteLink();
-    void detach();
-    void deleteChildren();
-    QList<AncreItem*> childrenList() const {
-        return children_;
-    }
+          virtual QVariant itemChange( GraphicsItemChange change, const QVariant& value );
+          void deleteLink();
+          void detach();
+          void deleteChildren();
+          QList<AncreItem*> childrenList() const {
+               return children_;
+          }
 
-protected:
-    QPointF posBottomAnchor_;
-    QPointF posUpAnchor_;
+     protected:
+          QPointF posBottomAnchor_;
+          QPointF posUpAnchor_;
 
-    AncreItem* parent_;
-    QList<AncreItem*> children_;
-    LiaisonItem* liaison_;
+          AncreItem* parent_;
+          QList<AncreItem*> children_;
+          LiaisonItem* liaison_;
 
-    virtual void addChild( AncreItem* child );
+          virtual void addChild( AncreItem* child );
 
 };
 

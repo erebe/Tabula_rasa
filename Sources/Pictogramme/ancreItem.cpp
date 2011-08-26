@@ -22,85 +22,84 @@
 #include <QDebug>
 
 AncreItem::AncreItem( QGraphicsItem* parent, QGraphicsScene* scene ):
-    QGraphicsItem( parent, scene ), parent_( 0 ), liaison_( 0 )
+     QGraphicsItem( parent, scene ), parent_( 0 ), liaison_( 0 )
 {
-    setFlag( QGraphicsItem::ItemSendsGeometryChanges );
+     setFlag( QGraphicsItem::ItemSendsGeometryChanges );
 }
 
 AncreItem::~AncreItem()
 {
 
-    detach();
+     detach();
 }
 
 void AncreItem::setParent( AncreItem* parent )
 {
-    deleteLink();
-    parent_ = parent;
-    parent_->addChild( this );
+     deleteLink();
+     parent_ = parent;
+     parent_->addChild( this );
 
-    liaison_ = new LiaisonItem( parent_, this );
-    scene()->addItem( liaison_ );
+     liaison_ = new LiaisonItem( parent_, this );
+     scene()->addItem( liaison_ );
 }
 
 void AncreItem::addChild( AncreItem* child )
 {
 
-    children_.append( child );
+     children_.append( child );
 }
 
 void AncreItem::updateLink()
 {
 
-    if( liaison_ )
-    {
-        liaison_->updatePath();
-    }
+     if( liaison_ ) {
+          liaison_->updatePath();
+     }
 
-    AncreItem* ancre;
-    foreach( ancre, children_ )
-    ancre->liaison_->updatePath();
+     AncreItem* ancre;
+     foreach( ancre, children_ )
+     ancre->liaison_->updatePath();
 }
 
 QVariant AncreItem::itemChange( GraphicsItemChange change, const QVariant& value )
 {
 
-    if ( change == QGraphicsItem::ItemPositionChange ) {
-        updateLink();
-        AncreItem* ancre;
-        foreach( ancre, children_ )
-        ancre->updateLink();
-    }
+     if ( change == QGraphicsItem::ItemPositionChange ) {
+          updateLink();
+          AncreItem* ancre;
+          foreach( ancre, children_ )
+          ancre->updateLink();
+     }
 
-    return value;
+     return value;
 }
 
 void AncreItem::detach()
 {
-    deleteLink();
-    deleteChildren();
+     deleteLink();
+     deleteChildren();
 }
 
 void AncreItem::deleteLink()
 {
 
-    if( liaison_ ) {
-        delete liaison_;
-        parent_->children_.removeOne( this );
-        liaison_ = 0;
-        parent_ = 0;
-    }
+     if( liaison_ ) {
+          delete liaison_;
+          parent_->children_.removeOne( this );
+          liaison_ = 0;
+          parent_ = 0;
+     }
 
 }
 
 void AncreItem::deleteChildren()
 {
 
-    AncreItem* child;
+     AncreItem* child;
 
-    foreach( child, children_ )
-    child->deleteLink();
+     foreach( child, children_ )
+     child->deleteLink();
 
-    children_.clear();
+     children_.clear();
 
 }
