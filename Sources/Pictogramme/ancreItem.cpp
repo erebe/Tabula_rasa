@@ -23,7 +23,9 @@
 
 AncreItem::AncreItem( QGraphicsItem* parent, QGraphicsScene* scene ):
     QGraphicsItem( parent, scene ), parent_( 0 ), liaison_( 0 )
-{}
+{
+    setFlag( QGraphicsItem::ItemSendsGeometryChanges );
+}
 
 AncreItem::~AncreItem()
 {

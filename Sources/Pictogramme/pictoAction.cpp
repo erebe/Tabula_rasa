@@ -17,6 +17,8 @@
  */
 #include "pictoAction.hpp"
 #include "labelItem.hpp"
+#include "pictoBuilder.hpp"
+#include "algorithmeScene.hpp"
 #include <QPainter>
 
 PictoAction::PictoAction( QString titre,
@@ -40,6 +42,57 @@ PictoAction::PictoAction( QString titre,
     actions_["EmptyDetails"]->setCheckable( true );
 
 }
+
+PictoAction::PictoAction( const QDomElement& node,
+                          AlgorithmeScene* scene ):
+    Pictogramme( 0, scene )
+{
+
+    QString label = node.firstChildElement( "PreAssertion" ).firstChild().toText().data();
+    labels_ << new LabelItem( label, 150, 15, 50, this, scene );
+
+    label = node.firstChildElement( "Titre" ).firstChild().toText().data();
+    labels_ << new LabelItem( label, 200, 50, 50, this, scene );
+
+    label = node.firstChildElement( "PostAssertion" ).firstChild().toText().data();
+    labels_ << new LabelItem( label, 150, 15, 50, this, scene );
+
+    label = node.firstChildElement( "Position" ).firstChild().toText().data();
+    QStringList position = label.split( QRegExp(";") );
+    setPos( position.at(0).toDouble(), position.at(1).toDouble() );
+
+    label = node.firstChildElement( "DetailsVisible").firstChild().toText().data();
+    detail_ = ( label == "1" ) ? true : false;
+
+    label = node.firstChildElement( "DetailsVideVisible").firstChild().toText().data();
+    emptyDetail_ = ( label == "1" ) ? true : false;
+
+    posBottomAnchor_.setY( 55 );
+    posUpAnchor_.setY( 5 );
+    updateDimension();
+
+    actions_["Details"] = contexteMenu_.addAction( tr( "Masquer les assertions" ) );
+    actions_["Details"]->setCheckable( true );
+    actions_["Details"]->setChecked( !detail_ );
+    actions_["EmptyDetails"] = contexteMenu_.addAction( tr( "Masquer les assertions vides" ) );
+    actions_["EmptyDetails"]->setCheckable( true );
+    actions_["EmptyDetails"]->setChecked( !emptyDetail_ );
+
+    const QDomNodeList nodes = node.firstChildElement( "Enfants").childNodes();
+    Pictogramme* picto = 0;
+
+    for(int i = 0; i < nodes.count(); i++){
+        if( nodes.at(i).isElement() ){
+            picto = PictoBuilder::fromXml( nodes.at(i).toElement(), scene );
+            if( picto ){
+                picto->AncreItem::setParent( this );
+                picto = 0;
+            }
+        }
+    }
+
+}
+
 
 
 void PictoAction::paint( QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget )
@@ -177,11 +230,11 @@ void PictoAction::toXml( QDomDocument& doc, QDomNode& node ) const {
     titre.appendChild( doc.createTextNode( labels_.at( 1 )->label() ) );
     item.appendChild( titre );
 
-    QDomElement details = doc.createElement( "Details" );
+    QDomElement details = doc.createElement( "DetailsVisible" );
     details.appendChild( doc.createTextNode( detail_ ? "1" : "0" ));
     item.appendChild( details );
 
-    QDomElement detailsVide = doc.createElement( "DetailsVide");
+    QDomElement detailsVide = doc.createElement( "DetailsVideVisible");
     detailsVide.appendChild( doc.createTextNode( emptyDetail_ ? "1" : "0"));
     item.appendChild( detailsVide );
 

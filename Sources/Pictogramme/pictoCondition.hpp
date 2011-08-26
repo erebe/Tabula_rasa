@@ -20,6 +20,8 @@
 
 #include "pictogramme.hpp"
 
+class AlgorithmeScene;
+
 class PictoCondition : public Pictogramme {
 
 public:
@@ -28,6 +30,9 @@ public:
     PictoCondition( const QString& titre,
                     QGraphicsItem* parent,
                     QGraphicsScene* scene );
+
+    PictoCondition( const QDomElement& node,
+                    AlgorithmeScene* scene = 0 );
 
     void paint( QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget );
     QRectF boundingRect() const;

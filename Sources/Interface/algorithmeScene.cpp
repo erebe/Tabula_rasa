@@ -23,20 +23,38 @@
 #include "Pictogramme/pictoProcedure.hpp"
 #include "Pictogramme/pictoSortie.hpp"
 #include "Pictogramme/pictoConditionMultiple.hpp"
+#include "Pictogramme/pictoBuilder.hpp"
 
 #include <QInputDialog>
 #include <QGraphicsSceneMouseEvent>
 #include <QGraphicsLineItem>
-#include <QtXml>
+
 
 AlgorithmeScene::AlgorithmeScene( qreal x, qreal y, qreal width, qreal height, QObject* parent ):
     QGraphicsScene( x, y, width, height, parent ), mode_( MoveItem ), line_( 0 ), root_( 0 ),
-    name_("Algorithme")
+    name_("Algorithme"), crown_(0)
 {
+    icoCrown_ = QPixmap(":/Icones/croix.ico");
 }
+
+
+void AlgorithmeScene::loadFromXml( const QDomDocument& doc )
+{
+    QDomElement racine = doc.documentElement();
+    name_ = racine.firstChildElement( "nom" ).firstChild().toText().data();
+
+     racine = racine.firstChildElement( "Elements" ).firstChildElement();
+
+     root_ = PictoBuilder::fromXml( racine, this );
+     icoCrown_ = QPixmap(":/Icones/croix.ico");
+}
+
 
 AlgorithmeScene::~AlgorithmeScene()
 {
+
+    if(crown_)
+        delete crown_;
 
     Pictogramme* picto;
 
@@ -45,7 +63,15 @@ AlgorithmeScene::~AlgorithmeScene()
 
 }
 
+void AlgorithmeScene::newItem(Pictogramme* picto){
 
+    if( picto ) {
+
+        items_.push_back( picto );
+        emit itemAdded( picto );
+
+    }
+}
 
 void AlgorithmeScene::mousePressEvent( QGraphicsSceneMouseEvent* mouseEvent )
 {
@@ -88,6 +114,32 @@ void AlgorithmeScene::mouseReleaseEvent( QGraphicsSceneMouseEvent* mouseEvent )
     if( mouseEvent->button() != Qt::LeftButton )
     {
         return;
+    }
+
+    if( mode_ == SetRoot ){
+        QList<QGraphicsItem*> liste = items( mouseEvent->scenePos() );
+
+        QGraphicsItem* item;
+
+        foreach( item, liste ) {
+            if( qgraphicsitem_cast<LiaisonItem*>( item ) ||
+                qgraphicsitem_cast<LabelItem*>( item ) )
+            {
+                liste.removeOne( item );
+            }
+        }
+
+        if( !liste.count() )
+            return;
+
+        root_ = static_cast<Pictogramme*>(liste.at(0));
+        delete crown_;
+        crown_ = addPixmap( icoCrown_ );
+        crown_->setParentItem(root_);
+        crown_->setPos( -8, -8);
+        setMode( AlgorithmeScene::MoveItem );
+        emit modeChanged( AlgorithmeScene::MoveItem );
+
     }
 
     if( line_ != 0 && mode_ == EditLink ) {
@@ -166,43 +218,19 @@ void AlgorithmeScene::mouseReleaseEvent( QGraphicsSceneMouseEvent* mouseEvent )
 
     if( ( mode_ != EditLink ) && ( mode_ != MoveItem ) ) {
 
-        Pictogramme* picto = 0;
+        Pictogramme* picto = PictoBuilder::fromMode( mode_, this);
 
-        if( mode_ == InsertAction ) {
-            picto = new PictoAction( "", "", "", 0, this );
-
-        } else if( mode_ == InsertLoop ) {
-            picto = new PictoIteration( "", 0, this );
-
-        } else if( mode_ == InsertProcedure ) {
-            picto = new PictoProcedure( "", "", "", 0, this );
-
-        } else if( mode_ == InsertCondition ) {
-            picto = new PictoCondition( "", 0, this );
-
-        } else if( mode_ == InsertExit ) {
-            picto = new PictoSortie( 0, this );
-
-        } else if( mode_ == InsertMultiCondition ) {
-            picto = new PictoConditionMultiple( "", 0, this );
-
-        }
-
-        if( picto ) {
+        if(picto){
             QRectF size = picto->boundingRect();
 
             picto->setPos( mouseEvent->scenePos().x() - ( size.width() / 2 ),
                            mouseEvent->scenePos().y() - ( size.height() / 2 ) );
-            emit itemAdded( picto );
-            items_.push_back( picto );
+        }
 
-            if( mouseEvent->modifiers() != Qt::ControlModifier ) {
+        if( mouseEvent->modifiers() != Qt::ControlModifier ) {
                 setMode( AlgorithmeScene::MoveItem );
                 emit modeChanged( AlgorithmeScene::MoveItem );
             }
-
-
-        }
     }
 
     QGraphicsScene::mouseReleaseEvent( mouseEvent );
@@ -213,7 +241,15 @@ void AlgorithmeScene::deleteItem( Pictogramme* item )
 
     items_.removeOne( item );
     removeItem( item );
+    if( root_ == item ){
+        delete crown_;
+        root_ = 0;
+        crown_ = 0;
+    }
+
     delete item;
+
+
 }
 
 void AlgorithmeScene::saveToXml( QTextStream& out ) const {
@@ -236,7 +272,7 @@ void AlgorithmeScene::saveToXml( QTextStream& out ) const {
     QDomElement elements = doc.createElement("Elements");
 
 
-    items_.at( 0 )->toXml(doc, elements);
+    root_->toXml(doc, elements);
 
 
     root.appendChild(elements);

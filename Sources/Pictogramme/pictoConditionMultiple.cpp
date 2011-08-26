@@ -1,4 +1,6 @@
 #include "pictoConditionMultiple.hpp"
+#include "pictoBuilder.hpp"
+#include "algorithmeScene.hpp"
 #include <QPainter>
 #include <QGraphicsSceneMouseEvent>
 #include <QDebug>
@@ -20,6 +22,48 @@ PictoConditionMultiple::PictoConditionMultiple( const QString& label,
     actions_["SupprimerA"] = contexteMenu_.addAction( tr( "Supprimer la condition" ) );
 }
 
+PictoConditionMultiple::PictoConditionMultiple( const QDomElement& node,
+                        AlgorithmeScene* scene ):
+    Pictogramme(0, scene)
+{
+    QString label = node.firstChildElement( "Position" ).firstChild().toText().data();
+    QStringList position = label.split( QRegExp(";") );
+    setPos( position.at(0).toDouble(), position.at(1).toDouble() );
+
+    label = node.firstChildElement( "Titre" ).firstChild().toText().data();
+    labels_ << new LabelItem( label, 150, 25, 25, this, scene );
+
+    posUpAnchor_.setY( 0 );
+
+    actions_["AjouterA"] = contexteMenu_.addAction( tr( "Ajouter une condition" ) );
+    actions_["SupprimerA"] = contexteMenu_.addAction( tr( "Supprimer la condition" ) );
+
+    const QDomNodeList nodes = node.firstChildElement( "operationsLogiques" ).childNodes();
+    Pictogramme* picto = 0;
+
+    for(int i = 0; i < nodes.count(); i++){
+
+        if( nodes.at(i).isElement() ){
+            label = nodes.at(i).firstChildElement( "Titre" ).firstChild().toText().data();
+            labels_ << new LabelItem( label, 150, 25, 25, this, scene );
+            updateDimension();
+
+            const QDomNodeList enfants = nodes.at(i).firstChildElement( "Enfants" ).childNodes();
+
+            for(int j = 0; j < enfants.count(); j++){
+                if( enfants.at(j).isElement() ){
+                    picto = PictoBuilder::fromXml( enfants.at(j).toElement(), scene );
+                    if( picto ){
+                        picto->AncreItem::setParent( labels_.last() );
+                        picto = 0;
+                    }
+                }
+            }
+
+        }
+
+    }
+}
 
 void PictoConditionMultiple::paint( QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget )
 {
@@ -35,33 +79,22 @@ void PictoConditionMultiple::paint( QPainter* painter, const QStyleOptionGraphic
 
     pos += 20;
 
-
     if( labels_.size() > 1 ) {
         int i;
 
         for( i = 1; i < labels_.size() - 1; i++ ) {
 
-            pos += 5;
-            labels_[i]->setPos( pos, 25 );
-            pos += labels_[i]->width() + 5;
+            pos += labels_[i]->width() + 10;
             painter->drawLine( pos, 25, pos, 50 );
         }
 
-        pos += 5;
-        labels_[i]->setPos( pos, 25 );
-        pos += labels_[i]->width() + 5;
-
-
+        pos += labels_[i]->width() + 10;
     }
 
     if( pos < labels_.at( 0 )->width() + 40 )
     {
         pos = labels_.at( 0 )->width() + 40;
     }
-
-    labels_[0]->setPos( ( pos - labels_[0]->width() + 20 ) / 2, 0 );
-
-
 
     //On dessine ">"
     painter->drawLine( pos, 0, pos + 20, 25 );
@@ -130,18 +163,24 @@ void PictoConditionMultiple::updateDimension()
 {
 
     qreal posAncre;
-    pos_ = 40;
+    pos_ = 20;
 
-    for( int i = 1; i < labels_.size(); i++ ) {
-        pos_ += labels_.at( i )->width() + 10;
-    }
+   for( int  i = 1; i < labels_.size(); i++ ) {
 
-    if( pos_ < labels_.at( 0 )->width() + 60 )
+            pos_ += 5;
+            labels_[i]->setPos( pos_, 25 );
+            pos_ += labels_[i]->width() + 5;
+         }
+
+    if( pos_ < labels_.at( 0 )->width() + 40 )
     {
-        pos_ = labels_.at( 0 )->width() + 60;
+        pos_ = labels_.at( 0 )->width() + 40;
     }
 
-    posAncre = ( pos_ / 2 );
+    labels_[0]->setPos( ( pos_ - labels_[0]->width() + 20 ) / 2, 0 );
+
+    pos_ += 20;
+    posAncre = pos_ / 2;
 
     posBottomAnchor_.setX( posAncre );
     posUpAnchor_.setX( posAncre );

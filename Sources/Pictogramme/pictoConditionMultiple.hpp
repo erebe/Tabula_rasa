@@ -19,6 +19,7 @@
 #define PICTOCONDITIONMULTIPLE_HPP
 
 #include "pictogramme.hpp"
+class AlgorithmeScene;
 
 class PictoConditionMultiple : public Pictogramme {
 
@@ -27,6 +28,9 @@ public:
     PictoConditionMultiple( const QString& titre,
                             QGraphicsItem* parent,
                             QGraphicsScene* scene );
+
+    PictoConditionMultiple( const QDomElement& node,
+                            AlgorithmeScene* scene = 0);
 
     void paint( QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget );
     QRectF boundingRect() const;

@@ -16,6 +16,8 @@
  * =====================================================================================
  */
 #include "pictoIteration.hpp"
+#include "pictoBuilder.hpp"
+#include "algorithmeScene.hpp"
 #include <QGraphicsSceneMouseEvent>
 #include <QPainter>
 
@@ -38,6 +40,48 @@ PictoIteration::PictoIteration( QString titre, QGraphicsItem* parent, QGraphicsS
     actions_["InfiniteLoop"]->setCheckable( true );
 }
 
+PictoIteration::PictoIteration( const QDomElement& node,
+                                AlgorithmeScene* scene ):
+    Pictogramme(0, scene)
+{
+    QString label = node.firstChildElement( "Titre" ).firstChild().toText().data();
+    labels_ << new LabelItem( label, 150, 50, 50, this, scene );
+
+    label = node.firstChildElement( "Position" ).firstChild().toText().data();
+    QStringList position = label.split( QRegExp(";") );
+    setPos( position.at(0).toDouble(), position.at(1).toDouble() );
+
+    label = node.firstChildElement( "IterationFixe").firstChild().toText().data();
+    isNumberedLoop_ = ( label == "1" ) ? true : false;
+
+    points_[0].setX( 50 );
+    points_[0].setY( 10 );
+    points_[1].setX( 45 );
+    points_[1].setY( 20 );
+    points_[2].setX( 60 );
+    points_[2].setY( 15 );
+
+    posBottomAnchor_ = QPoint( 27, 55 );
+    posUpAnchor_ = QPoint( 27, 0 );
+    updateDimension();
+
+    actions_["InfiniteLoop"] = contexteMenu_.addAction( tr( "Iteration non fixe" ) );
+    actions_["InfiniteLoop"]->setCheckable( true );
+    actions_["InfiniteLoop"]->setChecked( !isNumberedLoop_ );
+
+    const QDomNodeList nodes = node.firstChildElement( "Enfants").childNodes();
+    Pictogramme* picto = 0;
+
+    for(int i = 0; i < nodes.count(); i++){
+        if( nodes.at(i).isElement() ){
+            picto = PictoBuilder::fromXml( nodes.at(i).toElement(), scene );
+            if( picto ){
+                picto->AncreItem::setParent( this );
+                picto = 0;
+            }
+        }
+    }
+}
 
 void PictoIteration::paint( QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget )
 {
@@ -51,7 +95,6 @@ void PictoIteration::paint( QPainter* painter, const QStyleOptionGraphicsItem* o
     painter->setBrush( Qt::SolidPattern );
     painter->drawPolygon( points_, 3 );
     painter->setBrush( Qt::NoBrush );
-
 
     if( isNumberedLoop_ ) {
         labels_.at( 0 )->setEnabled( true );

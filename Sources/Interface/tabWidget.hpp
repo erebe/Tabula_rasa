@@ -17,6 +17,7 @@
 #ifndef TABWIDGET_HPP
 #define TABWIDGET_HPP
 #include <QWidget>
+#include <QtXml>
 
 class AlgorithmeScene;
 class QGraphicsView;
@@ -27,6 +28,7 @@ class TabWidget : public QWidget {
 
 public:
     TabWidget();
+
     inline AlgorithmeScene* scene() const {
         return scene_;
     }

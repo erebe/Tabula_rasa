@@ -20,8 +20,10 @@
 
 #include <QGraphicsScene>
 #include "Pictogramme/pictogramme.hpp"
+#include "Pictogramme/pictoBuilder.hpp"
 
 class QTextStream;
+
 
 
 class AlgorithmeScene: public QGraphicsScene {
@@ -29,7 +31,7 @@ class AlgorithmeScene: public QGraphicsScene {
     Q_OBJECT
 
 public:
-    enum Mode { MoveItem, EditLink,
+    enum Mode { MoveItem, EditLink, SetRoot,
                 InsertAction, InsertProcedure, InsertLoop,
                 InsertCondition, InsertMultiCondition, InsertExit
               };
@@ -41,13 +43,17 @@ public:
     }
     void deleteItem( Pictogramme* item );
     void saveToXml( QTextStream& out ) const;
-    void setName( QString& name ) {
+    void newItem(Pictogramme*);
+    void setName( const QString& name ) {
         name_ = name;
     }
+    void loadFromXml( const QDomDocument& doc );
 
 signals:
     void modeChanged( AlgorithmeScene::Mode mode );
     void itemAdded( Pictogramme* picto );
+
+
 
 private:
     Mode mode_;
@@ -55,6 +61,10 @@ private:
     QList<Pictogramme*> items_;
     Pictogramme* root_;
     QString name_;
+    QGraphicsPixmapItem* crown_;
+    QPixmap icoCrown_;
+
+
 
     void mousePressEvent( QGraphicsSceneMouseEvent* mouseEvent );
     void mouseMoveEvent( QGraphicsSceneMouseEvent* mouseEvent );

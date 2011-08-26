@@ -21,6 +21,7 @@
 #include "pictogramme.hpp"
 
 class LabelItem;
+class AlgorithmeScene;
 
 class PictoAction: public Pictogramme {
 
@@ -32,6 +33,9 @@ public:
                  QString postCondition = QString( "∅" ),
                  QGraphicsItem* parent = 0,
                  QGraphicsScene* scene = 0 );
+
+    PictoAction( const QDomElement& node,
+                  AlgorithmeScene* scene = 0 );
 
     void paint( QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget );
     QRectF boundingRect() const;
