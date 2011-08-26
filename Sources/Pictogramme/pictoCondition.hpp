@@ -24,34 +24,34 @@ class AlgorithmeScene;
 
 class PictoCondition : public Pictogramme {
 
-public:
-    enum { Type = UserType + 3 };
+     public:
+          enum { Type = UserType + 3 };
 
-    PictoCondition( const QString& titre,
-                    QGraphicsItem* parent,
-                    QGraphicsScene* scene );
+          PictoCondition( const QString& titre,
+                          QGraphicsItem* parent,
+                          QGraphicsScene* scene );
 
-    PictoCondition( const QDomElement& node,
-                    AlgorithmeScene* scene = 0 );
+          PictoCondition( const QDomElement& node,
+                          AlgorithmeScene* scene = 0 );
 
-    void paint( QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget );
-    QRectF boundingRect() const;
-    void updateDimension();
+          void paint( QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget );
+          QRectF boundingRect() const;
+          void updateDimension();
 
-    QVariant itemChange( GraphicsItemChange change, const QVariant& value );
-    virtual int type() const {
-        return Type;
-    }
+          QVariant itemChange( GraphicsItemChange change, const QVariant& value );
+          virtual int type() const {
+               return Type;
+          }
 
-    void processAction( QAction* action, QGraphicsSceneContextMenuEvent* event );
-    void toXml( QDomDocument& doc, QDomNode& node ) const;
+          void processAction( QAction* action, QGraphicsSceneContextMenuEvent* event );
+          void toXml( QDomDocument& doc, QDomNode& node ) const;
 
-    inline QString label() const {
-        return labels_.at( 0 )->label();
-    }
+          inline QString label() const {
+               return labels_.at( 0 )->label();
+          }
 
-private :
-    bool isForeverAlone_;
+     private :
+          bool isForeverAlone_;
 
 
 };

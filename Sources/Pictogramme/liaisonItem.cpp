@@ -22,48 +22,48 @@
 
 
 LiaisonItem::LiaisonItem( AncreItem* parent, AncreItem* enfant ):
-    parent_( parent ), child_( enfant )
+     parent_( parent ), child_( enfant )
 {
-    updatePath();
+     updatePath();
 }
 
 void LiaisonItem::updatePath()
 {
 
-    path_ = QPainterPath();
+     path_ = QPainterPath();
 
-    if( qgraphicsitem_cast<PictoAction*>(parent_)  ) {
+     if( qgraphicsitem_cast<PictoAction*>( parent_ )  ) {
 
-        path_.moveTo( parent_->scenePos().x() + parent_->positionAncreBasse().x() - 5,
-                      parent_->scenePos().y() + parent_->positionAncreBasse().y() );
+          path_.moveTo( parent_->scenePos().x() + parent_->positionAncreBasse().x() - 5,
+                        parent_->scenePos().y() + parent_->positionAncreBasse().y() );
 
-        path_.lineTo( parent_->scenePos().x() + parent_->positionAncreBasse().x() - 5,
-                      parent_->scenePos().y() + parent_->positionAncreBasse().y() + 25 );
+          path_.lineTo( parent_->scenePos().x() + parent_->positionAncreBasse().x() - 5,
+                        parent_->scenePos().y() + parent_->positionAncreBasse().y() + 25 );
 
-        path_.lineTo( parent_->scenePos().x() + parent_->positionAncreBasse().x() + 5,
-                      parent_->scenePos().y() + parent_->positionAncreBasse().y() + 25 );
+          path_.lineTo( parent_->scenePos().x() + parent_->positionAncreBasse().x() + 5,
+                        parent_->scenePos().y() + parent_->positionAncreBasse().y() + 25 );
 
-        path_.lineTo( parent_->scenePos().x() + parent_->positionAncreBasse().x() + 5,
-                      parent_->scenePos().y() + parent_->positionAncreBasse().y() );
+          path_.lineTo( parent_->scenePos().x() + parent_->positionAncreBasse().x() + 5,
+                        parent_->scenePos().y() + parent_->positionAncreBasse().y() );
 
-        path_.moveTo( parent_->scenePos().x() + parent_->positionAncreBasse().x(),
-                      parent_->scenePos().y() + parent_->positionAncreBasse().y() + 25 );
+          path_.moveTo( parent_->scenePos().x() + parent_->positionAncreBasse().x(),
+                        parent_->scenePos().y() + parent_->positionAncreBasse().y() + 25 );
 
-    } else {
+     } else {
 
-        path_.moveTo( parent_->scenePos().x() + parent_->positionAncreBasse().x(),
-                      parent_->scenePos().y() + parent_->positionAncreBasse().y() );
+          path_.moveTo( parent_->scenePos().x() + parent_->positionAncreBasse().x(),
+                        parent_->scenePos().y() + parent_->positionAncreBasse().y() );
 
-        path_.lineTo( parent_->scenePos().x() + parent_->positionAncreBasse().x(),
-                      parent_->scenePos().y() + parent_->positionAncreBasse().y() + 25 );
+          path_.lineTo( parent_->scenePos().x() + parent_->positionAncreBasse().x(),
+                        parent_->scenePos().y() + parent_->positionAncreBasse().y() + 25 );
 
-    }
+     }
 
-    path_.lineTo( child_->scenePos().x() + child_->positionAncreHaute().x(),
-                  parent_->scenePos().y() + parent_->positionAncreBasse().y() + 25 );
+     path_.lineTo( child_->scenePos().x() + child_->positionAncreHaute().x(),
+                   parent_->scenePos().y() + parent_->positionAncreBasse().y() + 25 );
 
-    path_.lineTo( child_->scenePos().x() + child_->positionAncreHaute().x(),
-                  child_->scenePos().y() + child_->positionAncreHaute().y() );
+     path_.lineTo( child_->scenePos().x() + child_->positionAncreHaute().x(),
+                   child_->scenePos().y() + child_->positionAncreHaute().y() );
 
-    setPath( path_ );
+     setPath( path_ );
 }

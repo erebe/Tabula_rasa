@@ -23,29 +23,29 @@ class AlgorithmeScene;
 
 class PictoConditionMultiple : public Pictogramme {
 
-public:
-    enum { Type = UserType + 7 };
-    PictoConditionMultiple( const QString& titre,
-                            QGraphicsItem* parent,
-                            QGraphicsScene* scene );
+     public:
+          enum { Type = UserType + 7 };
+          PictoConditionMultiple( const QString& titre,
+                                  QGraphicsItem* parent,
+                                  QGraphicsScene* scene );
 
-    PictoConditionMultiple( const QDomElement& node,
-                            AlgorithmeScene* scene = 0);
+          PictoConditionMultiple( const QDomElement& node,
+                                  AlgorithmeScene* scene = 0 );
 
-    void paint( QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget );
-    QRectF boundingRect() const;
-    void updateDimension();
+          void paint( QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget );
+          QRectF boundingRect() const;
+          void updateDimension();
 
-    QVariant itemChange( GraphicsItemChange change, const QVariant& value );
-    virtual int type() const {
-        return Type;
-    }
+          QVariant itemChange( GraphicsItemChange change, const QVariant& value );
+          virtual int type() const {
+               return Type;
+          }
 
-    void toXml( QDomDocument& doc, QDomNode& node ) const;
+          void toXml( QDomDocument& doc, QDomNode& node ) const;
 
 
-protected:
-    void processAction( QAction* action, QGraphicsSceneContextMenuEvent* event );
+     protected:
+          void processAction( QAction* action, QGraphicsSceneContextMenuEvent* event );
 };
 
 #endif // PICTOCONDITIONMULTIPLE_HPP

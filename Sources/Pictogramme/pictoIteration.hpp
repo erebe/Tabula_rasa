@@ -23,35 +23,35 @@ class AlgorithmeScene;
 
 class PictoIteration : public Pictogramme {
 
-public:
-    enum { Type = UserType + 4 };
+     public:
+          enum { Type = UserType + 4 };
 
-    PictoIteration( QString titre,
-                    QGraphicsItem* parent,
-                    QGraphicsScene* scene );
+          PictoIteration( QString titre,
+                          QGraphicsItem* parent,
+                          QGraphicsScene* scene );
 
-    PictoIteration( const QDomElement& node,
-                    AlgorithmeScene* scene = 0 );
+          PictoIteration( const QDomElement& node,
+                          AlgorithmeScene* scene = 0 );
 
-    void paint( QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget );
-    QRectF boundingRect() const;
-    void updateDimension();
+          void paint( QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget );
+          QRectF boundingRect() const;
+          void updateDimension();
 
-    void processAction( QAction* action, QGraphicsSceneContextMenuEvent* event );
-    void toXml( QDomDocument& doc, QDomNode& node ) const;
-
-
-    inline QString label() const {
-        return labels_.at( 0 )->label();
-    }
-    virtual int type() const {
-        return Type;
-    }
+          void processAction( QAction* action, QGraphicsSceneContextMenuEvent* event );
+          void toXml( QDomDocument& doc, QDomNode& node ) const;
 
 
-private:
-    QPointF points_[3];
-    bool isNumberedLoop_;
+          inline QString label() const {
+               return labels_.at( 0 )->label();
+          }
+          virtual int type() const {
+               return Type;
+          }
+
+
+     private:
+          QPointF points_[3];
+          bool isNumberedLoop_;
 
 };
 
