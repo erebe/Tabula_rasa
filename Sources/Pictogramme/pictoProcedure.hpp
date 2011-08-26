@@ -19,6 +19,8 @@
 #define PICTOPROCEDURE_HPP
 #include "pictogramme.hpp"
 
+class AlgorithmeScene;
+
 class PictoProcedure : public Pictogramme {
 
 public:
@@ -29,6 +31,9 @@ public:
                     QString postCondition,
                     QGraphicsItem* parent = 0,
                     QGraphicsScene* scene = 0 );
+
+    PictoProcedure( const QDomElement& node,
+                    AlgorithmeScene* scene = 0 );
 
 
     void paint( QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget );

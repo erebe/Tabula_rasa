@@ -25,6 +25,7 @@
 #include "aboutDialog.hpp"
 
 class ResizeDialog;
+class TabWidget;
 
 namespace Ui {
 class MainWindow;
@@ -43,6 +44,7 @@ private:
     ResizeDialog* dialog;
     AboutDialog* about_;
     void selectQAction( AlgorithmeScene::Mode mode );
+    TabWidget* createNewTab( QString name = "Algorithme");
 
 private slots:
     void on_actionMode_Edition_triggered( bool checked );
@@ -58,14 +60,12 @@ private slots:
     void on_actionExporter_vers_une_image_triggered();
     void on_actionRenommer_l_algorithme_triggered();
     void on_actionFermer_l_onglet_triggered();
-
     void on_actionRedimensionner_l_Algorithme_triggered();
-
     void on_actionA_propos_de_Tabula_Rasa_triggered();
-
     void on_actionImprimer_triggered();
-
     void on_actionEnregistrer_triggered();
+    void on_actionOuvrir_triggered();
+    void on_actionRoi_triggered(bool checked);
 
 public slots:
     void setMode( AlgorithmeScene::Mode mode );

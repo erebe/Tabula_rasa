@@ -27,7 +27,8 @@ HEADERS += Interface/mainwindow.hpp \
     Interface/tabWidget.hpp \
     Interface/resizeDialog.hpp \
     aboutDialog.hpp \
-    Interface/aboutDialog.hpp
+    Interface/aboutDialog.hpp \
+    Pictogramme/pictoBuilder.hpp
 FORMS += Interface/mainwindow.ui \
     Interface/resizeDialog.ui \
     aboutDialog.ui
@@ -45,7 +46,8 @@ SOURCES += main.cpp Interface/mainwindow.cpp \
     Pictogramme/pictoConditionMultiple.cpp \
     Interface/tabWidget.cpp \
     Interface/resizeDialog.cpp \
-    aboutDialog.cpp
+    aboutDialog.cpp \
+    Pictogramme/pictoBuilder.cpp
 RESOURCES += Ressources/ressources.qrc
 
 OTHER_FILES +=

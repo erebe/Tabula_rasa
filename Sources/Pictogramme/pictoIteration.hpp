@@ -18,7 +18,8 @@
 #ifndef PICTOITERATION_HPP
 #define PICTOITERATION_HPP
 #include "pictogramme.hpp"
-#include <QGraphicsItem>
+class QGraphicsItem;
+class AlgorithmeScene;
 
 class PictoIteration : public Pictogramme {
 
@@ -28,6 +29,9 @@ public:
     PictoIteration( QString titre,
                     QGraphicsItem* parent,
                     QGraphicsScene* scene );
+
+    PictoIteration( const QDomElement& node,
+                    AlgorithmeScene* scene = 0 );
 
     void paint( QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget );
     QRectF boundingRect() const;

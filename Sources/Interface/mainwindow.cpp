@@ -31,23 +31,16 @@ MainWindow::MainWindow( QWidget* parent )
 {
     ui->setupUi( this );
 
-//     ui->actionOuvrir->setIcon( QApplication::style()->standardIcon(
-//                                     QStyle::SP_DialogOpenButton ) );
-
     ui->actionEnregistrer->setIcon( QApplication::style()->standardIcon(
                                         QStyle::SP_DialogSaveButton ) );
 
-    TabWidget* tab = new TabWidget();
-    connect( tab->scene(), SIGNAL( modeChanged( AlgorithmeScene::Mode ) ), this, SLOT( setMode( AlgorithmeScene::Mode ) ) );
-    connect( tab->scene(), SIGNAL( itemAdded( Pictogramme* ) ), this, SLOT( itemAdded( Pictogramme* ) ) );
-    ui->tabWidget->addTab( tab, "Algorithme" );
+    createNewTab();
 
 
     connect( ui->actionA_propos_de_Qt, SIGNAL( triggered() ), qApp, SLOT( aboutQt() ) );
     connect( ui->actionQuitter, SIGNAL( triggered() ), qApp, SLOT( quit() ) );
 
 }
-
 
 MainWindow::~MainWindow()
 {
@@ -58,6 +51,7 @@ MainWindow::~MainWindow()
         delete ui->tabWidget->widget( i );
     }
 }
+
 
 
 void MainWindow::on_actionMode_Edition_triggered( bool checked )
@@ -72,7 +66,6 @@ void MainWindow::on_actionMode_Edition_triggered( bool checked )
 
 }
 
-
 void MainWindow::on_actionMode_Insertion_triggered( bool checked )
 {
     if( checked ) {
@@ -82,7 +75,6 @@ void MainWindow::on_actionMode_Insertion_triggered( bool checked )
         selectQAction( AlgorithmeScene::MoveItem );
     }
 }
-
 
 void MainWindow::on_actionAction_triggered( bool checked )
 {
@@ -95,7 +87,6 @@ void MainWindow::on_actionAction_triggered( bool checked )
 
 }
 
-
 void MainWindow::on_actionIteration_triggered( bool checked )
 {
     if( checked ) {
@@ -105,7 +96,6 @@ void MainWindow::on_actionIteration_triggered( bool checked )
         selectQAction( AlgorithmeScene::MoveItem );
     }
 }
-
 
 void MainWindow::on_actionProcedure_triggered( bool checked )
 {
@@ -117,7 +107,6 @@ void MainWindow::on_actionProcedure_triggered( bool checked )
     }
 }
 
-
 void MainWindow::on_actionCondition_triggered( bool checked )
 {
     if( checked ) {
@@ -127,7 +116,6 @@ void MainWindow::on_actionCondition_triggered( bool checked )
         selectQAction( AlgorithmeScene::MoveItem );
     }
 }
-
 
 void MainWindow::on_actionConditionMultiple_triggered( bool checked )
 {
@@ -139,7 +127,6 @@ void MainWindow::on_actionConditionMultiple_triggered( bool checked )
     }
 
 }
-
 
 void MainWindow::on_actionSortie_triggered( bool checked )
 {
@@ -161,6 +148,10 @@ void MainWindow::selectQAction( AlgorithmeScene::Mode mode )
 
     if( mode != AlgorithmeScene::InsertAction ) {
         ui->actionAction->setChecked( false );
+    }
+
+    if( mode != AlgorithmeScene::SetRoot ){
+        ui->actionRoi->setChecked( false );
     }
 
     if( mode != AlgorithmeScene::InsertLoop ) {
@@ -192,7 +183,6 @@ void MainWindow::selectQAction( AlgorithmeScene::Mode mode )
     }
 }
 
-
 void MainWindow::setMode( AlgorithmeScene::Mode mode )
 {
 
@@ -208,31 +198,32 @@ void MainWindow::on_tabWidget_tabCloseRequested( int index )
     delete ui->tabWidget->widget( index );
 
     if( ui->tabWidget->count() == 0 ) {
-        TabWidget* tab = new TabWidget();
-        connect( tab->scene(), SIGNAL( modeChanged( AlgorithmeScene::Mode ) ), this, SLOT( setMode( AlgorithmeScene::Mode ) ) );
-        connect( tab->scene(), SIGNAL( itemAdded( Pictogramme* ) ), this, SLOT( itemAdded( Pictogramme* ) ) );
-        ui->tabWidget->addTab( tab, "Algorithme" );
+        createNewTab();
     }
+}
+
+TabWidget* MainWindow::createNewTab( QString name ){
+
+    TabWidget* tab = new TabWidget();
+    connect( tab->scene(), SIGNAL( modeChanged( AlgorithmeScene::Mode ) ), this, SLOT( setMode( AlgorithmeScene::Mode ) ) );
+    connect( tab->scene(), SIGNAL( itemAdded( Pictogramme* ) ), this, SLOT( itemAdded( Pictogramme* ) ) );
+    ui->tabWidget->addTab( tab, name );
+    ui->tabWidget->setCurrentWidget( tab );
+
+    return tab;
 }
 
 void MainWindow::on_actionNouveau_triggered()
 {
     bool ok;
-    QString titre = QInputDialog::getText( this, tr( "Titre de l'agorithme" ), tr( "Quel est le titre de l'algorithme ?" ), QLineEdit::Normal, "", &ok );
+    QString name = QInputDialog::getText( this, tr( "Titre de l'agorithme" ), tr( "Quel est le titre de l'algorithme ?" ), QLineEdit::Normal, "", &ok );
 
     if( !ok )
     {
         return;
     }
 
-    TabWidget* tab = new TabWidget();
-
-    connect( tab->scene(), SIGNAL( modeChanged( AlgorithmeScene::Mode ) ), this, SLOT( setMode( AlgorithmeScene::Mode ) ) );
-    connect( tab->scene(), SIGNAL( itemAdded( Pictogramme* ) ), this, SLOT( itemAdded( Pictogramme* ) ) );
-
-
-    ui->tabWidget->addTab( tab, titre );
-
+    createNewTab( name );
 
 }
 
@@ -361,7 +352,6 @@ void MainWindow::on_actionImprimer_triggered()
     preview.exec();
 }
 
-
 void MainWindow::print( QPrinter *printer ) {
 
     AlgorithmeScene* scene = static_cast<TabWidget*>( ui->tabWidget->currentWidget() )
@@ -434,4 +424,39 @@ void MainWindow::on_actionEnregistrer_triggered()
     scene->saveToXml( out );
     file.close();
 
+}
+
+void MainWindow::on_actionOuvrir_triggered()
+{
+    QString fichier = QFileDialog::getOpenFileName( this, tr("Sélectionner un fichier à ouvrir"), QString(),
+                                                    "Tabula Rasa (*.tbr *.xml)");
+    QFile file(fichier);
+    if( !file.open(QIODevice::ReadOnly))
+        return;
+
+    QDomDocument doc;
+
+    if( !doc.setContent( &file )){
+        file.close();
+        return;
+    }
+
+    QDomElement racine = doc.documentElement();
+    QString name = racine.firstChildElement( "nom" ).firstChild().toText().data();
+
+    TabWidget* tab = createNewTab( name );
+    tab->scene()->loadFromXml( doc );
+
+
+    file.close();
+}
+
+
+void MainWindow::on_actionRoi_triggered(bool checked)
+{
+    if( checked ) {
+        selectQAction( AlgorithmeScene::SetRoot );
+    } else {
+        selectQAction( AlgorithmeScene::MoveItem );
+    }
 }

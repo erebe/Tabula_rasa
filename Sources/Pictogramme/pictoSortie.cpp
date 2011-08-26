@@ -29,6 +29,21 @@ PictoSortie::PictoSortie( QGraphicsItem* parent,
     pos_ = 50;
 }
 
+PictoSortie::PictoSortie( const QDomElement& node,
+             QGraphicsScene* scene ):
+    Pictogramme( 0, scene )
+{
+    posBottomAnchor_.setX( 25 );
+    posBottomAnchor_.setY( 50 );
+    posUpAnchor_.setX( 25 );
+    posUpAnchor_.setY( 0 );
+    pos_ = 50;
+
+    QString label = node.firstChildElement( "Position" ).firstChild().toText().data();
+    QStringList position = label.split( QRegExp(";") );
+    setPos( position.at(0).toDouble(), position.at(1).toDouble() );
+}
+
 
 void PictoSortie::paint( QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget )
 {

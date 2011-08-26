@@ -16,6 +16,8 @@
  * =====================================================================================
  */
 #include "pictoCondition.hpp"
+#include "pictoBuilder.hpp"
+#include "algorithmeScene.hpp"
 #include <QPainter>
 
 PictoCondition::PictoCondition( const QString& label,
@@ -32,6 +34,54 @@ PictoCondition::PictoCondition( const QString& label,
     actions_["SingleOne"]->setCheckable( true );
 }
 
+PictoCondition::PictoCondition( const QDomElement& node,
+                                AlgorithmeScene* scene ):
+    Pictogramme(0, scene)
+{
+    QString label = node.firstChildElement( "Position" ).firstChild().toText().data();
+    QStringList position = label.split( QRegExp(";") );
+    setPos( position.at(0).toDouble(), position.at(1).toDouble() );
+
+    label = node.firstChildElement( "estUnique" ).firstChild().toText().data();
+    isForeverAlone_ = ( label == "1" ) ? true : false;
+
+    posUpAnchor_.setY( 0 );
+
+    actions_["SingleOne"] = contexteMenu_.addAction( tr( "Condition unique" ) );
+    actions_["SingleOne"]->setCheckable( true );
+    actions_["SingleOne"]->setChecked( isForeverAlone_ );
+
+    const QDomNodeList nodes = node.firstChildElement( "operationsLogiques" ).childNodes();
+    Pictogramme* picto = 0;
+
+
+
+    for(int i = 0; i < nodes.count(); i++){
+
+        if( nodes.at(i).isElement() ){
+            label = nodes.at(i).firstChildElement( "Titre" ).firstChild().toText().data();
+            labels_ << new LabelItem( label, 150, 25, 50, this, scene );
+
+
+            const QDomNodeList enfants = nodes.at(i).firstChildElement( "Enfants" ).childNodes();
+
+            for(int j = 0; j < enfants.count(); j++){
+                if( enfants.at(j).isElement() ){
+                    picto = PictoBuilder::fromXml( enfants.at(j).toElement(), scene );
+                    if( picto ){
+                        picto->AncreItem::setParent( labels_.last() );
+                        picto = 0;
+                    }
+                }
+            }
+
+        }
+
+    }
+
+    updateDimension();
+}
+
 void PictoCondition::paint( QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget )
 {
 
@@ -44,11 +94,7 @@ void PictoCondition::paint( QPainter* painter, const QStyleOptionGraphicsItem* o
     painter->drawLine( pos, 25, 20, 0 );
     painter->drawLine( pos, 25, 20, 50 );
 
-    labels_.at( 0 )->setPos( 25, 0 );
     pos += labels_.at( 0 )->width() + 35;
-
-
-
 
     if( !isForeverAlone_ ) {
         //On dessine la barre vecticale
@@ -103,6 +149,9 @@ void PictoCondition::updateDimension()
 {
 
     qreal posAncre;
+    labels_.at( 0 )->setPos( 25, 0 );
+    labels_.at( 1 )->setPos( labels_.at( 0 )->width() + 45, 0 );
+
     if( !isForeverAlone_ ) {
         pos_ = labels_.at( 1 )->width()
                + labels_.at( 0 )->width() + 65;
@@ -128,6 +177,9 @@ void PictoCondition::processAction( QAction* action, QGraphicsSceneContextMenuEv
 
     if( action == actions_["SingleOne"] ) {
         isForeverAlone_ = !isForeverAlone_;
+        if( isForeverAlone_ )
+            labels_.at(1)->detach();
+
         prepareGeometryChange();
         updateDimension();
 
