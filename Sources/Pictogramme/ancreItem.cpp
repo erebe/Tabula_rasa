@@ -17,40 +17,71 @@
  * =====================================================================================
  */
 #include "ancreItem.hpp"
+#include "liaisonItem.hpp"
+
 #include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
-#include <QDebug>
 
+/*-----------------------------------------------------------------------------
+ *  Constructeurs / Destructeurs
+ *-----------------------------------------------------------------------------*/
 AncreItem::AncreItem( QGraphicsItem* parent, QGraphicsScene* scene ):
      QGraphicsItem( parent, scene ), parent_( 0 ), liaison_( 0 )
-{
-     setFlag( QGraphicsItem::ItemSendsGeometryChanges );
-}
+{}
 
 AncreItem::~AncreItem()
-{
+{/*{{{*/
 
      detach();
-}
+}/*}}}*/
+
+
+
+/*-----------------------------------------------------------------------------
+ *  Méthodes
+ *-----------------------------------------------------------------------------*/
+void AncreItem::detach()
+{/*{{{*/
+     deleteLink();
+     deleteChildren();
+}/*}}}*/
+
+void AncreItem::deleteLink()
+{/*{{{*/
+
+     if( liaison_ ) {
+          delete liaison_;
+          parent_->children_.removeOne( this );
+          liaison_ = 0;
+          parent_ = 0;
+     }
+
+}/*}}}*/
+
+void AncreItem::deleteChildren()
+{/*{{{*/
+
+     AncreItem* child;
+
+     foreach( child, children_ )
+     child->deleteLink();
+
+     children_.clear();
+
+}/*}}}*/
 
 void AncreItem::setParent( AncreItem* parent )
-{
+{/*{{{*/
      deleteLink();
      parent_ = parent;
      parent_->addChild( this );
 
      liaison_ = new LiaisonItem( parent_, this );
      scene()->addItem( liaison_ );
-}
-
-void AncreItem::addChild( AncreItem* child )
-{
-
-     children_.append( child );
-}
+}/*}}}*/
 
 void AncreItem::updateLink()
-{
+{/*{{{*/
 
      if( liaison_ ) {
           liaison_->updatePath();
@@ -59,10 +90,21 @@ void AncreItem::updateLink()
      AncreItem* ancre;
      foreach( ancre, children_ )
      ancre->liaison_->updatePath();
-}
+}/*}}}*/
 
+void AncreItem::addChild( AncreItem* child )
+{/*{{{*/
+
+     children_.append( child );
+}/*}}}*/
+
+
+
+/*-----------------------------------------------------------------------------
+ *  Gestionnaire évènements
+ *-----------------------------------------------------------------------------*/
 QVariant AncreItem::itemChange( GraphicsItemChange change, const QVariant& value )
-{
+{/*{{{*/
 
      if ( change == QGraphicsItem::ItemPositionChange ) {
           updateLink();
@@ -72,34 +114,5 @@ QVariant AncreItem::itemChange( GraphicsItemChange change, const QVariant& value
      }
 
      return value;
-}
+}/*}}}*/
 
-void AncreItem::detach()
-{
-     deleteLink();
-     deleteChildren();
-}
-
-void AncreItem::deleteLink()
-{
-
-     if( liaison_ ) {
-          delete liaison_;
-          parent_->children_.removeOne( this );
-          liaison_ = 0;
-          parent_ = 0;
-     }
-
-}
-
-void AncreItem::deleteChildren()
-{
-
-     AncreItem* child;
-
-     foreach( child, children_ )
-     child->deleteLink();
-
-     children_.clear();
-
-}

@@ -36,35 +36,37 @@ class PictoProcedure : public Pictogramme {
                           AlgorithmeScene* scene = 0 );
 
 
+          /*-----------------------------------------------------------------------------
+           *  Méthodes
+           *-----------------------------------------------------------------------------*/
           void paint( QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget );
           QRectF boundingRect() const;
-          void updateDimension();
+          virtual int type() const { return Type; }
 
-          inline QString label() const {
-               return labels_.at( 0 )->label();
-          }
-          inline QString preCondition() const {
-               return labels_.at( 1 )->label();;
-          }
-          inline QString postCondition() const {
-               return labels_.at( 2 )->label();
-          }
-          inline bool detail() const {
-               return detail_;
-          }
-          virtual int type() const {
-               return Type;
-          }
 
           void toXml( QDomDocument& doc, QDomNode& node ) const;
+          void updateDimension();
+          inline bool detail() const { return detail_; }
 
 
      private:
+          /*-----------------------------------------------------------------------------
+           *  Attributs
+           *-----------------------------------------------------------------------------*/
           bool detail_;
           bool emptyDetail_;
 
+          /*-----------------------------------------------------------------------------
+           *  Méthodes privées
+           *-----------------------------------------------------------------------------*/
           int drawDetails( QPainter* painter, LabelItem* texte, int pos ) const;
+
+          /*-----------------------------------------------------------------------------
+           *  Gestionnaire évènements
+           *-----------------------------------------------------------------------------*/
           void processAction( QAction* action, QGraphicsSceneContextMenuEvent* event );
+
+
 
 };
 

@@ -34,24 +34,24 @@ class PictoCondition : public Pictogramme {
           PictoCondition( const QDomElement& node,
                           AlgorithmeScene* scene = 0 );
 
+          /*-----------------------------------------------------------------------------
+           *  Méthodes
+           *-----------------------------------------------------------------------------*/
           void paint( QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget );
           QRectF boundingRect() const;
+          virtual int type() const { return Type; }
+
           void updateDimension();
-
-          QVariant itemChange( GraphicsItemChange change, const QVariant& value );
-          virtual int type() const {
-               return Type;
-          }
-
-          void processAction( QAction* action, QGraphicsSceneContextMenuEvent* event );
           void toXml( QDomDocument& doc, QDomNode& node ) const;
 
-          inline QString label() const {
-               return labels_.at( 0 )->label();
-          }
+     protected:
+          bool isForeverAlone_; //Doit on afficher le sinon ou pas
 
-     private :
-          bool isForeverAlone_;
+          /*-----------------------------------------------------------------------------
+           *  Gestionnaire évènements
+           *-----------------------------------------------------------------------------*/
+          QVariant itemChange( GraphicsItemChange change, const QVariant& value );
+          void processAction( QAction* action, QGraphicsSceneContextMenuEvent* event );
 
 
 };

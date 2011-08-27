@@ -31,27 +31,32 @@ class LabelItem : public AncreItem {
                      QGraphicsItem* parent = 0,
                      QGraphicsScene* scene = 0 );
 
-          virtual void paint( QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget );
+          /*-----------------------------------------------------------------------------
+           *  Méthodes
+           *-----------------------------------------------------------------------------*/
+          virtual void paint( QPainter* painter,
+                              const QStyleOptionGraphicsItem* option,
+                              QWidget* widget );
           QRectF boundingRect() const;
+          virtual int type() const { return Type; }
 
           void setLabel( const QString& texte );
-          inline QString label() const {
-               return label_.first;
-          }
-          inline unsigned int width() const {
-               return label_.second;
-          }
           bool isEmpty() const;
-          virtual int type() const {
-               return Type;
-          }
+          inline QString label() const { return label_.first; }
+          inline unsigned int width() const { return label_.second; }
 
 
      protected:
-          QPair<QString, unsigned int> label_;
+          /*-----------------------------------------------------------------------------
+           *  Attributs
+           *-----------------------------------------------------------------------------*/
+          QPair<QString, unsigned int> label_; //texte et sa largeur
           unsigned int height_, maxWidth_, minWidth_;
 
-          unsigned int calculLargeurTexte() const;
+          /*-----------------------------------------------------------------------------
+           *  Méthodes
+           *-----------------------------------------------------------------------------*/
+          unsigned int calculLargeurTexte() const; //retourne la largeur du texte
 
 };
 

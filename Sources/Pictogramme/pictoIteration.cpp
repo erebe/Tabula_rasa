@@ -18,12 +18,16 @@
 #include "pictoIteration.hpp"
 #include "pictoBuilder.hpp"
 #include "algorithmeScene.hpp"
+
 #include <QGraphicsSceneMouseEvent>
 #include <QPainter>
 
+/*-----------------------------------------------------------------------------
+ *  Constructeurs / Destructeurs
+ *-----------------------------------------------------------------------------*/
 PictoIteration::PictoIteration( QString titre, QGraphicsItem* parent, QGraphicsScene* scene ):
      Pictogramme( parent, scene ), isNumberedLoop_( true )
-{
+{/*{{{*/
      labels_ << new LabelItem( titre, 150, 50, 50, this, scene );
      points_[0].setX( 50 );
      points_[0].setY( 10 );
@@ -38,12 +42,12 @@ PictoIteration::PictoIteration( QString titre, QGraphicsItem* parent, QGraphicsS
 
      actions_["InfiniteLoop"] = contexteMenu_.addAction( tr( "Iteration non fixe" ) );
      actions_["InfiniteLoop"]->setCheckable( true );
-}
+}/*}}}*/
 
 PictoIteration::PictoIteration( const QDomElement& node,
                                 AlgorithmeScene* scene ):
      Pictogramme( 0, scene )
-{
+{/*{{{*/
      QString label = node.firstChildElement( "Titre" ).firstChild().toText().data();
      labels_ << new LabelItem( label, 150, 50, 50, this, scene );
 
@@ -82,10 +86,15 @@ PictoIteration::PictoIteration( const QDomElement& node,
                }
           }
      }
-}
+}/*}}}*/
 
+
+
+/*-----------------------------------------------------------------------------
+ *  Méthodes
+ *-----------------------------------------------------------------------------*/
 void PictoIteration::paint( QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget )
-{
+{/*{{{*/
 
      Q_UNUSED( option );
      Q_UNUSED( widget );
@@ -108,39 +117,26 @@ void PictoIteration::paint( QPainter* painter, const QStyleOptionGraphicsItem* o
      }
 
      Pictogramme::paint( painter, option, widget );
-}
+}/*}}}*/
 
 QRectF PictoIteration::boundingRect() const
-{
+{/*{{{*/
 
      return QRectF( 0, 0, pos_ , 55 );
-}
+}/*}}}*/
 
 void PictoIteration::updateDimension()
-{
+{/*{{{*/
 
      if( isNumberedLoop_ )
           { pos_ = labels_.at( 0 )->width() + 55; }
 
      else
           { pos_ = 60; }
-}
-
-void PictoIteration::processAction( QAction* action, QGraphicsSceneContextMenuEvent* event )
-{
-
-     if( action == actions_["InfiniteLoop"] ) {
-          isNumberedLoop_ = !isNumberedLoop_;
-          prepareGeometryChange();
-          updateDimension();
-
-     } else {
-          Pictogramme::processAction( action, event );
-     }
-}
+}/*}}}*/
 
 void PictoIteration::toXml( QDomDocument& doc, QDomNode& node ) const
-{
+{/*{{{*/
 
      QDomElement item = doc.createElement( "Iteration" );
      node.appendChild( item );
@@ -166,4 +162,23 @@ void PictoIteration::toXml( QDomDocument& doc, QDomNode& node ) const
      foreach( picto, children_ )
      static_cast<Pictogramme*>( picto )->toXml( doc, enfants );
 
-}
+}/*}}}*/
+
+
+
+/*-----------------------------------------------------------------------------
+ *  Gestionnaire évènements
+ *-----------------------------------------------------------------------------*/
+void PictoIteration::processAction( QAction* action, QGraphicsSceneContextMenuEvent* event )
+{/*{{{*/
+
+     if( action == actions_["InfiniteLoop"] ) {
+          isNumberedLoop_ = !isNumberedLoop_;
+          prepareGeometryChange();
+          updateDimension();
+
+     } else {
+          Pictogramme::processAction( action, event );
+     }
+}/*}}}*/
+

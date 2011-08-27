@@ -26,14 +26,16 @@ class LiaisonItem : public QGraphicsPathItem {
 
      public:
           enum { Type = UserType + 8 };
+
           LiaisonItem( AncreItem* parent = 0, AncreItem* enfant = 0 );
-          virtual int type() const {
-               return Type;
-          }
+          virtual int type() const { return Type; }
 
           void updatePath();
 
      protected:
+          /*-----------------------------------------------------------------------------
+           *  Attributs
+           *-----------------------------------------------------------------------------*/
           AncreItem* parent_;
           AncreItem* child_;
           QPainterPath path_;

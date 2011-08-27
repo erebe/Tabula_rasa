@@ -18,40 +18,45 @@
  */
 #ifndef ANCREITEM_HPP
 #define ANCREITEM_HPP
-#include "liaisonItem.hpp"
+
 #include <QEvent>
+#include <QGraphicsItem>
+#include "liaisonItem.hpp"
 
 class AncreItem: public QGraphicsItem {
 
      public:
           AncreItem( QGraphicsItem* parent = 0, QGraphicsScene* scene = 0 );
           virtual ~AncreItem();
-          QPointF positionAncreBasse() const {
-               return posBottomAnchor_;
-          }
-          QPointF positionAncreHaute() const {
-               return posUpAnchor_;
-          }
 
+          /*-----------------------------------------------------------------------------
+           *  Méthodes
+           *-----------------------------------------------------------------------------*/
+          inline QPointF positionAncreBasse() const { return posBottomAnchor_; }
+          inline QPointF positionAncreHaute() const { return posUpAnchor_; }
 
-          virtual void setParent( AncreItem* parent );
+          virtual void setParent( AncreItem* parent ); //Définit le parent de l'element
+          virtual void updateLink(); //Mets à jour le lien
 
-          virtual void updateLink();
-          virtual int type() const {
-               return Type;
-          }
+          virtual int type() const { return Type; }
 
+          void detach();//Appelle les deux methodes en dessous
+          void deleteLink(); //Supprime la liaison
+          void deleteChildren();//Supprime les liaisons vers les enfants
+
+          QList<AncreItem*> childrenList() const { return children_; }
+
+          /*-----------------------------------------------------------------------------
+           *  Gestionnaire évènements
+           *-----------------------------------------------------------------------------*/
           virtual QVariant itemChange( GraphicsItemChange change, const QVariant& value );
-          void deleteLink();
-          void detach();
-          void deleteChildren();
-          QList<AncreItem*> childrenList() const {
-               return children_;
-          }
 
      protected:
-          QPointF posBottomAnchor_;
-          QPointF posUpAnchor_;
+          /*-----------------------------------------------------------------------------
+           *  Attributs
+           *-----------------------------------------------------------------------------*/
+          QPointF posBottomAnchor_; //coord du point d'ancrage supérieur
+          QPointF posUpAnchor_; //coord du point d'ancrage inférieur
 
           AncreItem* parent_;
           QList<AncreItem*> children_;
