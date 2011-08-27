@@ -30,6 +30,7 @@ PictoSortie::PictoSortie( QGraphicsItem* parent,
      posUpAnchor_.setX( 25 );
      posUpAnchor_.setY( 0 );
      pos_ = 50;
+
 }/*}}}*/
 
 PictoSortie::PictoSortie( const QDomElement& node,

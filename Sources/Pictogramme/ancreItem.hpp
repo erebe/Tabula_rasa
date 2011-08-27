@@ -35,8 +35,9 @@ class AncreItem: public QGraphicsItem {
           inline QPointF positionAncreBasse() const { return posBottomAnchor_; }
           inline QPointF positionAncreHaute() const { return posUpAnchor_; }
 
-          virtual void setParent( AncreItem* parent ); //Définit le parent de l'element
+
           virtual void updateLink(); //Mets à jour le lien
+          virtual void addChild( AncreItem* child );
 
           virtual int type() const { return Type; }
           inline bool isChild() { return ( parent_ ) ? true : false; }
@@ -44,7 +45,11 @@ class AncreItem: public QGraphicsItem {
 
           void detach();//Appelle les deux methodes en dessous
           void deleteLink(); //Supprime la liaison
-          void deleteChildren();//Supprime les liaisons vers les enfants
+          void deleteParent();//Supprime les liaisons vers les enfants
+          void setLinkStyle( LiaisonItem::Style style ) {
+               if( liaison_ )
+                    { liaison_->setStyle( style );}
+          }
 
           QList<AncreItem*> childrenList() const { return children_; }
 
@@ -64,7 +69,8 @@ class AncreItem: public QGraphicsItem {
           QList<AncreItem*> children_;
           LiaisonItem* liaison_;
 
-          virtual void addChild( AncreItem* child );
+          virtual void setParent( AncreItem* parent ); //Définit le parent de l'element
+          virtual void createLink( );
 
 };
 

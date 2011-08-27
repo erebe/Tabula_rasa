@@ -39,6 +39,7 @@ PictoProcedure::PictoProcedure( QString titre,
      posUpAnchor_.setY( 5 );
      updateDimension();
 
+
      actions_["Details"] = contexteMenu_.addAction( tr( "Masquer les assertions" ) );
      actions_["Details"]->setCheckable( true );
      actions_["EmptyDetails"] = contexteMenu_.addAction( tr( "Masquer les assertions vides" ) );
@@ -89,7 +90,7 @@ PictoProcedure::PictoProcedure( const QDomElement& node,
                picto = PictoBuilder::fromXml( nodes.at( i ).toElement(), scene );
 
                if( picto ) {
-                    picto->AncreItem::setParent( this );
+                    addChild( picto );
                     picto = 0;
                }
           }
@@ -180,6 +181,13 @@ void PictoProcedure::toXml( QDomDocument& doc, QDomNode& node ) const
      position.appendChild( doc.createTextNode( QString( "%1;%2" ).arg( scenePos().x() )
                            .arg( scenePos().y() ) ) );
      item.appendChild( position );
+
+     QDomElement style = doc.createElement( "StyleLien" );
+     style.appendChild( doc.createTextNode(
+                             ( liaison_ ) ?
+                             QString::number( static_cast<int>( liaison_->style() ) ) :
+                             "1" ) ) ;
+     item.appendChild( style );
 
      QDomElement preAssertion = doc.createElement( "PreAssertion" );
      preAssertion.appendChild( doc.createTextNode( labels_.at( 0 )->label() ) );

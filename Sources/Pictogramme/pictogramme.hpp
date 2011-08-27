@@ -62,6 +62,7 @@ class Pictogramme : public QObject, public AncreItem {
           unsigned int pos_; //A renommer par width_
 
           QMenu contexteMenu_; //appelé lors du clic droit
+          QMenu* sousMenu_;
           QMap<QString, QAction*> actions_;
 
 

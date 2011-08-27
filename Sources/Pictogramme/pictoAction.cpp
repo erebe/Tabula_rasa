@@ -39,6 +39,7 @@ PictoAction::PictoAction( QString titre,
      posUpAnchor_.setY( 5 );
      updateDimension();
 
+
      actions_["Details"] = contexteMenu_.addAction( tr( "Masquer les assertions" ) );
      actions_["Details"]->setCheckable( true );
      actions_["EmptyDetails"] = contexteMenu_.addAction( tr( "Masquer les assertions vides" ) );
@@ -89,7 +90,7 @@ PictoAction::PictoAction( const QDomElement& node,
                picto = PictoBuilder::fromXml( nodes.at( i ).toElement(), scene );
 
                if( picto ) {
-                    picto->AncreItem::setParent( this );
+                    addChild( picto );
                     picto = 0;
                }
           }
@@ -176,6 +177,13 @@ void PictoAction::toXml( QDomDocument& doc, QDomNode& node ) const
                            .arg( scenePos().y() ) ) );
      item.appendChild( position );
 
+     QDomElement style = doc.createElement( "StyleLien" );
+     style.appendChild( doc.createTextNode(
+                             ( liaison_ ) ?
+                             QString::number( static_cast<int>( liaison_->style() ) ) :
+                             "1" ) ) ;
+     item.appendChild( style );
+
      QDomElement preAssertion = doc.createElement( "PreAssertion" );
      preAssertion.appendChild( doc.createTextNode( labels_.at( 0 )->label() ) );
      item.appendChild( preAssertion );
@@ -200,9 +208,9 @@ void PictoAction::toXml( QDomDocument& doc, QDomNode& node ) const
      item.appendChild( enfants );
 
      AncreItem* picto;
-     foreach( picto, children_ )
-     static_cast<Pictogramme*>( picto )->toXml( doc, enfants );
-
+     foreach( picto, children_ ) {
+          static_cast<Pictogramme*>( picto )->toXml( doc, enfants );
+     }
 
 }/*}}}*/
 
@@ -240,6 +248,11 @@ int PictoAction::drawDetails( QPainter* painter, LabelItem* texte, int pos ) con
 
 }/*}}}*/
 
+void PictoAction::createLink()
+{/*{{{*/
+     AncreItem::createLink();
+     liaison_->setStyle( LiaisonItem::Double );
+}/*}}}*/
 
 
 /*-----------------------------------------------------------------------------

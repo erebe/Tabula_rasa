@@ -50,7 +50,7 @@ class PictoAction: public Pictogramme {
           void updateDimension();
           inline bool detail() const { return detail_; }
 
-     private:
+     protected:
           /*-----------------------------------------------------------------------------
            *  Attributs
            *-----------------------------------------------------------------------------*/
@@ -61,6 +61,7 @@ class PictoAction: public Pictogramme {
            *  Méthodes privées
            *-----------------------------------------------------------------------------*/
           int drawDetails( QPainter* painter, LabelItem* texte, int pos ) const;
+          void createLink();
 
           /*-----------------------------------------------------------------------------
            *  Gestionnaire d'évènements
