@@ -117,7 +117,6 @@
    </attribute>
    <addaction name="actionMode_Insertion"/>
    <addaction name="actionMode_Edition"/>
-   <addaction name="actionRoi"/>
    <addaction name="separator"/>
    <addaction name="actionAction"/>
    <addaction name="actionProcedure"/>
@@ -253,24 +252,6 @@
    </property>
    <property name="toolTip">
     <string>Permet d'insérer une condition multiple</string>
-   </property>
-  </action>
-  <action name="actionRoi">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="enabled">
-    <bool>true</bool>
-   </property>
-   <property name="icon">
-    <iconset resource="../Ressources/ressources.qrc">
-     <normaloff>:/Icones/vignette_roi.png</normaloff>:/Icones/vignette_roi.png</iconset>
-   </property>
-   <property name="text">
-    <string>Roi</string>
-   </property>
-   <property name="toolTip">
-    <string>Un roi pour les gouverner tous</string>
    </property>
   </action>
   <action name="actionSortie">

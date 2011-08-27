@@ -67,10 +67,6 @@ void MainWindow::selectQAction( AlgorithmeScene::Mode mode )
           ui->actionAction->setChecked( false );
      }
 
-     if( mode != AlgorithmeScene::SetRoot ) {
-          ui->actionRoi->setChecked( false );
-     }
-
      if( mode != AlgorithmeScene::InsertLoop ) {
           ui->actionIteration->setChecked( false );
      }
@@ -201,17 +197,6 @@ void MainWindow::on_actionSortie_triggered( bool checked )
      }
 
 }/*}}}*/
-
-void MainWindow::on_actionRoi_triggered( bool checked )
-{/*{{{*/
-     if( checked ) {
-          selectQAction( AlgorithmeScene::SetRoot );
-
-     } else {
-          selectQAction( AlgorithmeScene::MoveItem );
-     }
-}/*}}}*/
-
 
 
 /*-----------------------------------------------------------------------------

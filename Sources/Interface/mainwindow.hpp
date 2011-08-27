@@ -65,7 +65,6 @@ class MainWindow : public QMainWindow {
           void on_actionCondition_triggered( bool checked );
           void on_actionConditionMultiple_triggered( bool checked );
           void on_actionSortie_triggered( bool checked );
-          void on_actionRoi_triggered( bool checked );
 
           /*-----------------------------------------------------------------------------
            *  Slot de l'interface
