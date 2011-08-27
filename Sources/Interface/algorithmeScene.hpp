@@ -67,13 +67,7 @@ class AlgorithmeScene: public QGraphicsScene {
           Mode mode_;
           QString name_; //Nom de l'agorithme
           QGraphicsLineItem* line_; //Line créée dans le mode edition lien
-
           QList<Pictogramme*> items_; //Liste de tous les pictogrammes de la scène (sans les liaisons)
-
-          Pictogramme* root_; //Item au sommet de l'algorithme (Racine de l'arbre)
-          QGraphicsPixmapItem* crown_; //Image designant l'element racine
-          QPixmap icoCrown_;
-
 
 
           /*-----------------------------------------------------------------------------

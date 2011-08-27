@@ -39,6 +39,8 @@ class AncreItem: public QGraphicsItem {
           virtual void updateLink(); //Mets à jour le lien
 
           virtual int type() const { return Type; }
+          inline bool isChild() { return ( parent_ ) ? true : false; }
+          inline bool isParent() { return ( children_.count() ) ? true : false; }
 
           void detach();//Appelle les deux methodes en dessous
           void deleteLink(); //Supprime la liaison

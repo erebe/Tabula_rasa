@@ -32,16 +32,11 @@
 AlgorithmeScene::AlgorithmeScene( qreal x, qreal y, qreal width, qreal height, QObject* parent ):
      QGraphicsScene( x, y, width, height, parent ),
      mode_( MoveItem ), name_( "Algorithme" ),
-     line_( 0 ), root_( 0 ), crown_( 0 )
-{/*{{{*/
-     icoCrown_ = QPixmap( ":/Icones/croix.ico" );
-}/*}}}*/
+     line_( 0 )
+{}
 
 AlgorithmeScene::~AlgorithmeScene()
 {/*{{{*/
-
-     if( crown_ )
-          { delete crown_; }
 
      Pictogramme* picto;
 
@@ -59,13 +54,6 @@ void AlgorithmeScene::deleteItem( Pictogramme* item )
 
      items_.removeOne( item );
      removeItem( item );
-
-     if( root_ == item ) {
-          delete crown_;
-          root_ = 0;
-          crown_ = 0;
-     }
-
      delete item;
 
 
@@ -102,9 +90,13 @@ void AlgorithmeScene::saveToXml( QTextStream& out ) const
 
      QDomElement elements = doc.createElement( "Elements" );
 
+     Pictogramme* picto;
 
-     root_->toXml( doc, elements );
-
+     foreach( picto, items_ ) {
+          if( !picto->isChild() ) {
+               picto->toXml( doc, elements );
+          }
+     }
 
      root.appendChild( elements );
      doc.save( out, 2 );
@@ -116,10 +108,14 @@ void AlgorithmeScene::loadFromXml( const QDomDocument& doc )
      QDomElement racine = doc.documentElement();
      name_ = racine.firstChildElement( "nom" ).firstChild().toText().data();
 
-     racine = racine.firstChildElement( "Elements" ).firstChildElement();
+     const QDomNodeList nodes = racine.firstChildElement( "Elements" ).childNodes();
 
-     root_ = PictoBuilder::fromXml( racine, this );
-     icoCrown_ = QPixmap( ":/Icones/croix.ico" );
+     for( int i = 0; i < nodes.count(); i++ ) {
+          if( nodes.at( i ).isElement() ) {
+               PictoBuilder::fromXml( nodes.at( i ).toElement() , this );
+          }
+     }
+
 }/*}}}*/
 
 
@@ -165,31 +161,6 @@ void AlgorithmeScene::mouseReleaseEvent( QGraphicsSceneMouseEvent* mouseEvent )
 
      if( mouseEvent->button() != Qt::LeftButton ) {
           return;
-     }
-
-     if( mode_ == SetRoot ) {
-          QList<QGraphicsItem*> liste = items( mouseEvent->scenePos() );
-
-          QGraphicsItem* item;
-
-          foreach( item, liste ) {
-               if( qgraphicsitem_cast<LiaisonItem*>( item ) ||
-                   qgraphicsitem_cast<LabelItem*>( item ) ) {
-                    liste.removeOne( item );
-               }
-          }
-
-          if( !liste.count() )
-               { return; }
-
-          root_ = static_cast<Pictogramme*>( liste.at( 0 ) );
-          delete crown_;
-          crown_ = addPixmap( icoCrown_ );
-          crown_->setParentItem( root_ );
-          crown_->setPos( -8, -8 );
-          setMode( AlgorithmeScene::MoveItem );
-          emit modeChanged( AlgorithmeScene::MoveItem );
-
      }
 
      if( line_ != 0 && mode_ == EditLink ) {
