@@ -23,5 +23,6 @@
         <file>linepointer.png</file>
         <file>icone_imprimante.png</file>
         <file>croix.ico</file>
+        <file>icone_sauvegarder.png</file>
     </qresource>
 </RCC>

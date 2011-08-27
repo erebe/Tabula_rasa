@@ -22,7 +22,7 @@
 
 namespace Ui {
 class ResizeDialog;
-}
+}/*}}}*/
 
 class ResizeDialog : public QDialog {
           Q_OBJECT

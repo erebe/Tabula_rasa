@@ -32,20 +32,24 @@ class PictoConditionMultiple : public Pictogramme {
           PictoConditionMultiple( const QDomElement& node,
                                   AlgorithmeScene* scene = 0 );
 
+
+          /*-----------------------------------------------------------------------------
+           *  Méthodes
+           *-----------------------------------------------------------------------------*/
           void paint( QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget );
           QRectF boundingRect() const;
-          void updateDimension();
+          virtual int type() const { return Type; }
 
-          QVariant itemChange( GraphicsItemChange change, const QVariant& value );
-          virtual int type() const {
-               return Type;
-          }
 
           void toXml( QDomDocument& doc, QDomNode& node ) const;
-
+          void updateDimension();
 
      protected:
+          /*-----------------------------------------------------------------------------
+           *  Gestionnaire évènements
+           *-----------------------------------------------------------------------------*/
           void processAction( QAction* action, QGraphicsSceneContextMenuEvent* event );
+          QVariant itemChange( GraphicsItemChange change, const QVariant& value );
 };
 
 #endif // PICTOCONDITIONMULTIPLE_HPP

@@ -18,12 +18,13 @@
 #ifndef PICTOGRAMME_HPP
 #define PICTOGRAMME_HPP
 
-#include <QGraphicsItem>
 #include <QMenu>
 #include <QtXml>
 
-#include "labelItem.hpp"
 #include "ancreItem.hpp"
+#include "labelItem.hpp"
+
+class QGraphicsItem;
 
 class Pictogramme : public QObject, public AncreItem {
 
@@ -33,25 +34,40 @@ class Pictogramme : public QObject, public AncreItem {
           Pictogramme( QGraphicsItem* parent = 0, QGraphicsScene* scene = 0 );
           virtual ~Pictogramme();
 
-          virtual void paint( QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget );
-          virtual void updateDimension() = 0;
-          inline unsigned int width() const {
-               return pos_;
-          }
+
+          /*-----------------------------------------------------------------------------
+           *  Methodes
+           *-----------------------------------------------------------------------------*/
+          virtual void paint( QPainter* painter,
+                              const QStyleOptionGraphicsItem* option,
+                              QWidget* widget );
+
+          virtual void updateDimension() = 0; //met à jour la dimension de l'item
+          inline unsigned int width() const { return pos_; }
+
+          //A implémenter pour sauvegarder en XML
           virtual void toXml( QDomDocument& doc, QDomNode& node ) const = 0;
 
 
 
      signals:
-          void doubleClick( LabelItem* item );
+          void doubleClick( LabelItem* item );//Pour renommer un labelItem
 
 
      protected:
-          QList<LabelItem*> labels_;
-          unsigned int pos_;
-          QMenu contexteMenu_;
+          /*-----------------------------------------------------------------------------
+           *  Attributs
+           *-----------------------------------------------------------------------------*/
+          QList<LabelItem*> labels_; //liste des labels que contient le picto
+          unsigned int pos_; //A renommer par width_
+
+          QMenu contexteMenu_; //appelé lors du clic droit
           QMap<QString, QAction*> actions_;
 
+
+          /*-----------------------------------------------------------------------------
+           *  Gestionnaire évènements
+           *-----------------------------------------------------------------------------*/
           void mouseDoubleClickEvent( QGraphicsSceneMouseEvent* event );
           void contextMenuEvent( QGraphicsSceneContextMenuEvent* event );
           virtual void processAction( QAction* action, QGraphicsSceneContextMenuEvent* event );

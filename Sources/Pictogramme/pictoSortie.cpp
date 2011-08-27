@@ -18,21 +18,24 @@
 #include "pictoSortie.hpp"
 #include <QPainter>
 
+/*-----------------------------------------------------------------------------
+ *  Constructeurs / Destructeurs
+ *-----------------------------------------------------------------------------*/
 PictoSortie::PictoSortie( QGraphicsItem* parent,
                           QGraphicsScene* scene ):
      Pictogramme( parent, scene )
-{
+{/*{{{*/
      posBottomAnchor_.setX( 25 );
      posBottomAnchor_.setY( 50 );
      posUpAnchor_.setX( 25 );
      posUpAnchor_.setY( 0 );
      pos_ = 50;
-}
+}/*}}}*/
 
 PictoSortie::PictoSortie( const QDomElement& node,
                           QGraphicsScene* scene ):
      Pictogramme( 0, scene )
-{
+{/*{{{*/
      posBottomAnchor_.setX( 25 );
      posBottomAnchor_.setY( 50 );
      posUpAnchor_.setX( 25 );
@@ -42,11 +45,15 @@ PictoSortie::PictoSortie( const QDomElement& node,
      QString label = node.firstChildElement( "Position" ).firstChild().toText().data();
      QStringList position = label.split( QRegExp( ";" ) );
      setPos( position.at( 0 ).toDouble(), position.at( 1 ).toDouble() );
-}
+}/*}}}*/
 
 
+
+/*-----------------------------------------------------------------------------
+ *  Méthodes
+ *-----------------------------------------------------------------------------*/
 void PictoSortie::paint( QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget )
-{
+{/*{{{*/
 
      Q_UNUSED( option );
      Q_UNUSED( widget );
@@ -60,19 +67,16 @@ void PictoSortie::paint( QPainter* painter, const QStyleOptionGraphicsItem* opti
 
      Pictogramme::paint( painter, option, widget );
 
-}
+}/*}}}*/
 
 QRectF PictoSortie::boundingRect() const
-{
+{/*{{{*/
 
      return QRectF( 0, 0, 50, 50 );
-}
-
-void PictoSortie::updateDimension()
-{}
+}/*}}}*/
 
 void PictoSortie::toXml( QDomDocument& doc, QDomNode& node ) const
-{
+{/*{{{*/
 
      QDomElement item = doc.createElement( "Sortie" );
      node.appendChild( item );
@@ -83,4 +87,7 @@ void PictoSortie::toXml( QDomDocument& doc, QDomNode& node ) const
                            .arg( scenePos().y() ) ) );
      item.appendChild( position );
 
-}
+}/*}}}*/
+
+void PictoSortie::updateDimension()
+{}

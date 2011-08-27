@@ -24,20 +24,23 @@ class PictoSortie: public Pictogramme {
 
      public:
           enum { Type = UserType + 6 };
+
           PictoSortie( QGraphicsItem* parent = 0,
                        QGraphicsScene* scene = 0 );
           PictoSortie( const QDomElement& node,
                        QGraphicsScene* scene = 0 );
 
 
+          /*-----------------------------------------------------------------------------
+           *  Méthodes
+           *-----------------------------------------------------------------------------*/
           void paint( QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget );
           QRectF boundingRect() const;
+          virtual int type() const { return Type; }
+
           void updateDimension();
           void toXml( QDomDocument& doc, QDomNode& node ) const;
 
-          virtual int type() const {
-               return Type;
-          }
 };
 
 #endif // PICTOSORTIE_HPP

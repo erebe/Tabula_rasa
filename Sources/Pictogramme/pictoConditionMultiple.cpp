@@ -3,14 +3,17 @@
 #include "algorithmeScene.hpp"
 #include <QPainter>
 #include <QGraphicsSceneMouseEvent>
-#include <QDebug>
 
 
+
+/*-----------------------------------------------------------------------------
+ *  Constructeurs / Destructeurs
+ *-----------------------------------------------------------------------------*/
 PictoConditionMultiple::PictoConditionMultiple( const QString& label,
           QGraphicsItem* parent,
           QGraphicsScene* scene ) :
      Pictogramme( parent, scene )
-{
+{/*{{{*/
      labels_ << new LabelItem( label, 150, 25, 25, this, scene );
      labels_ << new LabelItem( label, 150, 25, 25, this, scene );
      labels_ << new LabelItem( "Sinon", 150, 25, 25, this, scene );
@@ -20,12 +23,12 @@ PictoConditionMultiple::PictoConditionMultiple( const QString& label,
 
      actions_["AjouterA"] = contexteMenu_.addAction( tr( "Ajouter une condition" ) );
      actions_["SupprimerA"] = contexteMenu_.addAction( tr( "Supprimer la condition" ) );
-}
+}/*}}}*/
 
 PictoConditionMultiple::PictoConditionMultiple( const QDomElement& node,
           AlgorithmeScene* scene ):
      Pictogramme( 0, scene )
-{
+{/*{{{*/
      QString label = node.firstChildElement( "Position" ).firstChild().toText().data();
      QStringList position = label.split( QRegExp( ";" ) );
      setPos( position.at( 0 ).toDouble(), position.at( 1 ).toDouble() );
@@ -64,17 +67,21 @@ PictoConditionMultiple::PictoConditionMultiple( const QDomElement& node,
           }
 
      }
-}
+}/*}}}*/
 
+
+
+/*-----------------------------------------------------------------------------
+ *  Méthodes
+ *-----------------------------------------------------------------------------*/
 void PictoConditionMultiple::paint( QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget )
-{
+{/*{{{*/
 
      Q_UNUSED( option );
      Q_UNUSED( widget );
 
      unsigned int pos = 0;
 
-     //On dessine "<"
      painter->drawLine( pos, 25, 20, 0 );
      painter->drawLine( pos, 25, 20, 50 );
 
@@ -96,7 +103,6 @@ void PictoConditionMultiple::paint( QPainter* painter, const QStyleOptionGraphic
           pos = labels_.at( 0 )->width() + 40;
      }
 
-     //On dessine ">"
      painter->drawLine( pos, 0, pos + 20, 25 );
      painter->drawLine( pos, 50, pos + 20, 25 );
      painter->drawLine( 20, 0, pos, 0 );
@@ -106,61 +112,16 @@ void PictoConditionMultiple::paint( QPainter* painter, const QStyleOptionGraphic
      painter->drawLine( 0, 25, pos, 25 );
 
      Pictogramme::paint( painter, option, widget );
-}
+}/*}}}*/
 
 QRectF PictoConditionMultiple::boundingRect() const
-{
+{/*{{{*/
 
      return QRectF( 0, 0, pos_, 50 );
-}
-
-QVariant PictoConditionMultiple::itemChange( GraphicsItemChange change, const QVariant& value )
-{
-
-
-     if ( change == QGraphicsItem::ItemPositionChange ) {
-
-          updateLink();
-          AncreItem* ancre;
-          foreach( ancre, labels_ )
-          ancre->AncreItem::itemChange( change, value );
-     }
-
-     return value;
-}
-
-void PictoConditionMultiple::processAction( QAction* action, QGraphicsSceneContextMenuEvent* event )
-{
-
-     if( actions_["AjouterA"] == action ) {
-
-          labels_.insert( labels_.size() - 1, new LabelItem( "", 150, 25, 25, this, scene() ) );
-          prepareGeometryChange();
-          updateDimension();
-
-     } else if( actions_["SupprimerA"] == action ) {
-
-          LabelItem* tmp;
-
-          foreach( tmp, labels_ ) {
-               if( ( tmp != labels_.at( 0 ) ) &&
-                   tmp->contains( event->pos() - tmp->pos() ) ) {
-                    labels_.removeOne( tmp );
-                    delete tmp;
-                    prepareGeometryChange();
-                    updateDimension();
-                    break;
-               }
-          }
-
-     } else {
-          Pictogramme::processAction( action, event );
-     }
-}
-
+}/*}}}*/
 
 void PictoConditionMultiple::updateDimension()
-{
+{/*{{{*/
 
      qreal posAncre;
      pos_ = 20;
@@ -190,11 +151,10 @@ void PictoConditionMultiple::updateDimension()
      foreach( item, labels_ )
      item->updateLink();
 
-}
-
+}/*}}}*/
 
 void PictoConditionMultiple::toXml( QDomDocument& doc, QDomNode& node ) const
-{
+{/*{{{*/
 
      QDomElement item = doc.createElement( "ConditionMultiple" );
      node.appendChild( item );
@@ -234,4 +194,54 @@ void PictoConditionMultiple::toXml( QDomDocument& doc, QDomNode& node ) const
 
      }
 
-}
+}/*}}}*/
+
+
+
+/*-----------------------------------------------------------------------------
+ *  Gestionnaire d'évènements
+ *-----------------------------------------------------------------------------*/
+QVariant PictoConditionMultiple::itemChange( GraphicsItemChange change, const QVariant& value )
+{/*{{{*/
+
+
+     if ( change == QGraphicsItem::ItemPositionChange ) {
+
+          updateLink();
+          AncreItem* ancre;
+          foreach( ancre, labels_ )
+          ancre->AncreItem::itemChange( change, value );
+     }
+
+     return value;
+}/*}}}*/
+
+void PictoConditionMultiple::processAction( QAction* action, QGraphicsSceneContextMenuEvent* event )
+{/*{{{*/
+
+     if( actions_["AjouterA"] == action ) {
+
+          labels_.insert( labels_.size() - 1, new LabelItem( "", 150, 25, 25, this, scene() ) );
+          prepareGeometryChange();
+          updateDimension();
+
+     } else if( actions_["SupprimerA"] == action ) {
+
+          LabelItem* tmp;
+
+          foreach( tmp, labels_ ) {
+               if( ( tmp != labels_.at( 0 ) ) &&
+                   tmp->contains( event->pos() - tmp->pos() ) ) {
+                    labels_.removeOne( tmp );
+                    delete tmp;
+                    prepareGeometryChange();
+                    updateDimension();
+                    break;
+               }
+          }
+
+     } else {
+          Pictogramme::processAction( action, event );
+     }
+}/*}}}*/
+

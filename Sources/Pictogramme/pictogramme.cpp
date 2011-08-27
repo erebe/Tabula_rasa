@@ -17,14 +17,18 @@
  */
 #include "pictogramme.hpp"
 #include "algorithmeScene.hpp"
+
 #include <QPainter>
 #include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
 
 
+/*-----------------------------------------------------------------------------
+ *  Constructeurs / Destructeurs
+ *-----------------------------------------------------------------------------*/
 Pictogramme::Pictogramme( QGraphicsItem* parent, QGraphicsScene* scene ):
      AncreItem( parent, scene ), pos_( 0 )
-{
+{/*{{{*/
      setFlags( QGraphicsItem::ItemIsMovable |
                QGraphicsItem::ItemIsSelectable |
                QGraphicsItem::ItemSendsGeometryChanges );
@@ -35,20 +39,27 @@ Pictogramme::Pictogramme( QGraphicsItem* parent, QGraphicsScene* scene ):
      actions_["DelierE"] = contexteMenu_.addAction( tr( "Délier des enfants" ) );
      actions_["Delier"] = contexteMenu_.addAction( tr( "Délier de tous" ) );
      contexteMenu_.addSeparator();
-}
+}/*}}}*/
 
 Pictogramme::~Pictogramme()
-{
+{/*{{{*/
 
      LabelItem* label;
 
      foreach( label, labels_ )
      delete label;
 
-}
+}/*}}}*/
 
-void Pictogramme::paint( QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget )
-{
+
+
+/*-----------------------------------------------------------------------------
+ * Méthodes
+ *-----------------------------------------------------------------------------*/
+void Pictogramme::paint( QPainter* painter,
+                         const QStyleOptionGraphicsItem* option,
+                         QWidget* widget )
+{/*{{{*/
 
      Q_UNUSED( option );
      Q_UNUSED( widget );
@@ -57,11 +68,15 @@ void Pictogramme::paint( QPainter* painter, const QStyleOptionGraphicsItem* opti
           painter->setPen( QColor( 0, 0, 255 ) );
           painter->drawRect( boundingRect() );
      }
-}
+}/*}}}*/
 
 
+
+/*-----------------------------------------------------------------------------
+ *  Gestionnaires d'évènements
+ *-----------------------------------------------------------------------------*/
 void Pictogramme::mouseDoubleClickEvent( QGraphicsSceneMouseEvent* event )
-{
+{/*{{{*/
 
      LabelItem* label;
      foreach( label, labels_ ) {
@@ -73,10 +88,10 @@ void Pictogramme::mouseDoubleClickEvent( QGraphicsSceneMouseEvent* event )
                break;
           }
      }
-}
+}/*}}}*/
 
 void Pictogramme::contextMenuEvent( QGraphicsSceneContextMenuEvent* event )
-{
+{/*{{{*/
 
      event->accept();
 
@@ -88,11 +103,10 @@ void Pictogramme::contextMenuEvent( QGraphicsSceneContextMenuEvent* event )
      processAction( selectedAction, event );
 
 
-}
-
+}/*}}}*/
 
 void Pictogramme::processAction( QAction* action, QGraphicsSceneContextMenuEvent* event )
-{
+{/*{{{*/
      Q_UNUSED( event );
 
      if( actions_["Supprimer"] == action ) {
@@ -115,5 +129,5 @@ void Pictogramme::processAction( QAction* action, QGraphicsSceneContextMenuEvent
 
           deleteLink();
      }
-}
+}/*}}}*/
 

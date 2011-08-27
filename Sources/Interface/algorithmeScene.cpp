@@ -16,42 +16,29 @@
  * =====================================================================================
  */
 #include "algorithmeScene.hpp"
+#include "Pictogramme/pictogramme.hpp"
 #include "Pictogramme/ancreItem.hpp"
-#include "Pictogramme/pictoCondition.hpp"
-#include "Pictogramme/pictoAction.hpp"
-#include "Pictogramme/pictoIteration.hpp"
-#include "Pictogramme/pictoProcedure.hpp"
-#include "Pictogramme/pictoSortie.hpp"
-#include "Pictogramme/pictoConditionMultiple.hpp"
 #include "Pictogramme/pictoBuilder.hpp"
+#include "Pictogramme/pictoCondition.hpp"
+#include "Pictogramme/pictoConditionMultiple.hpp"
 
-#include <QInputDialog>
 #include <QGraphicsSceneMouseEvent>
 #include <QGraphicsLineItem>
 
 
+/*-----------------------------------------------------------------------------
+ *  Constructeurs / Destructeurs
+ *-----------------------------------------------------------------------------*/
 AlgorithmeScene::AlgorithmeScene( qreal x, qreal y, qreal width, qreal height, QObject* parent ):
-     QGraphicsScene( x, y, width, height, parent ), mode_( MoveItem ), line_( 0 ), root_( 0 ),
-     name_( "Algorithme" ), crown_( 0 )
-{
+     QGraphicsScene( x, y, width, height, parent ),
+     mode_( MoveItem ), name_( "Algorithme" ),
+     line_( 0 ), root_( 0 ), crown_( 0 )
+{/*{{{*/
      icoCrown_ = QPixmap( ":/Icones/croix.ico" );
-}
-
-
-void AlgorithmeScene::loadFromXml( const QDomDocument& doc )
-{
-     QDomElement racine = doc.documentElement();
-     name_ = racine.firstChildElement( "nom" ).firstChild().toText().data();
-
-     racine = racine.firstChildElement( "Elements" ).firstChildElement();
-
-     root_ = PictoBuilder::fromXml( racine, this );
-     icoCrown_ = QPixmap( ":/Icones/croix.ico" );
-}
-
+}/*}}}*/
 
 AlgorithmeScene::~AlgorithmeScene()
-{
+{/*{{{*/
 
      if( crown_ )
           { delete crown_; }
@@ -61,10 +48,31 @@ AlgorithmeScene::~AlgorithmeScene()
      foreach( picto, items_ )
      delete picto;
 
-}
+}/*}}}*/
+
+
+/*-----------------------------------------------------------------------------
+ *  Méthodes
+ *-----------------------------------------------------------------------------*/
+void AlgorithmeScene::deleteItem( Pictogramme* item )
+{/*{{{*/
+
+     items_.removeOne( item );
+     removeItem( item );
+
+     if( root_ == item ) {
+          delete crown_;
+          root_ = 0;
+          crown_ = 0;
+     }
+
+     delete item;
+
+
+}/*}}}*/
 
 void AlgorithmeScene::newItem( Pictogramme* picto )
-{
+{/*{{{*/
 
      if( picto ) {
 
@@ -72,10 +80,54 @@ void AlgorithmeScene::newItem( Pictogramme* picto )
           emit itemAdded( picto );
 
      }
-}
+}/*}}}*/
 
+void AlgorithmeScene::saveToXml( QTextStream& out ) const
+{/*{{{*/
+
+     QDomDocument doc( "Tabula_Rasa" );
+     QDomNode noeud = doc.createProcessingInstruction( "xml", "version=\"1.0\"" );
+     doc.insertBefore( noeud, doc.firstChild() );
+
+     QDomElement root = doc.createElement( "Algorithme" );
+     doc.appendChild( root );
+
+     QDomElement name = doc.createElement( "nom" );
+     name.appendChild( doc.createTextNode( name_ ) );
+     root.appendChild( name );
+
+     QDomElement date = doc.createElement( "date_creation" );
+     date.appendChild( doc.createTextNode( QDateTime::currentDateTime().toString( "d/M/yyyy hh:mm" ) ) );
+     root.appendChild( date );
+
+     QDomElement elements = doc.createElement( "Elements" );
+
+
+     root_->toXml( doc, elements );
+
+
+     root.appendChild( elements );
+     doc.save( out, 2 );
+
+}/*}}}*/
+
+void AlgorithmeScene::loadFromXml( const QDomDocument& doc )
+{/*{{{*/
+     QDomElement racine = doc.documentElement();
+     name_ = racine.firstChildElement( "nom" ).firstChild().toText().data();
+
+     racine = racine.firstChildElement( "Elements" ).firstChildElement();
+
+     root_ = PictoBuilder::fromXml( racine, this );
+     icoCrown_ = QPixmap( ":/Icones/croix.ico" );
+}/*}}}*/
+
+
+/*-----------------------------------------------------------------------------
+ *  Gestionnaires d'évènements
+ *-----------------------------------------------------------------------------*/
 void AlgorithmeScene::mousePressEvent( QGraphicsSceneMouseEvent* mouseEvent )
-{
+{/*{{{*/
 
      mouseEvent->accept();
 
@@ -89,10 +141,10 @@ void AlgorithmeScene::mousePressEvent( QGraphicsSceneMouseEvent* mouseEvent )
 
      QGraphicsScene::mousePressEvent( mouseEvent );
 
-}
+}/*}}}*/
 
 void AlgorithmeScene::mouseMoveEvent( QGraphicsSceneMouseEvent* mouseEvent )
-{
+{/*{{{*/
 
      mouseEvent->accept();
 
@@ -104,11 +156,10 @@ void AlgorithmeScene::mouseMoveEvent( QGraphicsSceneMouseEvent* mouseEvent )
           QGraphicsScene::mouseMoveEvent( mouseEvent );
      }
 
-}
-
+}/*}}}*/
 
 void AlgorithmeScene::mouseReleaseEvent( QGraphicsSceneMouseEvent* mouseEvent )
-{
+{/*{{{*/
 
      mouseEvent->accept();
 
@@ -226,50 +277,4 @@ void AlgorithmeScene::mouseReleaseEvent( QGraphicsSceneMouseEvent* mouseEvent )
      }
 
      QGraphicsScene::mouseReleaseEvent( mouseEvent );
-}
-
-void AlgorithmeScene::deleteItem( Pictogramme* item )
-{
-
-     items_.removeOne( item );
-     removeItem( item );
-
-     if( root_ == item ) {
-          delete crown_;
-          root_ = 0;
-          crown_ = 0;
-     }
-
-     delete item;
-
-
-}
-
-void AlgorithmeScene::saveToXml( QTextStream& out ) const
-{
-
-     QDomDocument doc( "Tabula_Rasa" );
-     QDomNode noeud = doc.createProcessingInstruction( "xml", "version=\"1.0\"" );
-     doc.insertBefore( noeud, doc.firstChild() );
-
-     QDomElement root = doc.createElement( "Algorithme" );
-     doc.appendChild( root );
-
-     QDomElement name = doc.createElement( "nom" );
-     name.appendChild( doc.createTextNode( name_ ) );
-     root.appendChild( name );
-
-     QDomElement date = doc.createElement( "date_creation" );
-     date.appendChild( doc.createTextNode( QDateTime::currentDateTime().toString( "d/M/yyyy hh:mm" ) ) );
-     root.appendChild( date );
-
-     QDomElement elements = doc.createElement( "Elements" );
-
-
-     root_->toXml( doc, elements );
-
-
-     root.appendChild( elements );
-     doc.save( out, 2 );
-
-}
+}/*}}}*/

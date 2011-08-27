@@ -21,14 +21,22 @@
 #include <QPainter>
 
 
+/*-----------------------------------------------------------------------------
+ *  Constructeurs / Destructeurs
+ *-----------------------------------------------------------------------------*/
 LiaisonItem::LiaisonItem( AncreItem* parent, AncreItem* enfant ):
      parent_( parent ), child_( enfant )
-{
+{/*{{{*/
      updatePath();
-}
+}/*}}}*/
 
+
+
+/*-----------------------------------------------------------------------------
+ *  Méthodes
+ *-----------------------------------------------------------------------------*/
 void LiaisonItem::updatePath()
-{
+{/*{{{*/
 
      path_ = QPainterPath();
 
@@ -66,4 +74,4 @@ void LiaisonItem::updatePath()
                    child_->scenePos().y() + child_->positionAncreHaute().y() );
 
      setPath( path_ );
-}
+}/*}}}*/

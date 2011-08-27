@@ -319,6 +319,10 @@
    <property name="enabled">
     <bool>true</bool>
    </property>
+   <property name="icon">
+    <iconset resource="../Ressources/ressources.qrc">
+     <normaloff>:/Icones/icone_sauvegarder.png</normaloff>:/Icones/icone_sauvegarder.png</iconset>
+   </property>
    <property name="text">
     <string>Enregistrer</string>
    </property>

@@ -20,11 +20,15 @@
 #include "algorithmeScene.hpp"
 #include <QPainter>
 
+/*-----------------------------------------------------------------------------
+ *  Constructeurs / Destructeurs
+ *-----------------------------------------------------------------------------*/
 PictoCondition::PictoCondition( const QString& label,
                                 QGraphicsItem* parent,
                                 QGraphicsScene* scene ) :
      Pictogramme( parent, scene ), isForeverAlone_( false )
-{
+{/*{{{*/
+
      labels_ << new LabelItem( label, 150, 25, 50, this, scene );
      labels_ << new LabelItem( "Sinon", 150, 25, 50, this, scene );
      posUpAnchor_.setY( 0 );
@@ -32,12 +36,13 @@ PictoCondition::PictoCondition( const QString& label,
 
      actions_["SingleOne"] = contexteMenu_.addAction( tr( "Condition unique" ) );
      actions_["SingleOne"]->setCheckable( true );
-}
+}/*}}}*/
 
 PictoCondition::PictoCondition( const QDomElement& node,
                                 AlgorithmeScene* scene ):
      Pictogramme( 0, scene )
-{
+{/*{{{*/
+
      QString label = node.firstChildElement( "Position" ).firstChild().toText().data();
      QStringList position = label.split( QRegExp( ";" ) );
      setPos( position.at( 0 ).toDouble(), position.at( 1 ).toDouble() );
@@ -81,24 +86,29 @@ PictoCondition::PictoCondition( const QDomElement& node,
      }
 
      updateDimension();
-}
+}/*}}}*/
 
-void PictoCondition::paint( QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget )
-{
+
+
+/*-----------------------------------------------------------------------------
+ *  Méthodes
+ *-----------------------------------------------------------------------------*/
+void PictoCondition::paint( QPainter* painter,
+                            const QStyleOptionGraphicsItem* option,
+                            QWidget* widget )
+{/*{{{*/
 
      Q_UNUSED( option );
      Q_UNUSED( widget );
 
      int pos = 0;
 
-     //On dessine "<"
      painter->drawLine( pos, 25, 20, 0 );
      painter->drawLine( pos, 25, 20, 50 );
 
      pos += labels_.at( 0 )->width() + 35;
 
      if( !isForeverAlone_ ) {
-          //On dessine la barre vecticale
           painter->drawLine( pos, 0, pos, 50 );
           labels_.at( 1 )->setPos( pos + 10, 0 );
           pos += labels_.at( 1 )->width() + 10;
@@ -110,45 +120,26 @@ void PictoCondition::paint( QPainter* painter, const QStyleOptionGraphicsItem* o
           labels_.at( 1 )->setVisible( false );
      }
 
-     //on dessine la barre supérieure
      painter->drawLine( 20, 0, pos, 0 );
 
-     //On dessine la barre inférieure
      painter->drawLine( 20, 50, pos, 50 );
 
-     //On dessine ">"
      painter->drawLine( pos, 0, pos + 20, 25 );
      painter->drawLine( pos, 50, pos + 20, 25 );
 
      pos += 20;
 
      Pictogramme::paint( painter, option, widget );
-}
+}/*}}}*/
 
 QRectF PictoCondition::boundingRect() const
-{
+{/*{{{*/
 
      return QRectF( 0, 0, pos_, 50 );
-}
-
-QVariant PictoCondition::itemChange( GraphicsItemChange change, const QVariant& value )
-{
-
-
-     if ( change == QGraphicsItem::ItemPositionChange ) {
-
-          updateLink();
-          AncreItem* ancre;
-          foreach( ancre, labels_ )
-          ancre->AncreItem::itemChange( change, value );
-     }
-
-     return value;
-}
-
+}/*}}}*/
 
 void PictoCondition::updateDimension()
-{
+{/*{{{*/
 
      qreal posAncre;
      labels_.at( 0 )->setPos( 25, 0 );
@@ -174,27 +165,10 @@ void PictoCondition::updateDimension()
      foreach( item, labels_ )
      item->updateLink();
 
-}
-
-void PictoCondition::processAction( QAction* action, QGraphicsSceneContextMenuEvent* event )
-{
-
-     if( action == actions_["SingleOne"] ) {
-          isForeverAlone_ = !isForeverAlone_;
-
-          if( isForeverAlone_ )
-               { labels_.at( 1 )->detach(); }
-
-          prepareGeometryChange();
-          updateDimension();
-
-     } else {
-          Pictogramme::processAction( action, event );
-     }
-}
+}/*}}}*/
 
 void PictoCondition::toXml( QDomDocument& doc, QDomNode& node ) const
-{
+{/*{{{*/
 
      QDomElement item = doc.createElement( "Condition" );
      node.appendChild( item );
@@ -234,4 +208,42 @@ void PictoCondition::toXml( QDomDocument& doc, QDomNode& node ) const
 
      }
 
-}
+}/*}}}*/
+
+
+
+/*-----------------------------------------------------------------------------
+ *  Gestionnaire évènements
+ *-----------------------------------------------------------------------------*/
+QVariant PictoCondition::itemChange( GraphicsItemChange change, const QVariant& value )
+{/*{{{*/
+
+
+     if ( change == QGraphicsItem::ItemPositionChange ) {
+
+          updateLink();
+          AncreItem* ancre;
+          foreach( ancre, labels_ )
+          ancre->AncreItem::itemChange( change, value );
+     }
+
+     return value;
+}/*}}}*/
+
+void PictoCondition::processAction( QAction* action, QGraphicsSceneContextMenuEvent* event )
+{/*{{{*/
+
+     if( action == actions_["SingleOne"] ) {
+          isForeverAlone_ = !isForeverAlone_;
+
+          if( isForeverAlone_ )
+               { labels_.at( 1 )->detach(); }
+
+          prepareGeometryChange();
+          updateDimension();
+
+     } else {
+          Pictogramme::processAction( action, event );
+     }
+}/*}}}*/
+

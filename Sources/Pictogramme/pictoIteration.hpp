@@ -17,7 +17,9 @@
  */
 #ifndef PICTOITERATION_HPP
 #define PICTOITERATION_HPP
+
 #include "pictogramme.hpp"
+
 class QGraphicsItem;
 class AlgorithmeScene;
 
@@ -33,25 +35,30 @@ class PictoIteration : public Pictogramme {
           PictoIteration( const QDomElement& node,
                           AlgorithmeScene* scene = 0 );
 
-          void paint( QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget );
+          /*-----------------------------------------------------------------------------
+           *  Méthodes
+           *-----------------------------------------------------------------------------*/
+          void paint( QPainter* painter,
+                      const QStyleOptionGraphicsItem* option,
+                      QWidget* widget );
           QRectF boundingRect() const;
-          void updateDimension();
+          virtual int type() const { return Type; }
 
-          void processAction( QAction* action, QGraphicsSceneContextMenuEvent* event );
+          void updateDimension();
           void toXml( QDomDocument& doc, QDomNode& node ) const;
 
-
-          inline QString label() const {
-               return labels_.at( 0 )->label();
-          }
-          virtual int type() const {
-               return Type;
-          }
-
-
      private:
+          /*-----------------------------------------------------------------------------
+           *  Attributs
+           *-----------------------------------------------------------------------------*/
           QPointF points_[3];
           bool isNumberedLoop_;
+
+
+          /*-----------------------------------------------------------------------------
+           *  Gestionnaire évènements
+           *-----------------------------------------------------------------------------*/
+          void processAction( QAction* action, QGraphicsSceneContextMenuEvent* event );
 
 };
 

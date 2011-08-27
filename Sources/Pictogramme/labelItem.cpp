@@ -18,8 +18,10 @@
  */
 #include "labelItem.hpp"
 #include <QPainter>
-#include <QDebug>
 
+/*-----------------------------------------------------------------------------
+ *  Constructeurs / Destructeurs
+ *-----------------------------------------------------------------------------*/
 LabelItem::LabelItem( const QString& texte,
                       const int maxWidth,
                       const int minWidth,
@@ -30,12 +32,59 @@ LabelItem::LabelItem( const QString& texte,
        height_( height ),
        maxWidth_( maxWidth ),
        minWidth_( minWidth )
-{
+{/*{{{*/
      setLabel( texte );
-}
+}/*}}}*/
+
+
+/*-----------------------------------------------------------------------------
+ *  Méthodes
+ *-----------------------------------------------------------------------------*/
+void LabelItem::paint( QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget )
+{/*{{{*/
+
+
+     Q_UNUSED( option );
+     Q_UNUSED( widget );
+
+     painter->drawText( 0, 0,
+                        label_.second, height_,
+                        Qt::TextWordWrap | Qt::AlignCenter,
+                        label_.first );
+}/*}}}*/
+
+QRectF LabelItem::boundingRect() const
+{/*{{{*/
+
+     return QRectF( 0, 0, label_.second, height_ );
+}/*}}}*/
+
+void LabelItem::setLabel( const QString& texte )
+{/*{{{*/
+
+
+     label_.first = texte.isEmpty() ? "?" : texte;
+     prepareGeometryChange();
+     label_.second = calculLargeurTexte();
+     posBottomAnchor_.setX( label_.second / 2 );
+     posBottomAnchor_.setY( height_ );
+
+     posUpAnchor_.setX( label_.second / 2 );
+     posUpAnchor_.setY( 0 );
+}/*}}}*/
+
+bool LabelItem::isEmpty() const
+{/*{{{*/
+
+     if( label_.first.isEmpty() || label_.first == "?" )
+          { return true; }
+
+     else
+          { return false; }
+}/*}}}*/
 
 unsigned int LabelItem::calculLargeurTexte() const
-{
+{/*{{{*/
 
      QFont font( "Cantarell,11,-1,5,50,0,0,0,0,0" );
      QFontMetrics fm( font );
@@ -51,47 +100,4 @@ unsigned int LabelItem::calculLargeurTexte() const
 
      return largeurTexte;
 
-}
-
-void LabelItem::paint( QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget )
-{
-
-
-     Q_UNUSED( option );
-     Q_UNUSED( widget );
-
-     painter->drawText( 0, 0,
-                        label_.second, height_,
-                        Qt::TextWordWrap | Qt::AlignCenter,
-                        label_.first );
-}
-
-QRectF LabelItem::boundingRect() const
-{
-
-     return QRectF( 0, 0, label_.second, height_ );
-}
-
-void LabelItem::setLabel( const QString& texte )
-{
-
-
-     label_.first = texte.isEmpty() ? "?" : texte;
-     prepareGeometryChange();
-     label_.second = calculLargeurTexte();
-     posBottomAnchor_.setX( label_.second / 2 );
-     posBottomAnchor_.setY( height_ );
-
-     posUpAnchor_.setX( label_.second / 2 );
-     posUpAnchor_.setY( 0 );
-}
-
-bool LabelItem::isEmpty() const
-{
-
-     if( label_.first.isEmpty() || label_.first == "?" )
-          { return true; }
-
-     else
-          { return false; }
-}
+}/*}}}*/

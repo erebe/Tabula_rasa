@@ -22,7 +22,7 @@
 #include <QHBoxLayout>
 
 TabWidget::TabWidget()
-{
+{/*{{{*/
      scene_ = new AlgorithmeScene( 0, 0, 2000, 2000, this );
      scene_->setBackgroundBrush( Qt::white );
 
@@ -36,4 +36,4 @@ TabWidget::TabWidget()
      layout_->addWidget( vue_ );
      layout_->setMargin( 0 );
 
-}
+}/*}}}*/
