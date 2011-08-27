@@ -26,19 +26,29 @@ class LiaisonItem : public QGraphicsPathItem {
 
      public:
           enum { Type = UserType + 8 };
+          enum Style { Linear, Simple, Double };
 
-          LiaisonItem( AncreItem* parent = 0, AncreItem* enfant = 0 );
+          LiaisonItem( AncreItem* parent, QList<AncreItem*>& enfants );
+
+
+          /*-----------------------------------------------------------------------------
+           *  Méthodes
+           *-----------------------------------------------------------------------------*/
           virtual int type() const { return Type; }
-
           void updatePath();
+          inline void setStyle( LiaisonItem::Style style ) { style_ = style; updatePath(); }
+          inline Style style() { return style_; }
 
      protected:
           /*-----------------------------------------------------------------------------
            *  Attributs
            *-----------------------------------------------------------------------------*/
           AncreItem* parent_;
-          AncreItem* child_;
+          QList<AncreItem*>& children_;
           QPainterPath path_;
+          Style style_;
 };
+
+
 
 #endif // LIAISONPICTO_HPP

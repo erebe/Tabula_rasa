@@ -34,6 +34,7 @@ PictoCondition::PictoCondition( const QString& label,
      posUpAnchor_.setY( 0 );
      updateDimension();
 
+
      actions_["SingleOne"] = contexteMenu_.addAction( tr( "Condition unique" ) );
      actions_["SingleOne"]->setCheckable( true );
 }/*}}}*/
@@ -75,7 +76,7 @@ PictoCondition::PictoCondition( const QDomElement& node,
                          picto = PictoBuilder::fromXml( enfants.at( j ).toElement(), scene );
 
                          if( picto ) {
-                              picto->AncreItem::setParent( labels_.last() );
+                              labels_.last()->addChild( picto );
                               picto = 0;
                          }
                     }
@@ -177,6 +178,13 @@ void PictoCondition::toXml( QDomDocument& doc, QDomNode& node ) const
      position.appendChild( doc.createTextNode( QString( "%1;%2" ).arg( scenePos().x() )
                            .arg( scenePos().y() ) ) );
      item.appendChild( position );
+
+     QDomElement style = doc.createElement( "StyleLien" );
+     style.appendChild( doc.createTextNode(
+                             ( liaison_ ) ?
+                             QString::number( static_cast<int>( liaison_->style() ) ) :
+                             "1" ) ) ;
+     item.appendChild( style );
 
      QDomElement unique = doc.createElement( "estUnique" );
      unique.appendChild( doc.createTextNode( isForeverAlone_ ? "1" : "0" ) );

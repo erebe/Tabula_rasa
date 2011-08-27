@@ -222,7 +222,7 @@ void AlgorithmeScene::mouseReleaseEvent( QGraphicsSceneMouseEvent* mouseEvent )
                }
 
                if( ( parent != 0 ) && ( enfant != parent ) ) {
-                    enfant->setParent( parent );
+                    parent->addChild( enfant );
                }
 
           }

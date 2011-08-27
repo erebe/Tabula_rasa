@@ -40,6 +40,7 @@ PictoIteration::PictoIteration( QString titre, QGraphicsItem* parent, QGraphicsS
      posUpAnchor_ = QPoint( 27, 0 );
      updateDimension();
 
+
      actions_["InfiniteLoop"] = contexteMenu_.addAction( tr( "Iteration non fixe" ) );
      actions_["InfiniteLoop"]->setCheckable( true );
 }/*}}}*/
@@ -81,7 +82,7 @@ PictoIteration::PictoIteration( const QDomElement& node,
                picto = PictoBuilder::fromXml( nodes.at( i ).toElement(), scene );
 
                if( picto ) {
-                    picto->AncreItem::setParent( this );
+                    addChild( picto );
                     picto = 0;
                }
           }
@@ -145,6 +146,13 @@ void PictoIteration::toXml( QDomDocument& doc, QDomNode& node ) const
      position.appendChild( doc.createTextNode( QString( "%1;%2" ).arg( scenePos().x() )
                            .arg( scenePos().y() ) ) );
      item.appendChild( position );
+
+     QDomElement style = doc.createElement( "StyleLien" );
+     style.appendChild( doc.createTextNode(
+                             ( liaison_ ) ?
+                             QString::number( static_cast<int>( liaison_->style() ) ) :
+                             "1" ) ) ;
+     item.appendChild( style );
 
      QDomElement titre = doc.createElement( "Titre" );
      titre.appendChild( doc.createTextNode( labels_.at( 0 )->label() ) );

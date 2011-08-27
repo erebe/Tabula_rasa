@@ -34,6 +34,11 @@ Pictogramme::Pictogramme( QGraphicsItem* parent, QGraphicsScene* scene ):
                QGraphicsItem::ItemSendsGeometryChanges );
 
      actions_["Supprimer"] = contexteMenu_.addAction( tr( "Supprimer" ) );
+     sousMenu_ = contexteMenu_.addMenu( QIcon(), "Style des liaisons" );
+     actions_["LSimple"] = sousMenu_->addAction( tr( "Simple" ) );
+     actions_["LDouble"] = sousMenu_->addAction( tr( "Double" ) );
+     actions_["LLineaire"] = sousMenu_->addAction( tr( "Linéaire" ) );
+
      contexteMenu_.addSeparator();
      actions_["DelierP"] = contexteMenu_.addAction( tr( "Délier du parent" ) );
      actions_["DelierE"] = contexteMenu_.addAction( tr( "Délier des enfants" ) );
@@ -98,6 +103,46 @@ void Pictogramme::contextMenuEvent( QGraphicsSceneContextMenuEvent* event )
      scene()->clearSelection();
      setSelected( true );
      ungrabMouse();
+
+     if( liaison_ ) {
+          sousMenu_->setEnabled( true );
+          actions_["DelierE"]->setEnabled( true );
+
+     } else {
+          bool enabled = false;
+
+          foreach( LabelItem * item, labels_ ) {
+               if( item->isParent() ) {
+                    enabled = true;
+                    break;
+               }
+          }
+
+          if( enabled ) {
+               sousMenu_->setEnabled( true );
+               actions_["DelierE"]->setEnabled( true );
+
+          } else {
+               sousMenu_->setEnabled( false );
+               actions_["DelierE"]->setEnabled( false );
+          }
+     }
+
+     if( isChild() ) {
+          actions_["DelierP"]->setEnabled( true );
+
+     } else {
+          actions_["DelierP"]->setEnabled( false );
+     }
+
+     if( actions_["DelierP"]->isEnabled() ||
+         actions_["DelierE"]->isEnabled() ) {
+          actions_["Delier"]->setEnabled( true );
+
+     } else {
+          actions_["Delier"]->setEnabled( false );
+     }
+
      QAction* selectedAction = contexteMenu_.exec( event->screenPos() );
 
      processAction( selectedAction, event );
@@ -117,17 +162,48 @@ void Pictogramme::processAction( QAction* action, QGraphicsSceneContextMenuEvent
      } else if( actions_["Delier"] == action ) {
 
           detach();
-          LabelItem* item;
-          foreach( item, labels_ )
-          item->detach();
+          foreach( LabelItem * item, labels_ ) {
+               item->detach();
+          }
 
      } else if( actions_["DelierE"] == action ) {
 
-          deleteChildren();
+          deleteLink();
+          foreach( LabelItem * item, labels_ ) {
+               item->deleteLink();
+          }
 
      } else if( actions_["DelierP"] == action ) {
 
-          deleteLink();
+          deleteParent();
+
+     } else if( actions_["LSimple"] == action ) {
+          if( liaison_ ) {
+               liaison_->setStyle( LiaisonItem::Simple );
+          }
+
+          foreach( LabelItem * item, labels_ ) {
+               item->setLinkStyle( LiaisonItem::Simple );
+          }
+
+     } else if( actions_["LDouble"] == action ) {
+          if( liaison_ ) {
+               liaison_->setStyle( LiaisonItem::Double );
+          }
+
+          foreach( LabelItem * item, labels_ ) {
+               item->setLinkStyle( LiaisonItem::Double );
+          }
+
+     } else if( actions_["LLineaire"] == action ) {
+          if( liaison_ ) {
+               liaison_->setStyle( LiaisonItem::Linear );
+          }
+
+          foreach( LabelItem * item, labels_ ) {
+               item->setLinkStyle( LiaisonItem::Linear );
+          }
+
      }
 }/*}}}*/
 
