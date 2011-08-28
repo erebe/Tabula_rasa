@@ -28,7 +28,6 @@
 Pictogramme* PictoBuilder::fromXml( const QDomElement& node,
                                     AlgorithmeScene* scene )
 {/*{{{*/
-
      QString tagName = node.tagName();
      Pictogramme* picto = 0;
 
@@ -49,20 +48,15 @@ Pictogramme* PictoBuilder::fromXml( const QDomElement& node,
 
      } else if( tagName == "Iteration" ) {
           picto = new PictoIteration( node, scene );
-
      }
 
      scene->newItem( picto );
      return picto;
-
-
 }/*}}}*/
 
 Pictogramme* PictoBuilder::fromMode( AlgorithmeScene::Mode mode,
                                      AlgorithmeScene* scene )
 {/*{{{*/
-
-
      Pictogramme* picto = 0;
 
      if( mode == AlgorithmeScene::InsertAction ) {
@@ -82,10 +76,8 @@ Pictogramme* PictoBuilder::fromMode( AlgorithmeScene::Mode mode,
 
      } else if( mode == AlgorithmeScene::InsertMultiCondition ) {
           picto = new PictoConditionMultiple( "", 0, scene );
-
      }
 
      scene->newItem( picto );
      return picto;
-
 }/*}}}*/

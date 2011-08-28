@@ -42,11 +42,8 @@ LabelItem::LabelItem( const QString& texte,
  *-----------------------------------------------------------------------------*/
 void LabelItem::paint( QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget )
 {/*{{{*/
-
-
      Q_UNUSED( option );
      Q_UNUSED( widget );
-
      painter->drawText( 0, 0,
                         label_.second, height_,
                         Qt::TextWordWrap | Qt::AlignCenter,
@@ -55,27 +52,22 @@ void LabelItem::paint( QPainter* painter, const QStyleOptionGraphicsItem* option
 
 QRectF LabelItem::boundingRect() const
 {/*{{{*/
-
      return QRectF( 0, 0, label_.second, height_ );
 }/*}}}*/
 
 void LabelItem::setLabel( const QString& texte )
 {/*{{{*/
-
-
      label_.first = texte.isEmpty() ? "?" : texte;
      prepareGeometryChange();
      label_.second = calculLargeurTexte();
      posBottomAnchor_.setX( label_.second / 2 );
      posBottomAnchor_.setY( height_ );
-
      posUpAnchor_.setX( label_.second / 2 );
      posUpAnchor_.setY( 0 );
 }/*}}}*/
 
 bool LabelItem::isEmpty() const
 {/*{{{*/
-
      if( label_.first.isEmpty() || label_.first == "?" )
           { return true; }
 
@@ -85,19 +77,16 @@ bool LabelItem::isEmpty() const
 
 unsigned int LabelItem::calculLargeurTexte() const
 {/*{{{*/
-
      QFont font( "Cantarell,11,-1,5,50,0,0,0,0,0" );
      QFontMetrics fm( font );
      unsigned int largeurTexte = fm.width( label_.first ) + 10;
 
      if( largeurTexte > maxWidth_ ) {
           return maxWidth_;
-     }
 
-     else if( largeurTexte < minWidth_ ) {
+     } else if( largeurTexte < minWidth_ ) {
           return minWidth_;
      }
 
      return largeurTexte;
-
 }/*}}}*/
