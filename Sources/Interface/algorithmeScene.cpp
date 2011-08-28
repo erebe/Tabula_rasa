@@ -37,12 +37,9 @@ AlgorithmeScene::AlgorithmeScene( qreal x, qreal y, qreal width, qreal height, Q
 
 AlgorithmeScene::~AlgorithmeScene()
 {/*{{{*/
-
      Pictogramme* picto;
-
      foreach( picto, items_ )
      delete picto;
-
 }/*}}}*/
 
 
@@ -51,63 +48,47 @@ AlgorithmeScene::~AlgorithmeScene()
  *-----------------------------------------------------------------------------*/
 void AlgorithmeScene::deleteItem( Pictogramme* item )
 {/*{{{*/
-
      items_.removeOne( item );
      removeItem( item );
      delete item;
-
-
 }/*}}}*/
 
 void AlgorithmeScene::newItem( Pictogramme* picto )
 {/*{{{*/
-
      if( picto ) {
-
           items_.push_back( picto );
           emit itemAdded( picto );
-
      }
 }/*}}}*/
 
 void AlgorithmeScene::saveToXml( QTextStream& out ) const
 {/*{{{*/
-
      QDomDocument doc( "Tabula_Rasa" );
      QDomNode noeud = doc.createProcessingInstruction( "xml", "version=\"1.0\"" );
      doc.insertBefore( noeud, doc.firstChild() );
-
      QDomElement root = doc.createElement( "Algorithme" );
      doc.appendChild( root );
-
      QDomElement name = doc.createElement( "nom" );
      name.appendChild( doc.createTextNode( name_ ) );
      root.appendChild( name );
-
      QDomElement date = doc.createElement( "date_creation" );
      date.appendChild( doc.createTextNode( QDateTime::currentDateTime().toString( "d/M/yyyy hh:mm" ) ) );
      root.appendChild( date );
-
      QDomElement elements = doc.createElement( "Elements" );
-
      Pictogramme* picto;
-
      foreach( picto, items_ ) {
           if( !picto->isChild() ) {
                picto->toXml( doc, elements );
           }
      }
-
      root.appendChild( elements );
      doc.save( out, 2 );
-
 }/*}}}*/
 
 void AlgorithmeScene::loadFromXml( const QDomDocument& doc )
 {/*{{{*/
      QDomElement racine = doc.documentElement();
      name_ = racine.firstChildElement( "nom" ).firstChild().toText().data();
-
      const QDomNodeList nodes = racine.firstChildElement( "Elements" ).childNodes();
 
      for( int i = 0; i < nodes.count(); i++ ) {
@@ -115,7 +96,6 @@ void AlgorithmeScene::loadFromXml( const QDomDocument& doc )
                PictoBuilder::fromXml( nodes.at( i ).toElement() , this );
           }
      }
-
 }/*}}}*/
 
 
@@ -124,24 +104,19 @@ void AlgorithmeScene::loadFromXml( const QDomDocument& doc )
  *-----------------------------------------------------------------------------*/
 void AlgorithmeScene::mousePressEvent( QGraphicsSceneMouseEvent* mouseEvent )
 {/*{{{*/
-
      mouseEvent->accept();
 
      if ( mouseEvent->button() == Qt::LeftButton && mode_ == EditLink ) {
-
           line_ = new QGraphicsLineItem( QLineF( mouseEvent->scenePos(),
                                                  mouseEvent->scenePos() ) );
-
           QGraphicsScene::addItem( line_ );
      }
 
      QGraphicsScene::mousePressEvent( mouseEvent );
-
 }/*}}}*/
 
 void AlgorithmeScene::mouseMoveEvent( QGraphicsSceneMouseEvent* mouseEvent )
 {/*{{{*/
-
      mouseEvent->accept();
 
      if ( mode_ == EditLink && line_ != 0 ) {
@@ -151,12 +126,10 @@ void AlgorithmeScene::mouseMoveEvent( QGraphicsSceneMouseEvent* mouseEvent )
      } else if ( mode_ == MoveItem ) {
           QGraphicsScene::mouseMoveEvent( mouseEvent );
      }
-
 }/*}}}*/
 
 void AlgorithmeScene::mouseReleaseEvent( QGraphicsSceneMouseEvent* mouseEvent )
 {/*{{{*/
-
      mouseEvent->accept();
 
      if( mouseEvent->button() != Qt::LeftButton ) {
@@ -164,7 +137,6 @@ void AlgorithmeScene::mouseReleaseEvent( QGraphicsSceneMouseEvent* mouseEvent )
      }
 
      if( line_ != 0 && mode_ == EditLink ) {
-
           QList<QGraphicsItem*> startItems = items( line_->line().p2() );
           QList<QGraphicsItem*> endItems = items( line_->line().p1() );
 
@@ -179,64 +151,50 @@ void AlgorithmeScene::mouseReleaseEvent( QGraphicsSceneMouseEvent* mouseEvent )
           removeItem( line_ );
           delete line_;
           line_ = 0;
-
           QGraphicsItem* item;
-
           foreach( item, startItems ) {
                if( qgraphicsitem_cast<LiaisonItem*>( item ) ) {
                     startItems.removeOne( item );
                }
           }
-
           foreach( item, endItems ) {
                if( qgraphicsitem_cast<LiaisonItem*>( item ) ) {
                     endItems.removeOne( item );
                }
           }
 
-
           if( startItems.count() && endItems.count() ) {
-
                AncreItem* enfant, *parent;
                enfant = parent = 0;
 
                if( startItems.first()->parentItem() != 0 ) {
                     enfant =  static_cast<AncreItem*>( startItems.first()->parentItem() );
-               }
 
-               else {
+               } else {
                     enfant = static_cast<AncreItem*>( startItems.first() );
                }
-
 
                if( endItems.first()->parentItem() != 0 &&
                    !qgraphicsitem_cast<PictoCondition*>( endItems.first()->parentItem() )
                    && !qgraphicsitem_cast<PictoConditionMultiple*>( endItems.first()->parentItem() ) ) {
-
                     parent = static_cast<AncreItem*>( endItems.first()->parentItem() );
 
                } else if( !qgraphicsitem_cast<PictoCondition*>( endItems.first() )
                           && !qgraphicsitem_cast<PictoConditionMultiple*>( endItems.first() ) ) {
-
                     parent = static_cast<AncreItem*>( endItems.first() );
                }
 
                if( ( parent != 0 ) && ( enfant != parent ) ) {
                     parent->addChild( enfant );
                }
-
           }
-
      }
 
-
      if( ( mode_ != EditLink ) && ( mode_ != MoveItem ) ) {
-
           Pictogramme* picto = PictoBuilder::fromMode( mode_, this );
 
           if( picto ) {
                QRectF size = picto->boundingRect();
-
                picto->setPos( mouseEvent->scenePos().x() - ( size.width() / 2 ),
                               mouseEvent->scenePos().y() - ( size.height() / 2 ) );
           }

@@ -34,12 +34,9 @@ MainWindow::MainWindow( QWidget* parent )
      : QMainWindow( parent ), ui( new Ui::MainWindow )
 {/*{{{*/
      ui->setupUi( this );
-
      createNewTab();
-
      connect( ui->actionA_propos_de_Qt, SIGNAL( triggered() ), qApp, SLOT( aboutQt() ) );
      connect( ui->actionQuitter, SIGNAL( triggered() ), qApp, SLOT( quit() ) );
-
 }/*}}}*/
 
 MainWindow::~MainWindow()
@@ -58,7 +55,6 @@ MainWindow::~MainWindow()
  *-----------------------------------------------------------------------------*/
 void MainWindow::selectQAction( AlgorithmeScene::Mode mode )
 {/*{{{*/
-
      AlgorithmeScene* scene = static_cast<TabWidget*>( ui->tabWidget->currentWidget() )
                               ->scene();
      scene->setMode( mode );
@@ -98,13 +94,11 @@ void MainWindow::selectQAction( AlgorithmeScene::Mode mode )
 
 TabWidget* MainWindow::createNewTab( QString name )
 {/*{{{*/
-
      TabWidget* tab = new TabWidget();
      connect( tab->scene(), SIGNAL( modeChanged( AlgorithmeScene::Mode ) ), this, SLOT( setMode( AlgorithmeScene::Mode ) ) );
      connect( tab->scene(), SIGNAL( itemAdded( Pictogramme* ) ), this, SLOT( itemAdded( Pictogramme* ) ) );
      ui->tabWidget->addTab( tab, name );
      ui->tabWidget->setCurrentWidget( tab );
-
      return tab;
 }/*}}}*/
 
@@ -115,14 +109,12 @@ TabWidget* MainWindow::createNewTab( QString name )
  *-----------------------------------------------------------------------------*/
 void MainWindow::on_actionMode_Edition_triggered( bool checked )
 {/*{{{*/
-
      if( checked ) {
           selectQAction( AlgorithmeScene::EditLink );
 
      } else {
           selectQAction( AlgorithmeScene::MoveItem );
      }
-
 }/*}}}*/
 
 void MainWindow::on_actionMode_Insertion_triggered( bool checked )
@@ -143,7 +135,6 @@ void MainWindow::on_actionAction_triggered( bool checked )
      } else {
           selectQAction( AlgorithmeScene::MoveItem );
      }
-
 }/*}}}*/
 
 void MainWindow::on_actionIteration_triggered( bool checked )
@@ -184,7 +175,6 @@ void MainWindow::on_actionConditionMultiple_triggered( bool checked )
      } else {
           selectQAction( AlgorithmeScene::MoveItem );
      }
-
 }/*}}}*/
 
 void MainWindow::on_actionSortie_triggered( bool checked )
@@ -195,7 +185,6 @@ void MainWindow::on_actionSortie_triggered( bool checked )
      } else {
           selectQAction( AlgorithmeScene::MoveItem );
      }
-
 }/*}}}*/
 
 
@@ -223,7 +212,6 @@ void MainWindow::on_actionNouveau_triggered()
      }
 
      createNewTab( name );
-
 }/*}}}*/
 
 void MainWindow::on_actionExporter_vers_une_image_triggered()
@@ -237,17 +225,13 @@ void MainWindow::on_actionExporter_vers_une_image_triggered()
 
      AlgorithmeScene* scene = static_cast<TabWidget*>( ui->tabWidget->currentWidget() )
                               ->scene();
-
      qreal maxX, maxY, minX, minY;
      maxX = maxY = 0;
      minX = scene->width();
      minY = scene->height();
-
      QGraphicsItem* item;
      QPointF point;
-
      foreach( item, scene->items() ) {
-
           if( qgraphicsitem_cast<LiaisonItem*>( item ) ) {
                continue;
           }
@@ -270,17 +254,13 @@ void MainWindow::on_actionExporter_vers_une_image_triggered()
                minY = point.y();
           }
      }
-
      QRectF sceneSize = scene->sceneRect();
      scene->setSceneRect( minX - 50, minY - 50, maxX - minX + 100, maxY - minY + 150 );
-
      QPixmap image( scene->width(), scene->height() );
-
      QPainter painter( &image );
      painter.setRenderHint( QPainter::Antialiasing );
      scene->clearSelection();
      scene->render( &painter );
-
      image.save( fichier );
      scene->setSceneRect( sceneSize );
 }/*}}}*/
@@ -308,8 +288,6 @@ void MainWindow::on_actionRedimensionner_l_Algorithme_triggered()
 {/*{{{*/
      AlgorithmeScene* scene = static_cast<TabWidget*>( ui->tabWidget->currentWidget() )
                               ->scene();
-
-
      dialog = new ResizeDialog( scene->sceneRect().width(),
                                 scene->sceneRect().height(),
                                 this );
@@ -351,7 +329,6 @@ void MainWindow::on_actionEnregistrer_triggered()
                               ->scene();
      scene->saveToXml( out );
      file.close();
-
 }/*}}}*/
 
 void MainWindow::on_actionOuvrir_triggered()
@@ -372,11 +349,8 @@ void MainWindow::on_actionOuvrir_triggered()
 
      QDomElement racine = doc.documentElement();
      QString name = racine.firstChildElement( "nom" ).firstChild().toText().data();
-
      TabWidget* tab = createNewTab( name );
      tab->scene()->loadFromXml( doc );
-
-
      file.close();
 }/*}}}*/
 
@@ -388,24 +362,19 @@ void MainWindow::on_actionOuvrir_triggered()
 
 void MainWindow::resizeScene( int width, int height )
 {/*{{{*/
-
      AlgorithmeScene* scene = static_cast<TabWidget*>( ui->tabWidget->currentWidget() )
                               ->scene();
      QGraphicsView* view = static_cast<TabWidget*>( ui->tabWidget->currentWidget() )
                            ->view();
-
      width = ( width < view->width() ) ? view->width() : width;
      height = ( height < view->height() ) ? view->height() : height;
-
      scene->setSceneRect( 0, 0, width, height );
      delete dialog;
      dialog = 0;
-
 }/*}}}*/
 
 void MainWindow::setMode( AlgorithmeScene::Mode mode )
 {/*{{{*/
-
      if( mode == AlgorithmeScene::MoveItem ) {
           ui->actionMode_Insertion->setChecked( true );
      }
@@ -415,20 +384,15 @@ void MainWindow::setMode( AlgorithmeScene::Mode mode )
 
 void MainWindow::print( QPrinter* printer )
 {/*{{{*/
-
      AlgorithmeScene* scene = static_cast<TabWidget*>( ui->tabWidget->currentWidget() )
                               ->scene();
-
      qreal maxX, maxY, minX, minY;
      maxX = maxY = 0;
      minX = scene->width();
      minY = scene->height();
-
      QGraphicsItem* item;
      QPointF point;
-
      foreach( item, scene->items() ) {
-
           if( qgraphicsitem_cast<LiaisonItem*>( item ) ) {
                continue;
           }
@@ -451,16 +415,13 @@ void MainWindow::print( QPrinter* printer )
                minY = point.y();
           }
      }
-
      QRectF sceneSize = scene->sceneRect();
      scene->setSceneRect( minX - 50, minY - 50, maxX - minX + 100, maxY - minY + 150 );
-
      QPainter painter( printer );
      painter.setRenderHint( QPainter::Antialiasing );
      QFont font = painter.font();
      font.setPixelSize( ( printer->pageRect().width() + printer->pageRect().height() ) / 2000 );
      painter.setFont( font );
-
      scene->clearSelection();
      scene->render( &painter );
      scene->setSceneRect( sceneSize );
@@ -468,15 +429,12 @@ void MainWindow::print( QPrinter* printer )
 
 void MainWindow::itemAdded( Pictogramme* item )
 {/*{{{*/
-
      connect( item, SIGNAL( doubleClick( LabelItem* ) ),
               this, SLOT( changeLabel( LabelItem* ) ) );
-
 }/*}}}*/
 
 void MainWindow::changeLabel( LabelItem* item )
 {/*{{{*/
-
      bool ok;
      QString test = QInputDialog::getText( this, "Changer le label", "Nouvel intitulé",
                                            QLineEdit::Normal, item->label(), &ok );
@@ -484,5 +442,4 @@ void MainWindow::changeLabel( LabelItem* item )
      if( ok ) {
           item->setLabel( test );
      }
-
 }/*}}}*/
