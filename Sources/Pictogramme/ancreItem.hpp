@@ -26,6 +26,8 @@
 class AncreItem: public QGraphicsItem {
 
      public:
+          enum AnchorType { None = 0, Up = 1, Down = 2, Both = 3  };
+
           AncreItem( QGraphicsItem* parent = 0, QGraphicsScene* scene = 0 );
           virtual ~AncreItem();
 
@@ -37,11 +39,13 @@ class AncreItem: public QGraphicsItem {
 
 
           virtual void updateLink(); //Mets à jour le lien
-          virtual void addChild( AncreItem* child );
+          bool addChild( AncreItem* child );
 
           virtual int type() const { return Type; }
           inline bool isChild() { return ( parent_ ) ? true : false; }
           inline bool isParent() { return ( children_.count() ) ? true : false; }
+          inline AnchorType anchorType() const { return anchorType_; }
+          inline void setAnchorType( AnchorType type ) { anchorType_ = type; }
 
           void detach();//Appelle les deux methodes en dessous
           void deleteLink(); //Supprime la liaison
@@ -64,6 +68,7 @@ class AncreItem: public QGraphicsItem {
            *-----------------------------------------------------------------------------*/
           QPointF posBottomAnchor_; //coord du point d'ancrage supérieur
           QPointF posUpAnchor_; //coord du point d'ancrage inférieur
+          AnchorType anchorType_;
 
           AncreItem* parent_;
           QList<AncreItem*> children_;
@@ -71,6 +76,7 @@ class AncreItem: public QGraphicsItem {
 
           virtual void setParent( AncreItem* parent ); //Définit le parent de l'element
           virtual void createLink( );
+          bool childExist( AncreItem* parent, AncreItem* child );
 
 };
 

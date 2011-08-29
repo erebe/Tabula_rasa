@@ -34,9 +34,13 @@ PictoAction::PictoAction( QString titre,
      labels_ << new LabelItem( preCondition, 150, 15, 50, this, scene );
      labels_ << new LabelItem( titre, 200, 50, 50, this, scene );
      labels_ << new LabelItem( postCondition, 150, 15, 50, this, scene );
+
+     setAnchorType( AncreItem::Both );
      posBottomAnchor_.setY( 55 );
      posUpAnchor_.setY( 5 );
+
      updateDimension();
+
      actions_["Details"] = contexteMenu_.addAction( tr( "Masquer les assertions" ) );
      actions_["Details"]->setCheckable( true );
      actions_["EmptyDetails"] = contexteMenu_.addAction( tr( "Masquer les assertions vides" ) );
@@ -49,26 +53,35 @@ PictoAction::PictoAction( const QDomElement& node,
 {/*{{{*/
      QString label = node.firstChildElement( "PreAssertion" ).firstChild().toText().data();
      labels_ << new LabelItem( label, 150, 15, 50, this, scene );
+
      label = node.firstChildElement( "Titre" ).firstChild().toText().data();
      labels_ << new LabelItem( label, 200, 50, 50, this, scene );
+
      label = node.firstChildElement( "PostAssertion" ).firstChild().toText().data();
      labels_ << new LabelItem( label, 150, 15, 50, this, scene );
+
      label = node.firstChildElement( "Position" ).firstChild().toText().data();
      QStringList position = label.split( QRegExp( ";" ) );
      setPos( position.at( 0 ).toDouble(), position.at( 1 ).toDouble() );
+
      label = node.firstChildElement( "DetailsVisible" ).firstChild().toText().data();
      detail_ = ( label == "1" ) ? true : false;
+
      label = node.firstChildElement( "DetailsVideVisible" ).firstChild().toText().data();
+
+     setAnchorType( AncreItem::Both );
      emptyDetail_ = ( label == "1" ) ? true : false;
      posBottomAnchor_.setY( 55 );
      posUpAnchor_.setY( 5 );
      updateDimension();
+
      actions_["Details"] = contexteMenu_.addAction( tr( "Masquer les assertions" ) );
      actions_["Details"]->setCheckable( true );
      actions_["Details"]->setChecked( !detail_ );
      actions_["EmptyDetails"] = contexteMenu_.addAction( tr( "Masquer les assertions vides" ) );
      actions_["EmptyDetails"]->setCheckable( true );
      actions_["EmptyDetails"]->setChecked( !emptyDetail_ );
+
      const QDomNodeList nodes = node.firstChildElement( "Enfants" ).childNodes();
      Pictogramme* picto = 0;
 
@@ -142,33 +155,42 @@ void PictoAction::toXml( QDomDocument& doc, QDomNode& node ) const
 {/*{{{*/
      QDomElement item = doc.createElement( "Action" );
      node.appendChild( item );
+
      QDomElement position = doc.createElement( "Position" );
      position.appendChild( doc.createTextNode( QString( "%1;%2" ).arg( scenePos().x() )
                            .arg( scenePos().y() ) ) );
      item.appendChild( position );
+
      QDomElement style = doc.createElement( "StyleLien" );
      style.appendChild( doc.createTextNode(
                              ( liaison_ ) ?
                              QString::number( static_cast<int>( liaison_->style() ) ) :
                              "1" ) ) ;
      item.appendChild( style );
+
      QDomElement preAssertion = doc.createElement( "PreAssertion" );
      preAssertion.appendChild( doc.createTextNode( labels_.at( 0 )->label() ) );
      item.appendChild( preAssertion );
+
      QDomElement postAssertion = doc.createElement( "PostAssertion" );
      postAssertion.appendChild( doc.createTextNode( labels_.at( 2 )->label() ) );
      item.appendChild( postAssertion );
+
      QDomElement titre = doc.createElement( "Titre" );
      titre.appendChild( doc.createTextNode( labels_.at( 1 )->label() ) );
      item.appendChild( titre );
+
      QDomElement details = doc.createElement( "DetailsVisible" );
      details.appendChild( doc.createTextNode( detail_ ? "1" : "0" ) );
      item.appendChild( details );
+
      QDomElement detailsVide = doc.createElement( "DetailsVideVisible" );
      detailsVide.appendChild( doc.createTextNode( emptyDetail_ ? "1" : "0" ) );
      item.appendChild( detailsVide );
+
      QDomElement enfants = doc.createElement( "Enfants" );
      item.appendChild( enfants );
+
      AncreItem* picto;
      foreach( picto, children_ ) {
           static_cast<Pictogramme*>( picto )->toXml( doc, enfants );

@@ -34,9 +34,12 @@ PictoProcedure::PictoProcedure( QString titre,
      labels_ << new LabelItem( preCondition, 150, 15, 50, this, scene );
      labels_ << new LabelItem( titre, 200, 50, 50, this, scene );
      labels_ << new LabelItem( postCondition, 150, 15, 50, this, scene );
+
+     setAnchorType( AncreItem::Both );
      posBottomAnchor_.setY( 55 );
      posUpAnchor_.setY( 5 );
      updateDimension();
+
      actions_["Details"] = contexteMenu_.addAction( tr( "Masquer les assertions" ) );
      actions_["Details"]->setCheckable( true );
      actions_["EmptyDetails"] = contexteMenu_.addAction( tr( "Masquer les assertions vides" ) );
@@ -49,26 +52,35 @@ PictoProcedure::PictoProcedure( const QDomElement& node,
 {/*{{{*/
      QString label = node.firstChildElement( "PreAssertion" ).firstChild().toText().data();
      labels_ << new LabelItem( label, 150, 15, 50, this, scene );
+
      label = node.firstChildElement( "Titre" ).firstChild().toText().data();
      labels_ << new LabelItem( label, 200, 50, 50, this, scene );
+
      label = node.firstChildElement( "PostAssertion" ).firstChild().toText().data();
      labels_ << new LabelItem( label, 150, 15, 50, this, scene );
+
      label = node.firstChildElement( "Position" ).firstChild().toText().data();
      QStringList position = label.split( QRegExp( ";" ) );
      setPos( position.at( 0 ).toDouble(), position.at( 1 ).toDouble() );
+
      label = node.firstChildElement( "DetailsVisible" ).firstChild().toText().data();
      detail_ = ( label == "1" ) ? true : false;
+
      label = node.firstChildElement( "DetailsVideVisible" ).firstChild().toText().data();
      emptyDetail_ = ( label == "1" ) ? true : false;
+
+     setAnchorType( AncreItem::Both );
      posBottomAnchor_.setY( 55 );
      posUpAnchor_.setY( 5 );
      updateDimension();
+
      actions_["Details"] = contexteMenu_.addAction( tr( "Masquer les assertions" ) );
      actions_["Details"]->setCheckable( true );
      actions_["Details"]->setChecked( !detail_ );
      actions_["EmptyDetails"] = contexteMenu_.addAction( tr( "Masquer les assertions vides" ) );
      actions_["EmptyDetails"]->setCheckable( true );
      actions_["EmptyDetails"]->setChecked( !emptyDetail_ );
+
      const QDomNodeList nodes = node.firstChildElement( "Enfants" ).childNodes();
      Pictogramme* picto = 0;
 

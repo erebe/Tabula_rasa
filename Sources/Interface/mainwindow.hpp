@@ -89,5 +89,6 @@ class MainWindow : public QMainWindow {
           void print( QPrinter* device ); // Imprime l'algorithme
           void itemAdded( Pictogramme* item ); //Pour connecter un labelItem ou slot changeLabel
           void changeLabel( LabelItem* item ); //Appelé pour changer l'intitulé d'un LabelItem
+          void liaisonError();
 };
 #endif                           // MAINWINDOW_HPP

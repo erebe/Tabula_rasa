@@ -24,6 +24,7 @@
 
 #include <QGraphicsSceneMouseEvent>
 #include <QGraphicsLineItem>
+#include <QMessageBox>
 
 
 /*-----------------------------------------------------------------------------
@@ -185,7 +186,10 @@ void AlgorithmeScene::mouseReleaseEvent( QGraphicsSceneMouseEvent* mouseEvent )
                }
 
                if( ( parent != 0 ) && ( enfant != parent ) ) {
-                    parent->addChild( enfant );
+                    if( !parent->addChild( enfant ) ) {
+
+                         emit liaisonError();
+                    }
                }
           }
      }

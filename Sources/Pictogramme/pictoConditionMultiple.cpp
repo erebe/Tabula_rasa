@@ -15,10 +15,18 @@ PictoConditionMultiple::PictoConditionMultiple( const QString& label,
      Pictogramme( parent, scene )
 {/*{{{*/
      labels_ << new LabelItem( label, 150, 25, 25, this, scene );
+     labels_.last()->setAnchorType( AncreItem::Down );
+
      labels_ << new LabelItem( label, 150, 25, 25, this, scene );
+     labels_.last()->setAnchorType( AncreItem::Down );
+
      labels_ << new LabelItem( "Sinon", 150, 25, 25, this, scene );
+     labels_.last()->setAnchorType( AncreItem::Down );
+
+     setAnchorType( AncreItem::Up );
      posUpAnchor_.setY( 0 );
      updateDimension();
+
      actions_["AjouterA"] = contexteMenu_.addAction( tr( "Ajouter une condition" ) );
      actions_["SupprimerA"] = contexteMenu_.addAction( tr( "Supprimer la condition" ) );
 }/*}}}*/
@@ -30,11 +38,16 @@ PictoConditionMultiple::PictoConditionMultiple( const QDomElement& node,
      QString label = node.firstChildElement( "Position" ).firstChild().toText().data();
      QStringList position = label.split( QRegExp( ";" ) );
      setPos( position.at( 0 ).toDouble(), position.at( 1 ).toDouble() );
+
      label = node.firstChildElement( "Titre" ).firstChild().toText().data();
      labels_ << new LabelItem( label, 150, 25, 25, this, scene );
+
+     setAnchorType( AncreItem::Up );
      posUpAnchor_.setY( 0 );
+
      actions_["AjouterA"] = contexteMenu_.addAction( tr( "Ajouter une condition" ) );
      actions_["SupprimerA"] = contexteMenu_.addAction( tr( "Supprimer la condition" ) );
+
      const QDomNodeList nodes = node.firstChildElement( "operationsLogiques" ).childNodes();
      Pictogramme* picto = 0;
 
@@ -42,7 +55,9 @@ PictoConditionMultiple::PictoConditionMultiple( const QDomElement& node,
           if( nodes.at( i ).isElement() ) {
                label = nodes.at( i ).firstChildElement( "Titre" ).firstChild().toText().data();
                labels_ << new LabelItem( label, 150, 25, 25, this, scene );
-               updateDimension();
+               labels_.last()->setAnchorType( AncreItem::Down );
+
+
                const QDomNodeList enfants = nodes.at( i ).firstChildElement( "Enfants" ).childNodes();
 
                for( int j = 0; j < enfants.count(); j++ ) {
@@ -60,6 +75,8 @@ PictoConditionMultiple::PictoConditionMultiple( const QDomElement& node,
                labels_.last()->setLinkStyle( static_cast<LiaisonItem::Style>( label.toInt() ) );
           }
      }
+
+     updateDimension();
 }/*}}}*/
 
 

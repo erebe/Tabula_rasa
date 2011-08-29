@@ -57,6 +57,7 @@ class AlgorithmeScene: public QGraphicsScene {
      signals:
           void modeChanged( AlgorithmeScene::Mode mode ); //emit lorsqu'on change de mode
           void itemAdded( Pictogramme* picto ); //emit lors de l'ajout d'un Pictogramme sur la scène
+          void liaisonError(); //Lorsqu'une liaison est impossible
 
 
 

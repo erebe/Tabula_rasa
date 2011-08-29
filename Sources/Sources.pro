@@ -6,7 +6,7 @@ TEMPLATE = app
 TARGET = tabula_Rasa
 DEPENDPATH += . Interface Pictogramme Ressources
 INCLUDEPATH += . Interface Pictogramme
-CONFIG += debug
+#CONFIG += debug
 RC_FILE = iconSetter.rc
 QT += xml
 
