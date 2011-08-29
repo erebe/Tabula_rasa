@@ -4,7 +4,7 @@
 
 TEMPLATE = app
 TARGET = 
-TARGET = tabula_Rasa
+TARGET = tabula_rasa
 DEPENDPATH += . Algorithme Interface Ressources Algorithme/Pictogramme
 INCLUDEPATH += . Interface Algorithme Algorithme/Pictogramme
 #CONFIG += debug
