@@ -25,7 +25,8 @@
 LiaisonItem::LiaisonItem( AncreItem* parent, QList<AncreItem*>& enfants ):
      parent_( parent ), children_( enfants ), style_( Simple )
 {/*{{{*/
-     updatePath();
+    setEnabled(0); 
+    updatePath();
 }/*}}}*/
 
 

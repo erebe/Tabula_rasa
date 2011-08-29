@@ -156,12 +156,12 @@ void AlgorithmeScene::mouseReleaseEvent( QGraphicsSceneMouseEvent* mouseEvent )
           line_ = 0;
           QGraphicsItem* item;
           foreach( item, startItems ) {
-               if( qgraphicsitem_cast<LiaisonItem*>( item ) ) {
+               if( !item->isEnabled() ) {
                     startItems.removeOne( item );
                }
           }
           foreach( item, endItems ) {
-               if( qgraphicsitem_cast<LiaisonItem*>( item ) ) {
+               if( !item->isEnabled() ) {
                     endItems.removeOne( item );
                }
           }
