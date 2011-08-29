@@ -17,13 +17,13 @@
  */
 
 #include "pictoBuilder.hpp"
-#include "pictogramme.hpp"
-#include "pictoAction.hpp"
-#include "pictoSortie.hpp"
-#include "pictoIteration.hpp"
-#include "pictoProcedure.hpp"
-#include "pictoCondition.hpp"
-#include "pictoConditionMultiple.hpp"
+#include "Pictogramme/pictogramme.hpp"
+#include "Pictogramme/pictoAction.hpp"
+#include "Pictogramme/pictoSortie.hpp"
+#include "Pictogramme/pictoIteration.hpp"
+#include "Pictogramme/pictoProcedure.hpp"
+#include "Pictogramme/pictoCondition.hpp"
+#include "Pictogramme/pictoConditionMultiple.hpp"
 
 Pictogramme* PictoBuilder::fromXml( const QDomElement& node,
                                     AlgorithmeScene* scene )

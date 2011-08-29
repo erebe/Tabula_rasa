@@ -20,7 +20,7 @@
 
 #include <QMainWindow>
 #include <QInputDialog>
-#include "algorithmeScene.hpp"
+#include "Algorithme/algorithmeScene.hpp"
 
 class ResizeDialog;
 class TabWidget;
