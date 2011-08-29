@@ -16,15 +16,14 @@
  * =====================================================================================
  */
 #include "algorithmeScene.hpp"
+#include "pictoBuilder.hpp"
+
 #include "Pictogramme/pictogramme.hpp"
-#include "Pictogramme/ancreItem.hpp"
-#include "Pictogramme/pictoBuilder.hpp"
 #include "Pictogramme/pictoCondition.hpp"
 #include "Pictogramme/pictoConditionMultiple.hpp"
 
 #include <QGraphicsSceneMouseEvent>
 #include <QGraphicsLineItem>
-#include <QMessageBox>
 
 
 /*-----------------------------------------------------------------------------
@@ -137,7 +136,10 @@ void AlgorithmeScene::mouseReleaseEvent( QGraphicsSceneMouseEvent* mouseEvent )
           return;
      }
 
-     if( line_ != 0 && mode_ == EditLink ) {
+     /*-----------------------------------------------------------------------------
+      *  Mode d'edition des liaisons
+      *-----------------------------------------------------------------------------*/
+     if( line_ != 0 && mode_ == EditLink ) {/*{{{*/
           QList<QGraphicsItem*> startItems = items( line_->line().p2() );
           QList<QGraphicsItem*> endItems = items( line_->line().p1() );
 
@@ -165,24 +167,24 @@ void AlgorithmeScene::mouseReleaseEvent( QGraphicsSceneMouseEvent* mouseEvent )
           }
 
           if( startItems.count() && endItems.count() ) {
-               AncreItem* enfant, *parent;
+               Pictogramme* enfant, *parent;
                enfant = parent = 0;
 
                if( startItems.first()->parentItem() != 0 ) {
-                    enfant =  static_cast<AncreItem*>( startItems.first()->parentItem() );
+                    enfant =  static_cast<Pictogramme*>( startItems.first()->parentItem() );
 
                } else {
-                    enfant = static_cast<AncreItem*>( startItems.first() );
+                    enfant = static_cast<Pictogramme*>( startItems.first() );
                }
 
                if( endItems.first()->parentItem() != 0 &&
                    !qgraphicsitem_cast<PictoCondition*>( endItems.first()->parentItem() )
                    && !qgraphicsitem_cast<PictoConditionMultiple*>( endItems.first()->parentItem() ) ) {
-                    parent = static_cast<AncreItem*>( endItems.first()->parentItem() );
+                    parent = static_cast<Pictogramme*>( endItems.first()->parentItem() );
 
                } else if( !qgraphicsitem_cast<PictoCondition*>( endItems.first() )
                           && !qgraphicsitem_cast<PictoConditionMultiple*>( endItems.first() ) ) {
-                    parent = static_cast<AncreItem*>( endItems.first() );
+                    parent = static_cast<Pictogramme*>( endItems.first() );
                }
 
                if( ( parent != 0 ) && ( enfant != parent ) ) {
@@ -192,9 +194,13 @@ void AlgorithmeScene::mouseReleaseEvent( QGraphicsSceneMouseEvent* mouseEvent )
                     }
                }
           }
-     }
+     }/*}}}*/
 
-     if( ( mode_ != EditLink ) && ( mode_ != MoveItem ) ) {
+     
+     /*-----------------------------------------------------------------------------
+      *  Mode d'insertion d'item
+      *-----------------------------------------------------------------------------*/
+     if( ( mode_ != EditLink ) && ( mode_ != MoveItem ) ) {/*{{{*/
           Pictogramme* picto = PictoBuilder::fromMode( mode_, this );
 
           if( picto ) {
@@ -207,7 +213,7 @@ void AlgorithmeScene::mouseReleaseEvent( QGraphicsSceneMouseEvent* mouseEvent )
                setMode( AlgorithmeScene::MoveItem );
                emit modeChanged( AlgorithmeScene::MoveItem );
           }
-     }
+     }/*}}}*/
 
      QGraphicsScene::mouseReleaseEvent( mouseEvent );
 }/*}}}*/

@@ -20,9 +20,9 @@
 #include "tabWidget.hpp"
 #include "resizeDialog.hpp"
 #include "aboutDialog.hpp"
-#include "Pictogramme/labelItem.hpp"
-#include "Pictogramme/pictogramme.hpp"
-#include "Pictogramme/liaisonItem.hpp"
+#include "Algorithme/Pictogramme/labelItem.hpp"
+#include "Algorithme/Pictogramme/pictogramme.hpp"
+#include "Algorithme/Pictogramme/liaisonItem.hpp"
 
 #include <QFileDialog>
 #include <QtGui>

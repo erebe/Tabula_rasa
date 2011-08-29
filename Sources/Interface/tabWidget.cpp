@@ -16,7 +16,7 @@
  * =====================================================================================
  */
 #include "tabWidget.hpp"
-#include "algorithmeScene.hpp"
+#include "Algorithme/algorithmeScene.hpp"
 #include <QGraphicsView>
 #include <QGraphicsScene>
 #include <QHBoxLayout>
