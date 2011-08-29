@@ -29,9 +29,14 @@ PictoCondition::PictoCondition( const QString& label,
      Pictogramme( parent, scene ), isForeverAlone_( false )
 {/*{{{*/
      labels_ << new LabelItem( label, 150, 25, 50, this, scene );
+     labels_.at( 0 )->setAnchorType( AncreItem::Down );
      labels_ << new LabelItem( "Sinon", 150, 25, 50, this, scene );
+     labels_.at( 1 )->setAnchorType( AncreItem::Down );
+
+     setAnchorType( AncreItem::Up );
      posUpAnchor_.setY( 0 );
      updateDimension();
+
      actions_["SingleOne"] = contexteMenu_.addAction( tr( "Condition unique" ) );
      actions_["SingleOne"]->setCheckable( true );
 }/*}}}*/
@@ -43,12 +48,17 @@ PictoCondition::PictoCondition( const QDomElement& node,
      QString label = node.firstChildElement( "Position" ).firstChild().toText().data();
      QStringList position = label.split( QRegExp( ";" ) );
      setPos( position.at( 0 ).toDouble(), position.at( 1 ).toDouble() );
+
      label = node.firstChildElement( "estUnique" ).firstChild().toText().data();
      isForeverAlone_ = ( label == "1" ) ? true : false;
+
+     setAnchorType( AncreItem::Up );
      posUpAnchor_.setY( 0 );
+
      actions_["SingleOne"] = contexteMenu_.addAction( tr( "Condition unique" ) );
      actions_["SingleOne"]->setCheckable( true );
      actions_["SingleOne"]->setChecked( isForeverAlone_ );
+
      const QDomNodeList nodes = node.firstChildElement( "operationsLogiques" ).childNodes();
      Pictogramme* picto = 0;
 
@@ -56,6 +66,8 @@ PictoCondition::PictoCondition( const QDomElement& node,
           if( nodes.at( i ).isElement() ) {
                label = nodes.at( i ).firstChildElement( "Titre" ).firstChild().toText().data();
                labels_ << new LabelItem( label, 150, 25, 50, this, scene );
+               labels_.last()->setAnchorType( AncreItem::Down );
+
                const QDomNodeList enfants = nodes.at( i ).firstChildElement( "Enfants" ).childNodes();
 
                for( int j = 0; j < enfants.count(); j++ ) {

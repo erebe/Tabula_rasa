@@ -97,6 +97,8 @@ TabWidget* MainWindow::createNewTab( QString name )
      TabWidget* tab = new TabWidget();
      connect( tab->scene(), SIGNAL( modeChanged( AlgorithmeScene::Mode ) ), this, SLOT( setMode( AlgorithmeScene::Mode ) ) );
      connect( tab->scene(), SIGNAL( itemAdded( Pictogramme* ) ), this, SLOT( itemAdded( Pictogramme* ) ) );
+     connect( tab->scene(), SIGNAL( liaisonError() ), this, SLOT( liaisonError() ) );
+
      ui->tabWidget->addTab( tab, name );
      ui->tabWidget->setCurrentWidget( tab );
      return tab;
@@ -193,10 +195,14 @@ void MainWindow::on_actionSortie_triggered( bool checked )
  *-----------------------------------------------------------------------------*/
 void MainWindow::on_tabWidget_tabCloseRequested( int index )
 {/*{{{*/
-     delete ui->tabWidget->widget( index );
+     if ( QMessageBox::question( this, tr( "Fermer l'onglet ?" ),
+                                 tr( "Voulez-vous vraiment fermer l'onglet ?" ),
+                                 QMessageBox::Yes | QMessageBox::No ) == QMessageBox::Yes ) {
+          delete ui->tabWidget->widget( index );
 
-     if( ui->tabWidget->count() == 0 ) {
-          createNewTab();
+          if( ui->tabWidget->count() == 0 ) {
+               createNewTab();
+          }
      }
 }/*}}}*/
 
@@ -352,6 +358,7 @@ void MainWindow::on_actionOuvrir_triggered()
      TabWidget* tab = createNewTab( name );
      tab->scene()->loadFromXml( doc );
      file.close();
+     setMode( AlgorithmeScene::MoveItem );
 }/*}}}*/
 
 
@@ -442,4 +449,11 @@ void MainWindow::changeLabel( LabelItem* item )
      if( ok ) {
           item->setLabel( test );
      }
+}/*}}}*/
+
+void MainWindow::liaisonError()
+{/*{{{*/
+
+     QMessageBox::critical( this, tr( "Liaison impossible" ), tr( "Désolé mais vous ne pouvez relier ces deux éléments" ) );
+
 }/*}}}*/

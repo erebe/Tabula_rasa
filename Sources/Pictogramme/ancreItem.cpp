@@ -21,13 +21,12 @@
 
 #include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
-#include <QDebug>
 
 /*-----------------------------------------------------------------------------
  *  Constructeurs / Destructeurs
  *-----------------------------------------------------------------------------*/
 AncreItem::AncreItem( QGraphicsItem* parent, QGraphicsScene* scene ):
-     QGraphicsItem( parent, scene ), parent_( 0 ), liaison_( 0 )
+     QGraphicsItem( parent, scene ), anchorType_( None ), parent_( 0 ), liaison_( 0 )
 {}
 
 AncreItem::~AncreItem()
@@ -92,8 +91,18 @@ void AncreItem::updateLink()
      }
 }/*}}}*/
 
-void AncreItem::addChild( AncreItem* child )
+bool AncreItem::addChild( AncreItem* child )
 {/*{{{*/
+
+     if( !( anchorType() & Down ) ||
+         !( child->anchorType() & Up ) ) {
+          return false;
+     }
+
+     if( childExist( this, child ) ) {
+          return false;
+     }
+
      children_.append( child );
      child->setParent( this );
 
@@ -103,12 +112,33 @@ void AncreItem::addChild( AncreItem* child )
      } else {
           updateLink();
      }
+
+     return true;
 }/*}}}*/
 
 void AncreItem::createLink()
 {/*{{{*/
      liaison_ = new LiaisonItem( this, children_ );
      scene()->addItem( liaison_ );
+}/*}}}*/
+
+bool AncreItem::childExist( AncreItem* parent, AncreItem* child )
+{/*{{{*/
+
+     if( parent && parent->parentItem() ) {
+          parent = static_cast<AncreItem*>( parent->parentItem() );
+     }
+
+     if( parent == 0 ) {
+          return 0;
+
+     } else if( parent == child ) {
+          return 1;
+
+     } else {
+          return childExist( parent->parent_, child );
+     }
+
 }/*}}}*/
 
 
