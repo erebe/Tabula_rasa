@@ -90,5 +90,6 @@ class MainWindow : public QMainWindow {
           void itemAdded( Pictogramme* item ); //Pour connecter un labelItem ou slot changeLabel
           void changeLabel( LabelItem* item ); //Appelé pour changer l'intitulé d'un LabelItem
           void liaisonError();
+          void on_actionTout_s_lectionner_triggered();
 };
 #endif                           // MAINWINDOW_HPP

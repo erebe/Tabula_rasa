@@ -32,8 +32,10 @@
 AlgorithmeScene::AlgorithmeScene( qreal x, qreal y, qreal width, qreal height, QObject* parent ):
      QGraphicsScene( x, y, width, height, parent ),
      mode_( MoveItem ), name_( "Algorithme" ),
-     line_( 0 )
-{}
+    line_( 0 )
+{
+    selectionArea_.second = 0;
+}
 
 AlgorithmeScene::~AlgorithmeScene()
 {/*{{{*/
@@ -64,17 +66,23 @@ void AlgorithmeScene::newItem( Pictogramme* picto )
 void AlgorithmeScene::saveToXml( QTextStream& out ) const
 {/*{{{*/
      QDomDocument doc( "Tabula_Rasa" );
+
      QDomNode noeud = doc.createProcessingInstruction( "xml", "version=\"1.0\"" );
      doc.insertBefore( noeud, doc.firstChild() );
+
      QDomElement root = doc.createElement( "Algorithme" );
      doc.appendChild( root );
+
      QDomElement name = doc.createElement( "nom" );
      name.appendChild( doc.createTextNode( name_ ) );
      root.appendChild( name );
+
      QDomElement date = doc.createElement( "date_creation" );
      date.appendChild( doc.createTextNode( QDateTime::currentDateTime().toString( "d/M/yyyy hh:mm" ) ) );
      root.appendChild( date );
+
      QDomElement elements = doc.createElement( "Elements" );
+
      Pictogramme* picto;
      foreach( picto, items_ ) {
           if( !picto->isChild() ) {
@@ -89,6 +97,7 @@ void AlgorithmeScene::loadFromXml( const QDomDocument& doc )
 {/*{{{*/
      QDomElement racine = doc.documentElement();
      name_ = racine.firstChildElement( "nom" ).firstChild().toText().data();
+
      const QDomNodeList nodes = racine.firstChildElement( "Elements" ).childNodes();
 
      for( int i = 0; i < nodes.count(); i++ ) {
@@ -107,11 +116,22 @@ void AlgorithmeScene::mousePressEvent( QGraphicsSceneMouseEvent* mouseEvent )
      mouseEvent->accept();
 
      if ( mouseEvent->button() == Qt::LeftButton && mode_ == EditLink ) {
-          line_ = new QGraphicsLineItem( QLineF( mouseEvent->scenePos(),
+       
+         line_ = new QGraphicsLineItem( QLineF( mouseEvent->scenePos(),
                                                  mouseEvent->scenePos() ) );
           QGraphicsScene::addItem( line_ );
-     }
 
+     }else if ( mouseEvent->button() == Qt::LeftButton && mode_ == MoveItem ) {
+         if( !items( mouseEvent->scenePos() ).count() ){ 
+
+             selectionArea_.first = mouseEvent->scenePos();
+             selectionArea_.second = new QGraphicsRectItem( mouseEvent->scenePos().x(),
+                                                            mouseEvent->scenePos().y(),
+                                                            0, 0 );
+             QGraphicsScene::addItem( selectionArea_.second );
+
+         }
+     }
      QGraphicsScene::mousePressEvent( mouseEvent );
 }/*}}}*/
 
@@ -124,6 +144,25 @@ void AlgorithmeScene::mouseMoveEvent( QGraphicsSceneMouseEvent* mouseEvent )
           line_->setLine( newLine );
 
      } else if ( mode_ == MoveItem ) {
+          if( selectionArea_.second != 0){
+
+              QPointF topLeft( ( selectionArea_.first.x() < mouseEvent->scenePos().x() ) ?
+                                  selectionArea_.first.x() : mouseEvent->scenePos().x(),
+
+                               ( selectionArea_.first.y() < mouseEvent->scenePos().y() ) ?
+                                 selectionArea_.first.y() : mouseEvent->scenePos().y() );
+
+              QPointF bottomRight( ( selectionArea_.first.x() > mouseEvent->scenePos().x() ) ?
+                                       selectionArea_.first.x() : mouseEvent->scenePos().x(),
+
+                                    ( selectionArea_.first.y() > mouseEvent->scenePos().y() ) ?
+                                      selectionArea_.first.y() : mouseEvent->scenePos().y() );
+
+
+              QRectF rect( topLeft, bottomRight );
+              selectionArea_.second->setRect( rect );
+                  
+          }
           QGraphicsScene::mouseMoveEvent( mouseEvent );
      }
 }/*}}}*/
@@ -134,6 +173,14 @@ void AlgorithmeScene::mouseReleaseEvent( QGraphicsSceneMouseEvent* mouseEvent )
 
      if( mouseEvent->button() != Qt::LeftButton ) {
           return;
+     }
+
+     if( selectionArea_.second != 0 ){
+         foreach( QGraphicsItem* item, items(selectionArea_.second->rect())){
+             item->setSelected( true );
+         }
+         delete selectionArea_.second;
+         selectionArea_.second = 0;
      }
 
      /*-----------------------------------------------------------------------------
@@ -154,13 +201,15 @@ void AlgorithmeScene::mouseReleaseEvent( QGraphicsSceneMouseEvent* mouseEvent )
           removeItem( line_ );
           delete line_;
           line_ = 0;
-          QGraphicsItem* item;
-          foreach( item, startItems ) {
+
+
+
+          foreach( QGraphicsItem* item, startItems ) {
                if( !item->isEnabled() ) {
                     startItems.removeOne( item );
                }
           }
-          foreach( item, endItems ) {
+          foreach( QGraphicsItem* item, endItems ) {
                if( !item->isEnabled() ) {
                     endItems.removeOne( item );
                }
@@ -217,3 +266,11 @@ void AlgorithmeScene::mouseReleaseEvent( QGraphicsSceneMouseEvent* mouseEvent )
 
      QGraphicsScene::mouseReleaseEvent( mouseEvent );
 }/*}}}*/
+
+void AlgorithmeScene::selectAll(){
+
+    foreach(Pictogramme* picto, items_){
+        picto->setSelected( true );
+    }
+
+}

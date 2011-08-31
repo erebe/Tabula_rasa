@@ -35,7 +35,7 @@ PictoProcedure::PictoProcedure( QString titre,
      labels_ << new LabelItem( titre, 200, 50, 50, this, scene );
      labels_ << new LabelItem( postCondition, 150, 15, 50, this, scene );
 
-     setAnchorType( AncreItem::Both );
+     setAnchorType( AncreItem::Up );
      posBottomAnchor_.setY( 55 );
      posUpAnchor_.setY( 5 );
      updateDimension();
@@ -60,7 +60,7 @@ PictoProcedure::PictoProcedure( const QDomElement& node,
      labels_ << new LabelItem( label, 150, 15, 50, this, scene );
 
      label = node.firstChildElement( "Position" ).firstChild().toText().data();
-     QStringList position = label.split( QRegExp( ";" ) );
+     QStringList position = label.split( ';' );
      setPos( position.at( 0 ).toDouble(), position.at( 1 ).toDouble() );
 
      label = node.firstChildElement( "DetailsVisible" ).firstChild().toText().data();
@@ -69,7 +69,7 @@ PictoProcedure::PictoProcedure( const QDomElement& node,
      label = node.firstChildElement( "DetailsVideVisible" ).firstChild().toText().data();
      emptyDetail_ = ( label == "1" ) ? true : false;
 
-     setAnchorType( AncreItem::Both );
+     setAnchorType( AncreItem::Up );
      posBottomAnchor_.setY( 55 );
      posUpAnchor_.setY( 5 );
      updateDimension();

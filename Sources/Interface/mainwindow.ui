@@ -72,6 +72,8 @@
     <property name="title">
      <string>&amp;Edition</string>
     </property>
+    <addaction name="actionTout_s_lectionner"/>
+    <addaction name="separator"/>
     <addaction name="actionRenommer_l_algorithme"/>
     <addaction name="actionRedimensionner_l_Algorithme"/>
    </widget>
@@ -457,6 +459,14 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+P</string>
+   </property>
+  </action>
+  <action name="actionTout_s_lectionner">
+   <property name="text">
+    <string>Tout sélectionner</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+A</string>
    </property>
   </action>
  </widget>

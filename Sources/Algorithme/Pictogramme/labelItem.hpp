@@ -42,7 +42,7 @@ class LabelItem : public AncreItem {
 
           void setLabel( const QString& texte );
           bool isEmpty() const;
-          inline QString label() const { return label_.first; }
+          inline QString label() const { return QString(label_.first).replace('\n', ';'); }
           inline unsigned int width() const { return label_.second; }
 
 
@@ -57,6 +57,7 @@ class LabelItem : public AncreItem {
            *  Méthodes
            *-----------------------------------------------------------------------------*/
           unsigned int calculLargeurTexte() const; //retourne la largeur du texte
+          void formatString(); //retourne la largeur du texte
 
 };
 

@@ -457,3 +457,9 @@ void MainWindow::liaisonError()
      QMessageBox::critical( this, tr( "Liaison impossible" ), tr( "Désolé mais vous ne pouvez relier ces deux éléments" ) );
 
 }/*}}}*/
+
+void MainWindow::on_actionTout_s_lectionner_triggered()
+{
+    static_cast<TabWidget*>( ui->tabWidget->currentWidget() )
+            ->scene()->selectAll();
+}
