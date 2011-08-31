@@ -25,11 +25,9 @@ PictoSortie::PictoSortie( QGraphicsItem* parent,
                           QGraphicsScene* scene ):
      Pictogramme( parent, scene )
 {/*{{{*/
-     posBottomAnchor_.setX( 25 );
-     posBottomAnchor_.setY( 50 );
-     posUpAnchor_.setX( 25 );
+     posUpAnchor_.setX( 20 );
      posUpAnchor_.setY( 0 );
-     pos_ = 50;
+     pos_ = 40;
      setAnchorType( AncreItem::Up );
 }/*}}}*/
 
@@ -38,12 +36,10 @@ PictoSortie::PictoSortie( const QDomElement& node,
      Pictogramme( 0, scene )
 {/*{{{*/
      setAnchorType( AncreItem::Up );
-     posBottomAnchor_.setX( 25 );
-     posBottomAnchor_.setY( 50 );
-     posUpAnchor_.setX( 25 );
+     posUpAnchor_.setX( 20 );
      posUpAnchor_.setY( 0 );
 
-     pos_ = 50;
+     pos_ = 40;
 
      QString label = node.firstChildElement( "Position" ).firstChild().toText().data();
      QStringList position = label.split( QRegExp( ";" ) );
@@ -59,26 +55,30 @@ void PictoSortie::paint( QPainter* painter, const QStyleOptionGraphicsItem* opti
 {/*{{{*/
      Q_UNUSED( option );
      Q_UNUSED( widget );
-     painter->drawRect( 0, 0, 50, 50 );
-     painter->drawLine( 15, 5, 15, 27 );
-     painter->drawLine( 35, 5, 35, 27 );
-     painter->drawLine( 5, 25, 25, 45 );
-     painter->drawLine( 25, 45, 45, 25 );
+
+     painter->drawRect( 0, 0, 40, 40 );
+     painter->drawLine( 12, 5, 12, 20 );
+     painter->drawLine( 28, 5, 28, 20 );
+     painter->drawLine( 5, 20, 20, 35 );
+     painter->drawLine( 20, 35, 35, 20 );
+
      Pictogramme::paint( painter, option, widget );
 }/*}}}*/
 
 QRectF PictoSortie::boundingRect() const
 {/*{{{*/
-     return QRectF( 0, 0, 50, 50 );
+     return QRectF( 0, 0, 40, 40 );
 }/*}}}*/
 
 void PictoSortie::toXml( QDomDocument& doc, QDomNode& node ) const
 {/*{{{*/
      QDomElement item = doc.createElement( "Sortie" );
      node.appendChild( item );
+
      QDomElement position = doc.createElement( "Position" );
      position.appendChild( doc.createTextNode( QString( "%1;%2" ).arg( scenePos().x() )
                            .arg( scenePos().y() ) ) );
+
      item.appendChild( position );
 }/*}}}*/
 

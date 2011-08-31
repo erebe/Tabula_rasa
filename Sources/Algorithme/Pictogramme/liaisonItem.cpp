@@ -23,7 +23,7 @@
  *  Constructeurs / Destructeurs
  *-----------------------------------------------------------------------------*/
 LiaisonItem::LiaisonItem( AncreItem* parent, QList<AncreItem*>& enfants ):
-     parent_( parent ), children_( enfants ), style_( Simple )
+     parent_( parent ), children_( enfants ), style_( Double )
 {/*{{{*/
     setEnabled(0); 
     updatePath();

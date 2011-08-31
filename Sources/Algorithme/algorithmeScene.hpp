@@ -30,7 +30,7 @@ class AlgorithmeScene: public QGraphicsScene {
 
      public:
           //Représente les modes d'interactions avec la scène
-          enum Mode { MoveItem, EditLink, SetRoot,
+          enum Mode { MoveItem, EditLink, SelectArea,
                       InsertAction, InsertProcedure, InsertLoop,
                       InsertCondition, InsertMultiCondition, InsertExit
                     };
@@ -45,7 +45,7 @@ class AlgorithmeScene: public QGraphicsScene {
           inline void setMode( Mode mode )
           { mode_ = mode; }
           inline void setName( const QString& name )
-          {name_ = name;}
+          { name_ = name;}
 
           void deleteItem( Pictogramme* item );
           void newItem( Pictogramme* ); //appelé par PictoBuilder
@@ -53,6 +53,7 @@ class AlgorithmeScene: public QGraphicsScene {
           //Sauvegarde et chargement au format XML
           void saveToXml( QTextStream& out ) const;
           void loadFromXml( const QDomDocument& doc );
+          void selectAll();
 
      signals:
           void modeChanged( AlgorithmeScene::Mode mode ); //emit lorsqu'on change de mode
@@ -68,6 +69,7 @@ class AlgorithmeScene: public QGraphicsScene {
           Mode mode_;
           QString name_; //Nom de l'agorithme
           QGraphicsLineItem* line_; //Line créée dans le mode edition lien
+          QPair<QPointF,QGraphicsRectItem*> selectionArea_;
           QList<Pictogramme*> items_; //Liste de tous les pictogrammes de la scène (sans les liaisons)
 
 
