@@ -69,7 +69,7 @@ class AlgorithmeScene: public QGraphicsScene {
           Mode mode_;
           QString name_; //Nom de l'agorithme
           QGraphicsLineItem* line_; //Line créée dans le mode edition lien
-          QPair<QPointF,QGraphicsRectItem*> selectionArea_;
+          QPair<QPointF, QGraphicsRectItem*> selectionArea_;
           QList<Pictogramme*> items_; //Liste de tous les pictogrammes de la scène (sans les liaisons)
 
 
@@ -80,5 +80,4 @@ class AlgorithmeScene: public QGraphicsScene {
           void mouseMoveEvent( QGraphicsSceneMouseEvent* mouseEvent );
           void mouseReleaseEvent( QGraphicsSceneMouseEvent* mouseEvent );
 };
-
 #endif // ALGORITHMESCENE_HPP

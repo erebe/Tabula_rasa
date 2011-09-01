@@ -33,5 +33,4 @@ class PictoBuilder {
           static Pictogramme* fromMode( AlgorithmeScene::Mode mode,
                                         AlgorithmeScene* scene );
 };
-
 #endif // PICTOBUILDER_H

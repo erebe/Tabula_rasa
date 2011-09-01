@@ -29,6 +29,12 @@ AncreItem::AncreItem( QGraphicsItem* parent, QGraphicsScene* scene ):
      QGraphicsItem( parent, scene ), anchorType_( None ), parent_( 0 ), liaison_( 0 )
 {}
 
+//AncreItem::AncreItem( const AncreItem& item ):
+//    QGraphicsItem( item.parentItem(), item.scene() ), anchorType_( item.anchorType() ),
+//    parent_( new AncreItem( item.parent_) ), liaison_
+//{
+//
+//}
 AncreItem::~AncreItem()
 {/*{{{*/
      detach();

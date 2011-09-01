@@ -448,7 +448,7 @@ void MainWindow::changeLabel( LabelItem* item )
 
      if( ok ) {
           item->setLabel( test );
-     }
+   }
 }/*}}}*/
 
 void MainWindow::liaisonError()
