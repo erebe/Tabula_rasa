@@ -25,7 +25,6 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QGraphicsLineItem>
 
-
 /*-----------------------------------------------------------------------------
  *  Constructeurs / Destructeurs
  *-----------------------------------------------------------------------------*/
