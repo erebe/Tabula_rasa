@@ -42,7 +42,7 @@ class LabelItem : public AncreItem {
 
           void setLabel( const QString& texte );
           bool isEmpty() const;
-          inline QString label() const { return QString(label_.first).replace('\n', ';'); }
+          inline QString label() const { return label_.first; }
           inline unsigned int width() const { return label_.second; }
 
 

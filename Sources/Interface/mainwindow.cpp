@@ -23,6 +23,7 @@
 #include "Algorithme/Pictogramme/labelItem.hpp"
 #include "Algorithme/Pictogramme/pictogramme.hpp"
 #include "Algorithme/Pictogramme/liaisonItem.hpp"
+#include "labeledit.hpp"
 
 #include <QFileDialog>
 #include <QtGui>
@@ -443,13 +444,17 @@ void MainWindow::itemAdded( Pictogramme* item )
 
 void MainWindow::changeLabel( LabelItem* item )
 {/*{{{*/
-     bool ok;
-     QString test = QInputDialog::getText( this, "Changer le label", "Nouvel intitulé",
-                                           QLineEdit::Normal, item->label(), &ok );
+//     bool ok;
+//     QString test = QInputDialog::getText( this, "Changer le label", "Nouvel intitulé",
+//                                           QLineEdit::Normal, item->label(), &ok );
 
-     if( ok ) {
-          item->setLabel( test );
-   }
+//     if( ok ) {
+//          item->setLabel( test );
+//   }
+        LabelEdit tmp( this, item->label() );
+        if( tmp.exec() == QDialog::Accepted ){
+                item->setLabel( tmp.label() );
+        }
 }/*}}}*/
 
 void MainWindow::liaisonError()
