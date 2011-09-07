@@ -11,6 +11,8 @@ INCLUDEPATH += . Interface Algorithme Algorithme/Pictogramme
 RC_FILE = iconSetter.rc
 QT += xml svg
 
+target.path += /usr/bin/
+INSTALLS += target
 # Input
 HEADERS += Algorithme/algorithmeScene.hpp \
            Algorithme/pictoBuilder.hpp \
