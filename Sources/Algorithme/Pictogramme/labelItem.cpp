@@ -109,8 +109,6 @@ unsigned int LabelItem::calculLargeurTexte() const
 
 void LabelItem::formatString() {
 
-    label_.first = label_.first.simplified();
-    label_.first.replace(';', '\n');
     label_.first.replace("->", "→");
     label_.first.replace("<-", "←");
 }
