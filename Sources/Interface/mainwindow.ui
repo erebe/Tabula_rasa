@@ -52,7 +52,7 @@
      <x>0</x>
      <y>0</y>
      <width>938</width>
-     <height>35</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_Fichier">
@@ -62,8 +62,10 @@
     <addaction name="actionNouveau"/>
     <addaction name="actionOuvrir"/>
     <addaction name="actionEnregistrer"/>
-    <addaction name="actionExporter_vers_une_image"/>
     <addaction name="actionImprimer"/>
+    <addaction name="separator"/>
+    <addaction name="actionExporter_vers_une_image"/>
+    <addaction name="actionExporter_SVG"/>
     <addaction name="separator"/>
     <addaction name="actionFermer_l_onglet"/>
     <addaction name="actionQuitter"/>
@@ -145,8 +147,10 @@
    <addaction name="actionNouveau"/>
    <addaction name="actionOuvrir"/>
    <addaction name="actionEnregistrer"/>
-   <addaction name="actionExporter_vers_une_image"/>
    <addaction name="actionImprimer"/>
+   <addaction name="separator"/>
+   <addaction name="actionExporter_vers_une_image"/>
+   <addaction name="actionExporter_SVG"/>
   </widget>
   <action name="actionMode_Insertion">
    <property name="checkable">
@@ -319,7 +323,10 @@
      <normaloff>:/Icones/exporter_Image.png</normaloff>:/Icones/exporter_Image.png</iconset>
    </property>
    <property name="text">
-    <string>Exporter vers une image</string>
+    <string>Exporter en PNG</string>
+   </property>
+   <property name="toolTip">
+    <string>Permet d'exporter vers le format de fichier PNG</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+Shift+S</string>
@@ -467,6 +474,18 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+A</string>
+   </property>
+  </action>
+  <action name="actionExporter_SVG">
+   <property name="icon">
+    <iconset resource="../Ressources/ressources.qrc">
+     <normaloff>:/Icones/export_svg.png</normaloff>:/Icones/export_svg.png</iconset>
+   </property>
+   <property name="text">
+    <string>Exporter en SVG</string>
+   </property>
+   <property name="toolTip">
+    <string>Permet d'exporter vers le format de fichier SVG</string>
    </property>
   </action>
  </widget>

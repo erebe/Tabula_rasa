@@ -82,7 +82,7 @@ bool LabelItem::isEmpty() const
 
 unsigned int LabelItem::calculLargeurTexte() const
 {/*{{{*/
-     QFont font( "times", 6 );
+     QFont font( "times", 10 );
      QFontMetrics fm( font );
 
      unsigned int largeurTexte = 0;

@@ -25,13 +25,12 @@ TabWidget::TabWidget()
 {/*{{{*/
      scene_ = new AlgorithmeScene( 0, 0, 2000, 2000, this );
      scene_->setBackgroundBrush( Qt::white );
-     scene_->setFont( QFont( "times", 6) );
 
      vue_ = new QGraphicsView( this );
      vue_->setResizeAnchor( QGraphicsView::NoAnchor );
      vue_->setTransformationAnchor( QGraphicsView::NoAnchor );
      vue_->setRenderHint( QPainter::Antialiasing );
-     vue_->setFont( QFont( "times", 6) );
+     vue_->setFont( QFont( "times", 10) );
      vue_->setScene( scene_ );
 
      layout_ = new QHBoxLayout( this );
