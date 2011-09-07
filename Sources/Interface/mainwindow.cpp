@@ -26,6 +26,7 @@
 
 #include <QFileDialog>
 #include <QtGui>
+#include <QtSvg/QSvgGenerator>
 
 /*-----------------------------------------------------------------------------
  *  Constructeurs / Destructeurs
@@ -462,4 +463,59 @@ void MainWindow::on_actionTout_s_lectionner_triggered()
 {
     static_cast<TabWidget*>( ui->tabWidget->currentWidget() )
             ->scene()->selectAll();
+}
+
+void MainWindow::on_actionExporter_SVG_triggered()
+{
+    QString fichier = QFileDialog::getSaveFileName( this, "Enregistrer l'algorithme",
+                      QString( "algo.svg" ), "Fichiers SVG (*.svg)" );
+
+    if( fichier.isEmpty() ) {
+         return;
+    }
+
+    AlgorithmeScene* scene = static_cast<TabWidget*>( ui->tabWidget->currentWidget() )
+                             ->scene();
+    qreal maxX, maxY, minX, minY;
+    maxX = maxY = 0;
+    minX = scene->width();
+    minY = scene->height();
+    QGraphicsItem* item;
+    QPointF point;
+
+    foreach( item, scene->items() ) {
+         if( qgraphicsitem_cast<LiaisonItem*>( item ) ) {
+              continue;
+         }
+
+         point = item->scenePos();
+
+         if( maxX < ( point.x() + static_cast<Pictogramme*>( item )->width() ) ) {
+              maxX = point.x() + static_cast<Pictogramme*>( item )->width();
+         }
+
+         if( maxY < point.y() ) {
+              maxY = point.y();
+         }
+
+         if( minX > point.x() ) {
+              minX = point.x();
+         }
+
+         if( minY > point.y() ) {
+              minY = point.y();
+         }
+    }
+    QRectF sceneSize = scene->sceneRect();
+    scene->setSceneRect( minX, minY, maxX - minX, maxY - minY + 50);
+
+    QSvgGenerator generator;
+    generator.setFileName(fichier);
+    generator.setSize(QSize(scene->width(),scene->height()) );
+    generator.setViewBox( QRect(0,0, scene->width(), scene->height()) );
+
+    QPainter painter( &generator );
+    scene->clearSelection();
+    scene->render( &painter );
+    scene->setSceneRect( sceneSize );
 }

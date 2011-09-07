@@ -91,5 +91,6 @@ class MainWindow : public QMainWindow {
           void changeLabel( LabelItem* item ); //Appelé pour changer l'intitulé d'un LabelItem
           void liaisonError();
           void on_actionTout_s_lectionner_triggered();
+          void on_actionExporter_SVG_triggered();
 };
 #endif                           // MAINWINDOW_HPP
