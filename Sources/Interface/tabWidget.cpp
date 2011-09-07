@@ -30,7 +30,7 @@ TabWidget::TabWidget()
      vue_->setResizeAnchor( QGraphicsView::NoAnchor );
      vue_->setTransformationAnchor( QGraphicsView::NoAnchor );
      vue_->setRenderHint( QPainter::Antialiasing );
-     vue_->setFont( QFont( "times", 10) );
+     vue_->setFont( QFont( "times", 10 ) );
      vue_->setScene( scene_ );
 
      layout_ = new QHBoxLayout( this );

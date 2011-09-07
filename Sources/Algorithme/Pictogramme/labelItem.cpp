@@ -88,15 +88,16 @@ unsigned int LabelItem::calculLargeurTexte() const
      unsigned int largeurTexte = 0;
      unsigned int current;
 
-     QStringList lignes = label_.first.split("\n");
-     foreach(const QString& ligne, lignes){
-         current = fm.width( ligne );
+     QStringList lignes = label_.first.split( "\n" );
+     foreach( const QString & ligne, lignes ) {
+          current = fm.width( ligne );
 
-         if( current > largeurTexte )
-             largeurTexte = fm.width( ligne );
+          if( current > largeurTexte )
+               { largeurTexte = fm.width( ligne ); }
      }
 
      largeurTexte += 10;
+
      if( largeurTexte > maxWidth_ ) {
           return maxWidth_;
 
@@ -107,8 +108,9 @@ unsigned int LabelItem::calculLargeurTexte() const
      return largeurTexte;
 }/*}}}*/
 
-void LabelItem::formatString() {
+void LabelItem::formatString()
+{/*{{{*/
 
-    label_.first.replace("->", "→");
-    label_.first.replace("<-", "←");
-}
+     label_.first.replace( "->", "→" );
+     label_.first.replace( "<-", "←" );
+}/*}}}*/
