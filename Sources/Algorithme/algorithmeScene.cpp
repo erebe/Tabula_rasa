@@ -21,6 +21,8 @@
 #include "Pictogramme/pictogramme.hpp"
 #include "Pictogramme/pictoCondition.hpp"
 #include "Pictogramme/pictoConditionMultiple.hpp"
+#include "Pictogramme/pictoSortie.hpp"
+#include "Pictogramme/pictoIteration.hpp"
 
 #include <QGraphicsSceneMouseEvent>
 #include <QGraphicsLineItem>
@@ -235,6 +237,13 @@ void AlgorithmeScene::mouseReleaseEvent( QGraphicsSceneMouseEvent* mouseEvent )
                } else if( !qgraphicsitem_cast<PictoCondition*>( endItems.first() )
                           && !qgraphicsitem_cast<PictoConditionMultiple*>( endItems.first() ) ) {
                     parent = static_cast<Pictogramme*>( endItems.first() );
+               }
+
+               if( qgraphicsitem_cast<PictoIteration*>( parent ) &&
+                   qgraphicsitem_cast<PictoSortie*>( enfant ) ){
+
+                       emit liaisonError();
+                       return;
                }
 
                if( ( parent != 0 ) && ( enfant != parent ) ) {
