@@ -15,9 +15,9 @@ Installation pour Windows :
 Installation pour Linux (Nécessite Qt d'installé et git) :
 	+ Ouvrez un terminal et tapez "git clone git://github.com/erebe/Tabula_rasa.git "
 	+ cd Tabula_rasa
-	+ chmod +x install.sh
-	+ ./install.sh
-	+ ./tabula_Rasa
+	+ chmod +x build.sh
+	+ ./build.sh
+	+ sudo make install
 
 
 Fonctionnalités prévues :
