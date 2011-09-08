@@ -19,6 +19,9 @@
      <property name="enabled">
       <bool>true</bool>
      </property>
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
      <property name="html">
       <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
@@ -53,10 +56,11 @@ p, li { white-space: pre-wrap; }
 &lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New,courier';&quot;&gt;                              ';::::::::;;:.   ':::'  .:;;:''':;;;:'                            &lt;/span&gt;&lt;/p&gt;
 &lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New,courier';&quot;&gt;                                `':`   .`       ':'     ``.   ':'                               &lt;/span&gt;&lt;/p&gt;
 &lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New,courier';&quot;&gt;               `.                        .`             &lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Tabula Rasa v0.5 - &lt;span style=&quot; font-family:'Century Schoolbook L';&quot;&gt;https://github.com/erebe/Tabula_rasa&lt;br /&gt;&lt;/span&gt;Romain Gérard (erebe@erebe.eu)&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Tabula Rasa v0.6 - &lt;span style=&quot; font-family:'Century Schoolbook L';&quot;&gt;https://github.com/erebe/Tabula_rasa&lt;br /&gt;&lt;/span&gt;Romain Gérard (editeur.algo@erebe.eu)&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;L'application a été créée dans le but d'aider les étudiants de l'IUT de Bayonne et du Pays Basque dans la fastidieuse tâche de représentation des algorithmes vues en cours.&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Je souhaiterais remercier pour tous les retours qu'ils m'ont transmit durant le développement de l'application : &lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Century Schoolbook L'; font-weight:600;&quot;&gt;Julien Etchepare&lt;br /&gt;Kévin Bélellou&lt;br /&gt;Marina Aguilar&lt;br /&gt;Thibault Etienne&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot; margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Century Schoolbook L'; font-weight:600;&quot;&gt;Clément Larrieu&lt;br /&gt;Julien Etchepare&lt;br /&gt;Kévin Bélellou&lt;br /&gt;Marina Aguilar&lt;br /&gt;Thibault Etienne&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;L'icone de l'application a été réalisée par &lt;span style=&quot; font-weight:600;&quot;&gt;Guillaume Pelletier&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
     </widget>
    </item>
