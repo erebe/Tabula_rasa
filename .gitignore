@@ -3,3 +3,4 @@ moc_*
 qrc_*
 ui_*
 tabula_rasa
+Makefile
