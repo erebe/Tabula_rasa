@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 NORMAL="\\033[39;49;00m"
 ROUGE="\\033[1;31m"
@@ -23,9 +23,9 @@ read reponse
 
 if [ $reponse == "o" ]
 then
-    echo ''
     sudo make install
     echo -e "${ROUGE}Terminé ! Tapez directement ${VERT}tabula_rasa ${ROUGE}dans votre terminal pour lancer l'application${NORMAL}"
+    echo ''
 fi
 
 
