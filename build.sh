@@ -18,7 +18,9 @@ cp tabula_rasa ../
 
 
 echo -e "\n\n${ROUGE}Vous pouvez lancer l'application en tapant la commande ${VERT}./tabula_rasa"
-echo -e "${ROUGE}Installer l'application dans ${VERT}/usr/bin ${ROUGE}? [o/n] ${NORMAL}" 
+
+echo -e "${ROUGE}Voulez-vous installer l'application dans ${VERT}/usr/bin ${ROUGE}? [o/n] ${NORMAL}" 
+
 read reponse
 
 if [ $reponse == "o" ]
