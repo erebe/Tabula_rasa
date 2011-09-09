@@ -23,7 +23,7 @@ echo -e "${ROUGE}Voulez-vous installer l'application dans ${VERT}/usr/bin ${ROUG
 
 read reponse
 
-if [ $reponse == "o" ]
+if [ "${reponse}" == "o" ]
 then
     sudo make install
     echo -e "${ROUGE}Terminé ! Tapez directement ${VERT}tabula_rasa ${ROUGE}dans votre terminal pour lancer l'application${NORMAL}"
