@@ -55,6 +55,8 @@ class AncreItem: public QGraphicsItem {
                if( liaison_ )
                     { liaison_->setStyle( style );}
           }
+          inline LiaisonItem::Style linkStyle( ) const { return liaison_->style(); }
+          inline bool hasLink() const { return ( liaison_ ); }
 
           QList<AncreItem*> childrenList() const { return children_; }
 
