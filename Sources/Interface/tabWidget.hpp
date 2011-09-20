@@ -23,6 +23,7 @@ class AlgorithmeScene;
 class QGraphicsView;
 class QHBoxLayout;
 class QHBoxLayout;
+class QPtrinter;
 
 class TabWidget : public QWidget {
 
@@ -36,10 +37,16 @@ class TabWidget : public QWidget {
                return vue_;
           }
 
+          void exportToPdf();
+          void exportToSvg();
+          void exportToPng();
+          void exportToPrinter( QPrinter* printer );
+
      private:
           AlgorithmeScene* scene_;
           QGraphicsView* vue_;
           QHBoxLayout* layout_;
+          QString svgPath_, pngPath_, pdfPath_, tbrPath_;
 };
 
 #endif // TABWIDGET_HPP

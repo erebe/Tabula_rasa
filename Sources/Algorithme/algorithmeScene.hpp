@@ -54,6 +54,7 @@ class AlgorithmeScene: public QGraphicsScene {
           void saveToXml( QTextStream& out ) const;
           void loadFromXml( const QDomDocument& doc );
           void selectAll();
+          void adjust( int delta = 0 );
 
      signals:
           void modeChanged( AlgorithmeScene::Mode mode ); //emit lorsqu'on change de mode
