@@ -46,7 +46,6 @@ class LabelItem : public AncreItem {
           inline unsigned int width() const { return label_.second; }
 
 
-
      protected:
           /*-----------------------------------------------------------------------------
            *  Attributs
