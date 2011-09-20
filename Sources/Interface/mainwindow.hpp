@@ -92,5 +92,6 @@ class MainWindow : public QMainWindow {
           void liaisonError();
           void on_actionTout_s_lectionner_triggered();
           void on_actionExporter_SVG_triggered();
+          void on_actionExporter_en_PDF_triggered();
 };
 #endif                           // MAINWINDOW_HPP
