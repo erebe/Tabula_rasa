@@ -65,6 +65,7 @@
     <addaction name="actionImprimer"/>
     <addaction name="separator"/>
     <addaction name="actionExporter_vers_une_image"/>
+    <addaction name="actionExporter_en_PDF"/>
     <addaction name="actionExporter_SVG"/>
     <addaction name="separator"/>
     <addaction name="actionFermer_l_onglet"/>
@@ -150,6 +151,7 @@
    <addaction name="actionImprimer"/>
    <addaction name="separator"/>
    <addaction name="actionExporter_vers_une_image"/>
+   <addaction name="actionExporter_en_PDF"/>
    <addaction name="actionExporter_SVG"/>
   </widget>
   <action name="actionMode_Insertion">
@@ -486,6 +488,18 @@
    </property>
    <property name="toolTip">
     <string>Permet d'exporter vers le format de fichier SVG</string>
+   </property>
+  </action>
+  <action name="actionExporter_en_PDF">
+   <property name="icon">
+    <iconset resource="../Ressources/ressources.qrc">
+     <normaloff>:/Icones/export_pdf.png</normaloff>:/Icones/export_pdf.png</iconset>
+   </property>
+   <property name="text">
+    <string>Exporter en PDF</string>
+   </property>
+   <property name="toolTip">
+    <string>Permet d'exporter vers le format de fichier pdf</string>
    </property>
   </action>
  </widget>

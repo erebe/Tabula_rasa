@@ -203,11 +203,15 @@ QVariant PictoConditionMultiple::itemChange( GraphicsItemChange change, const QV
 void PictoConditionMultiple::processAction( QAction* action, QGraphicsSceneContextMenuEvent* event )
 {/*{{{*/
      if( actions_["AjouterA"] == action ) {
-          labels_.insert( labels_.size() - 1, new LabelItem( "", 150, 25, 25, this, scene() ) );
+          LabelItem* item = new LabelItem( "", 150, 25, 25, this, scene() );
+          item->setAnchorType( AncreItem::Down );
+
+          labels_.insert( labels_.size() - 1, item );
           prepareGeometryChange();
           updateDimension();
 
      } else if( actions_["SupprimerA"] == action ) {
+
           LabelItem* tmp;
           foreach( tmp, labels_ ) {
                if( ( tmp != labels_.at( 0 ) ) &&
