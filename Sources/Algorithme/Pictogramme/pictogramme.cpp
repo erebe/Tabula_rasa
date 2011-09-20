@@ -36,7 +36,7 @@ Pictogramme::Pictogramme( QGraphicsItem* parent, QGraphicsScene* scene ):
      actions_["Supprimer"] = contexteMenu_.addAction( tr( "Supprimer" ) );
      sousMenu_ = contexteMenu_.addMenu( QIcon(), "Style des liaisons" );
 
-     actions_["LSimple"] = sousMenu_->addAction( tr( "Simple" ) );
+     //actions_["LSimple"] = sousMenu_->addAction( tr( "Simple" ) );
      actions_["LDouble"] = sousMenu_->addAction( tr( "Double" ) );
      actions_["LLineaire"] = sousMenu_->addAction( tr( "Linéaire" ) );
      contexteMenu_.addSeparator();

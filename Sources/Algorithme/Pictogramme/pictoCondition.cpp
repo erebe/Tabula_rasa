@@ -163,8 +163,8 @@ void PictoCondition::toXml( QDomDocument& doc, QDomNode& node ) const
      item.appendChild( position );
      QDomElement style = doc.createElement( "StyleLien" );
      style.appendChild( doc.createTextNode(
-                             ( labels_.last()->hasLink() ) ?
-                             QString::number( static_cast<int>( labels_.last()->linkStyle() ) ) :
+                             ( liaison_ ) ?
+                             QString::number( static_cast<int>( liaison_->style() ) ) :
                              "1" ) ) ;
      item.appendChild( style );
      QDomElement unique = doc.createElement( "estUnique" );
