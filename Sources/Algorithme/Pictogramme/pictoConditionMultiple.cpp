@@ -152,7 +152,7 @@ void PictoConditionMultiple::toXml( QDomDocument& doc, QDomNode& node ) const
 {/*{{{*/
      QDomElement item = doc.createElement( "ConditionMultiple" );
      node.appendChild( item )
-                     ;
+     ;
      QDomElement position = doc.createElement( "Position" );
      position.appendChild( doc.createTextNode( QString( "%1;%2" ).arg( scenePos().x() )
                            .arg( scenePos().y() ) ) );
@@ -160,8 +160,8 @@ void PictoConditionMultiple::toXml( QDomDocument& doc, QDomNode& node ) const
 
      QDomElement style = doc.createElement( "StyleLien" );
      style.appendChild( doc.createTextNode(
-                            ( labels_.last()->hasLink() ) ?
-                            QString::number( static_cast<int>( labels_.first()->linkStyle() ) ) :
+                             ( labels_.last()->hasLink() ) ?
+                             QString::number( static_cast<int>( labels_.first()->linkStyle() ) ) :
                              "1" ) ) ;
      item.appendChild( style );
 
@@ -185,7 +185,7 @@ void PictoConditionMultiple::toXml( QDomDocument& doc, QDomNode& node ) const
           condition.appendChild( enfants );
 
 
-          foreach( AncreItem* picto, ( *label )->childrenList() ) {
+          foreach( AncreItem * picto, ( *label )->childrenList() ) {
                static_cast<Pictogramme*>( picto )->toXml( doc, enfants );
           }
      }

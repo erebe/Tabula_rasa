@@ -277,8 +277,8 @@ void MainWindow::on_actionImprimer_triggered()
 
 void MainWindow::on_actionEnregistrer_triggered()
 {/*{{{*/
-    TabWidget* tab = static_cast<TabWidget*>( ui->tabWidget->currentWidget() );
-    tab->save();
+     TabWidget* tab = static_cast<TabWidget*>( ui->tabWidget->currentWidget() );
+     tab->save();
 
 }/*}}}*/
 
@@ -379,13 +379,13 @@ void MainWindow::on_actionExporter_SVG_triggered()
 }/*}}}*/
 
 void MainWindow::on_actionExporter_en_PDF_triggered()
-{
-    TabWidget* tab = static_cast<TabWidget*>( ui->tabWidget->currentWidget() );
-    tab->exportToPdf();
-}
+{/*{{{*/
+     TabWidget* tab = static_cast<TabWidget*>( ui->tabWidget->currentWidget() );
+     tab->exportToPdf();
+}/*}}}*/
 
 void MainWindow::on_actionSauvegarder_sous_triggered()
-{
-    TabWidget* tab = static_cast<TabWidget*>( ui->tabWidget->currentWidget() );
-    tab->saveAs();
-}
+{/*{{{*/
+     TabWidget* tab = static_cast<TabWidget*>( ui->tabWidget->currentWidget() );
+     tab->saveAs();
+}/*}}}*/

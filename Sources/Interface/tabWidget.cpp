@@ -140,62 +140,65 @@ void TabWidget::exportToPdf()
 
      pdfPath_ = QFileInfo( fichier ).path();
 
-    QPrinter* printer = new QPrinter( QPrinter::HighResolution );
-    printer->setOutputFormat( QPrinter::PdfFormat );
-    printer->setOrientation( QPrinter::Portrait );
-    printer->setPaperSize( QSizeF( scene()->width(), scene()->height() ),
-                           QPrinter::Point );
-    printer->setOutputFileName( fichier );
-    printer->setPageMargins( 0, 0, 0, 0, QPrinter::Point );
+     QPrinter* printer = new QPrinter( QPrinter::HighResolution );
+     printer->setOutputFormat( QPrinter::PdfFormat );
+     printer->setOrientation( QPrinter::Portrait );
+     printer->setPaperSize( QSizeF( scene()->width(), scene()->height() ),
+                            QPrinter::Point );
+     printer->setOutputFileName( fichier );
+     printer->setPageMargins( 0, 0, 0, 0, QPrinter::Point );
 
 
-    exportToPrinter( printer );
-    delete printer;
-}
+     exportToPrinter( printer );
+     delete printer;
+}/*}}}*/
 
-void TabWidget::save() {
+void TabWidget::save()
+{/*{{{*/
 
-    if( tbrPath_.isEmpty() ){
+     if( tbrPath_.isEmpty() ) {
 
-        QString fichier = QFileDialog::getSaveFileName( this, "Enregistrer l'algorithme",
-                      QString( "algo.tbr" ), "Tabula Rasa (*.tbr *.xml  )" );
+          QString fichier = QFileDialog::getSaveFileName( this, "Enregistrer l'algorithme",
+                            QString( "algo.tbr" ), "Tabula Rasa (*.tbr *.xml  )" );
 
-        if( fichier.isEmpty() ) {
-             return;
-        }
+          if( fichier.isEmpty() ) {
+               return;
+          }
 
-        tbrPath_ = QFileInfo( fichier ).path();
-   }
-    QFile file( tbrPath_ );
+          tbrPath_ = QFileInfo( fichier ).path();
+     }
 
-    if ( !file.open( QIODevice::Truncate | QIODevice::WriteOnly ) )
-         { return; }
+     QFile file( tbrPath_ );
 
-    QTextStream out( &file );
+     if ( !file.open( QIODevice::Truncate | QIODevice::WriteOnly ) )
+          { return; }
 
-    scene()->saveToXml( out );
-    file.close();
+     QTextStream out( &file );
 
-}
+     scene()->saveToXml( out );
+     file.close();
 
-void TabWidget::saveAs() {
+}/*}}}*/
 
-    QString fichier = QFileDialog::getSaveFileName( this, "Enregistrer l'algorithme",
-                  QString( "algo.tbr" ), "Tabula Rasa (*.tbr *.xml  )" );
+void TabWidget::saveAs()
+{/*{{{*/
 
-    if( fichier.isEmpty() ) {
-         return;
-    }
+     QString fichier = QFileDialog::getSaveFileName( this, "Enregistrer l'algorithme",
+                       QString( "algo.tbr" ), "Tabula Rasa (*.tbr *.xml  )" );
 
-    tbrPath_ = fichier;
-    QFile file( tbrPath_ );
+     if( fichier.isEmpty() ) {
+          return;
+     }
 
-    if ( !file.open( QIODevice::Truncate | QIODevice::WriteOnly ) )
-         { return; }
+     tbrPath_ = fichier;
+     QFile file( tbrPath_ );
 
-    QTextStream out( &file );
+     if ( !file.open( QIODevice::Truncate | QIODevice::WriteOnly ) )
+          { return; }
 
-    scene()->saveToXml( out );
-    file.close();
+     QTextStream out( &file );
 
-}
+     scene()->saveToXml( out );
+     file.close();
+
+}/*}}}*/
