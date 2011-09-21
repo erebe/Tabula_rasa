@@ -41,6 +41,9 @@ class TabWidget : public QWidget {
           void exportToSvg();
           void exportToPng();
           void exportToPrinter( QPrinter* printer );
+          void save();
+          void saveAs();
+          inline void setTbrPath( QString path ) { tbrPath_ = path; }
 
      private:
           AlgorithmeScene* scene_;

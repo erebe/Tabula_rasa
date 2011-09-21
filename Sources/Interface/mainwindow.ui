@@ -62,6 +62,7 @@
     <addaction name="actionNouveau"/>
     <addaction name="actionOuvrir"/>
     <addaction name="actionEnregistrer"/>
+    <addaction name="actionSauvegarder_sous"/>
     <addaction name="actionImprimer"/>
     <addaction name="separator"/>
     <addaction name="actionExporter_vers_une_image"/>
@@ -331,7 +332,7 @@
     <string>Permet d'exporter vers le format de fichier PNG</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+Shift+S</string>
+    <string>Ctrl+Alt+I</string>
    </property>
   </action>
   <action name="actionFermer_l_onglet">
@@ -489,6 +490,9 @@
    <property name="toolTip">
     <string>Permet d'exporter vers le format de fichier SVG</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+Alt+S</string>
+   </property>
   </action>
   <action name="actionExporter_en_PDF">
    <property name="icon">
@@ -500,6 +504,24 @@
    </property>
    <property name="toolTip">
     <string>Permet d'exporter vers le format de fichier pdf</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Alt+P</string>
+   </property>
+  </action>
+  <action name="actionSauvegarder_sous">
+   <property name="icon">
+    <iconset resource="../Ressources/ressources.qrc">
+     <normaloff>:/Icones/icone_sauvegarder.png</normaloff>:/Icones/icone_sauvegarder.png</iconset>
+   </property>
+   <property name="text">
+    <string>Sauvegarder sous</string>
+   </property>
+   <property name="toolTip">
+    <string>Sauvegarder l'agorithme vers un nouveau fichier</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+S</string>
    </property>
   </action>
  </widget>
