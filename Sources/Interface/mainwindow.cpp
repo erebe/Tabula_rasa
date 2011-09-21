@@ -392,7 +392,7 @@ void MainWindow::on_actionExporter_SVG_triggered()
 }/*}}}*/
 
 void MainWindow::on_actionExporter_en_PDF_triggered()
-{
-    TabWidget* tab = static_cast<TabWidget*>( ui->tabWidget->currentWidget() );
-    tab->exportToPdf();
-}
+{/*{{{*/
+     TabWidget* tab = static_cast<TabWidget*>( ui->tabWidget->currentWidget() );
+     tab->exportToPdf();
+}/*}}}*/
