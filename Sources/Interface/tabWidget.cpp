@@ -45,6 +45,7 @@ TabWidget::TabWidget()
      svgPath_ = "algorithme.svg";
      pngPath_ = "algorithme.png";
      pdfPath_ = "algorithme.pdf";
+     tbrPath_ = "";
 
 }/*}}}*/
 
@@ -60,7 +61,7 @@ void TabWidget::exportToSvg()
           return;
      }
 
-     svgPath_ = QFileInfo( fichier ).path();
+     svgPath_ = fichier;
 
      QRectF sceneSize = scene()->sceneRect();
      scene()->adjust( 10 );
@@ -89,7 +90,7 @@ void TabWidget::exportToPng()
           return;
      }
 
-     pngPath_ = QFileInfo( fichier ).path();
+     pngPath_ = fichier;
 
      QRectF sceneSize = scene()->sceneRect();
      scene()->adjust( 50 );
@@ -138,7 +139,7 @@ void TabWidget::exportToPdf()
           return;
      }
 
-     pdfPath_ = QFileInfo( fichier ).path();
+     pdfPath_ = fichier;
 
      QPrinter* printer = new QPrinter( QPrinter::HighResolution );
      printer->setOutputFormat( QPrinter::PdfFormat );
@@ -165,7 +166,7 @@ void TabWidget::save()
                return;
           }
 
-          tbrPath_ = QFileInfo( fichier ).path();
+          tbrPath_ = fichier;
      }
 
      QFile file( tbrPath_ );
