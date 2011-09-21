@@ -135,15 +135,62 @@ void TabWidget::exportToPdf() {
 
     pdfPath_ = QFileInfo( fichier ).path();
 
-        QPrinter* printer = new QPrinter( QPrinter::HighResolution );
-        printer->setOutputFormat( QPrinter::PdfFormat );
-        printer->setOrientation( QPrinter::Portrait );
-        printer->setPaperSize( QSizeF( scene()->width(), scene()->height() ),
-                               QPrinter::Point );
-        printer->setOutputFileName( fichier );
-        printer->setPageMargins( 0, 0, 0, 0, QPrinter::Point );
+    QPrinter* printer = new QPrinter( QPrinter::HighResolution );
+    printer->setOutputFormat( QPrinter::PdfFormat );
+    printer->setOrientation( QPrinter::Portrait );
+    printer->setPaperSize( QSizeF( scene()->width(), scene()->height() ),
+                           QPrinter::Point );
+    printer->setOutputFileName( fichier );
+    printer->setPageMargins( 0, 0, 0, 0, QPrinter::Point );
 
 
-        exportToPrinter( printer );
-        delete printer;
+    exportToPrinter( printer );
+    delete printer;
+}
+
+void TabWidget::save() {
+
+    if( tbrPath_.isEmpty() ){
+
+        QString fichier = QFileDialog::getSaveFileName( this, "Enregistrer l'algorithme",
+                      QString( "algo.tbr" ), "Tabula Rasa (*.tbr *.xml  )" );
+
+        if( fichier.isEmpty() ) {
+             return;
+        }
+
+        tbrPath_ = QFileInfo( fichier ).path();
+   }
+    QFile file( tbrPath_ );
+
+    if ( !file.open( QIODevice::Truncate | QIODevice::WriteOnly ) )
+         { return; }
+
+    QTextStream out( &file );
+
+    scene()->saveToXml( out );
+    file.close();
+
+}
+
+void TabWidget::saveAs() {
+
+    QString fichier = QFileDialog::getSaveFileName( this, "Enregistrer l'algorithme",
+                  QString( "algo.tbr" ), "Tabula Rasa (*.tbr *.xml  )" );
+
+    if( fichier.isEmpty() ) {
+         return;
+    }
+
+    tbrPath_ = fichier;
+    QFile file( tbrPath_ );
+
+    if ( !file.open( QIODevice::Truncate | QIODevice::WriteOnly ) )
+         { return; }
+
+    QTextStream out( &file );
+
+    scene()->saveToXml( out );
+    file.close();
+
 }

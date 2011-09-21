@@ -277,23 +277,9 @@ void MainWindow::on_actionImprimer_triggered()
 
 void MainWindow::on_actionEnregistrer_triggered()
 {/*{{{*/
-     QString fichier = QFileDialog::getSaveFileName( this, "Enregistrer l'algorithme",
-                       QString( "algo.tbr" ), "Tabula Rasa (*.tbr *.xml  )" );
+    TabWidget* tab = static_cast<TabWidget*>( ui->tabWidget->currentWidget() );
+    tab->save();
 
-     if( fichier.isEmpty() ) {
-          return;
-     }
-
-     QFile file( fichier );
-
-     if ( !file.open( QIODevice::Truncate | QIODevice::WriteOnly ) )
-          { return; }
-
-     QTextStream out( &file );
-     AlgorithmeScene* scene = static_cast<TabWidget*>( ui->tabWidget->currentWidget() )
-                              ->scene();
-     scene->saveToXml( out );
-     file.close();
 }/*}}}*/
 
 void MainWindow::on_actionOuvrir_triggered()
@@ -316,6 +302,7 @@ void MainWindow::on_actionOuvrir_triggered()
      QString name = racine.firstChildElement( "nom" ).firstChild().toText().data();
      TabWidget* tab = createNewTab( name );
      tab->scene()->loadFromXml( doc );
+     tab->setTbrPath( fichier );
      file.close();
      setMode( AlgorithmeScene::MoveItem );
 }/*}}}*/
@@ -395,4 +382,10 @@ void MainWindow::on_actionExporter_en_PDF_triggered()
 {
     TabWidget* tab = static_cast<TabWidget*>( ui->tabWidget->currentWidget() );
     tab->exportToPdf();
+}
+
+void MainWindow::on_actionSauvegarder_sous_triggered()
+{
+    TabWidget* tab = static_cast<TabWidget*>( ui->tabWidget->currentWidget() );
+    tab->saveAs();
 }

@@ -151,33 +151,41 @@ void PictoConditionMultiple::updateDimension()
 void PictoConditionMultiple::toXml( QDomDocument& doc, QDomNode& node ) const
 {/*{{{*/
      QDomElement item = doc.createElement( "ConditionMultiple" );
-     node.appendChild( item );
+     node.appendChild( item )
+                     ;
      QDomElement position = doc.createElement( "Position" );
      position.appendChild( doc.createTextNode( QString( "%1;%2" ).arg( scenePos().x() )
                            .arg( scenePos().y() ) ) );
      item.appendChild( position );
+
      QDomElement style = doc.createElement( "StyleLien" );
      style.appendChild( doc.createTextNode(
-                             ( liaison_ ) ?
-                             QString::number( static_cast<int>( liaison_->style() ) ) :
+                            ( labels_.last()->hasLink() ) ?
+                            QString::number( static_cast<int>( labels_.first()->linkStyle() ) ) :
                              "1" ) ) ;
      item.appendChild( style );
+
      QDomElement titre = doc.createElement( "Titre" );
      titre.appendChild( doc.createTextNode( labels_.at( 0 )->label() ) );
      item.appendChild( titre );
+
      QDomElement operations = doc.createElement( "operationsLogiques" );
      item.appendChild( operations );
 
      for( QList<LabelItem*>::const_iterator label = labels_.constBegin() + 1; label != labels_.constEnd(); label++ ) {
+
           QDomElement condition = doc.createElement( "operation" );
           operations.appendChild( condition );
+
           QDomElement titre = doc.createElement( "Titre" );
           titre.appendChild( doc.createTextNode( ( *label )->label() ) );
           condition.appendChild( titre );
+
           QDomElement enfants = doc.createElement( "Enfants" );
           condition.appendChild( enfants );
-          AncreItem* picto;
-          foreach( picto, ( *label )->childrenList() ) {
+
+
+          foreach( AncreItem* picto, ( *label )->childrenList() ) {
                static_cast<Pictogramme*>( picto )->toXml( doc, enfants );
           }
      }

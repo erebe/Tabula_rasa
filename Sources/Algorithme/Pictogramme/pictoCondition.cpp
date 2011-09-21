@@ -155,34 +155,45 @@ void PictoCondition::updateDimension()
 
 void PictoCondition::toXml( QDomDocument& doc, QDomNode& node ) const
 {/*{{{*/
+
      QDomElement item = doc.createElement( "Condition" );
      node.appendChild( item );
+
      QDomElement position = doc.createElement( "Position" );
      position.appendChild( doc.createTextNode( QString( "%1;%2" ).arg( scenePos().x() )
                            .arg( scenePos().y() ) ) );
      item.appendChild( position );
+
      QDomElement style = doc.createElement( "StyleLien" );
-     style.appendChild( doc.createTextNode(
-                             ( liaison_ ) ?
-                             QString::number( static_cast<int>( liaison_->style() ) ) :
-                             "1" ) ) ;
+          style.appendChild( doc.createTextNode(
+                                 ( labels_.last()->hasLink() ) ?
+                                QString::number( static_cast<int>( labels_.last()->linkStyle() ) ) :
+                                 "1" ) ) ;
      item.appendChild( style );
+
      QDomElement unique = doc.createElement( "estUnique" );
      unique.appendChild( doc.createTextNode( isForeverAlone_ ? "1" : "0" ) );
      item.appendChild( unique );
+
      QDomElement operations = doc.createElement( "operationsLogiques" );
      item.appendChild( operations );
-     LabelItem* label;
-     foreach( label, labels_ ) {
+
+
+     foreach( LabelItem* label, labels_ ) {
+
           QDomElement condition = doc.createElement( "operation" );
           operations.appendChild( condition );
+
           QDomElement titre = doc.createElement( "Titre" );
           titre.appendChild( doc.createTextNode( label->label() ) );
           condition.appendChild( titre );
+
           QDomElement enfants = doc.createElement( "Enfants" );
           condition.appendChild( enfants );
-          AncreItem* picto;
-          foreach( picto, label->childrenList() ) {
+
+
+
+          foreach( AncreItem* picto, label->childrenList() ) {
                static_cast<Pictogramme*>( picto )->toXml( doc, enfants );
           }
      }
