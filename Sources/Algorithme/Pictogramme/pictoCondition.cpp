@@ -165,10 +165,10 @@ void PictoCondition::toXml( QDomDocument& doc, QDomNode& node ) const
      item.appendChild( position );
 
      QDomElement style = doc.createElement( "StyleLien" );
-          style.appendChild( doc.createTextNode(
-                                 ( labels_.last()->hasLink() ) ?
-                                QString::number( static_cast<int>( labels_.last()->linkStyle() ) ) :
-                                 "1" ) ) ;
+     style.appendChild( doc.createTextNode(
+                             ( labels_.last()->hasLink() ) ?
+                             QString::number( static_cast<int>( labels_.last()->linkStyle() ) ) :
+                             "1" ) ) ;
      item.appendChild( style );
 
      QDomElement unique = doc.createElement( "estUnique" );
@@ -179,7 +179,7 @@ void PictoCondition::toXml( QDomDocument& doc, QDomNode& node ) const
      item.appendChild( operations );
 
 
-     foreach( LabelItem* label, labels_ ) {
+     foreach( LabelItem * label, labels_ ) {
 
           QDomElement condition = doc.createElement( "operation" );
           operations.appendChild( condition );
@@ -193,7 +193,7 @@ void PictoCondition::toXml( QDomDocument& doc, QDomNode& node ) const
 
 
 
-          foreach( AncreItem* picto, label->childrenList() ) {
+          foreach( AncreItem * picto, label->childrenList() ) {
                static_cast<Pictogramme*>( picto )->toXml( doc, enfants );
           }
      }
