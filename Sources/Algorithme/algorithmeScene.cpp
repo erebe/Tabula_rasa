@@ -240,10 +240,10 @@ void AlgorithmeScene::mouseReleaseEvent( QGraphicsSceneMouseEvent* mouseEvent )
                }
 
                if( qgraphicsitem_cast<PictoIteration*>( parent ) &&
-                   qgraphicsitem_cast<PictoSortie*>( enfant ) ){
+                   qgraphicsitem_cast<PictoSortie*>( enfant ) ) {
 
-                       emit liaisonError();
-                       return;
+                    emit liaisonError();
+                    return;
                }
 
                if( ( parent != 0 ) && ( enfant != parent ) ) {
@@ -286,40 +286,41 @@ void AlgorithmeScene::selectAll()
 
 }/*}}}*/
 
-void AlgorithmeScene::adjust( int delta ){
+void AlgorithmeScene::adjust( int delta )
+{/*{{{*/
 
-    qreal maxX, maxY, minX, minY;
-    maxX = maxY = 0;
-    minX = width();
-    minY = height();
+     qreal maxX, maxY, minX, minY;
+     maxX = maxY = 0;
+     minX = width();
+     minY = height();
 
-    Pictogramme* item;
-    QPointF point;
+     Pictogramme* item;
+     QPointF point;
 
-    foreach( item, items_ ) {
+     foreach( item, items_ ) {
 
-         point = item->scenePos();
+          point = item->scenePos();
 
-         if( maxX < ( point.x() + item->width() ) ) {
-              maxX = point.x() + item->width();
-         }
+          if( maxX < ( point.x() + item->width() ) ) {
+               maxX = point.x() + item->width();
+          }
 
-         if( maxY < point.y() ) {
-              maxY = point.y();
-         }
+          if( maxY < point.y() ) {
+               maxY = point.y();
+          }
 
-         if( minX > point.x() ) {
-              minX = point.x();
-         }
+          if( minX > point.x() ) {
+               minX = point.x();
+          }
 
-         if( minY > point.y() ) {
-              minY = point.y();
-         }
-    }
+          if( minY > point.y() ) {
+               minY = point.y();
+          }
+     }
 
 
      setSceneRect( minX - delta , minY - delta,
                    maxX - minX + ( 2 * delta ),
-                   maxY - minY + 50 + ( 2 * delta) );
+                   maxY - minY + 50 + ( 2 * delta ) );
 
-}
+}/*}}}*/

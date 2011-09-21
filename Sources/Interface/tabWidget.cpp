@@ -49,101 +49,106 @@ TabWidget::TabWidget()
 }/*}}}*/
 
 
-void TabWidget::exportToSvg() {
+void TabWidget::exportToSvg()
+{/*{{{*/
 
 
-    QString fichier = QFileDialog::getSaveFileName( this, "Enregistrer l'algorithme",
-                        svgPath_, "Fichiers SVG (*.svg)" );
+     QString fichier = QFileDialog::getSaveFileName( this, "Enregistrer l'algorithme",
+                       svgPath_, "Fichiers SVG (*.svg)" );
 
-    if( fichier.isEmpty() ) {
-         return;
-    }
-    svgPath_ = QFileInfo( fichier ).path();
+     if( fichier.isEmpty() ) {
+          return;
+     }
 
-    QRectF sceneSize = scene()->sceneRect();
-    scene()->adjust( 10 );
+     svgPath_ = QFileInfo( fichier ).path();
 
-    QSvgGenerator generator;
-    generator.setFileName( fichier );
-    generator.setSize( QSize( scene()->width(), scene()->height() ) );
-    generator.setViewBox( QRect( 0, 0, scene()->width(), scene()->height() ) );
+     QRectF sceneSize = scene()->sceneRect();
+     scene()->adjust( 10 );
 
-    QPainter painter( &generator );
-    scene()->clearSelection();
-    scene()->render( &painter );
+     QSvgGenerator generator;
+     generator.setFileName( fichier );
+     generator.setSize( QSize( scene()->width(), scene()->height() ) );
+     generator.setViewBox( QRect( 0, 0, scene()->width(), scene()->height() ) );
 
-    scene()->setSceneRect( sceneSize );
+     QPainter painter( &generator );
+     scene()->clearSelection();
+     scene()->render( &painter );
 
-}
+     scene()->setSceneRect( sceneSize );
 
-
-void TabWidget::exportToPng() {
-
-    QString fichier = QFileDialog::getSaveFileName( this, "Enregistrer l'algorithme",
-                      pngPath_, "Images (*.png *.gif *.jpg *.jpeg)" );
-
-    if( fichier.isEmpty() ) {
-         return;
-    }
-
-    pngPath_ = QFileInfo( fichier ).path();
-
-    QRectF sceneSize = scene()->sceneRect();
-    scene()->adjust( 50 );
-
-    QPixmap image( scene()->width(), scene()->height() );
-    QPainter painter( &image );
-    painter.setRenderHint( QPainter::Antialiasing );
-
-    scene()->clearSelection();
-    scene()->render( &painter );
-
-    image.save( fichier );
-    scene()->setSceneRect( sceneSize );
+}/*}}}*/
 
 
-}
+void TabWidget::exportToPng()
+{/*{{{*/
 
-void TabWidget::exportToPrinter( QPrinter* printer ) {
+     QString fichier = QFileDialog::getSaveFileName( this, "Enregistrer l'algorithme",
+                       pngPath_, "Images (*.png *.gif *.jpg *.jpeg)" );
 
-         QRectF sceneSize = scene()->sceneRect();
-         scene()->adjust( 50 );
+     if( fichier.isEmpty() ) {
+          return;
+     }
 
-         QPainter painter( printer );
-         painter.setRenderHint( QPainter::Antialiasing );
+     pngPath_ = QFileInfo( fichier ).path();
 
-         QFont font = scene()->font();
-         font.setPixelSize( 10 );
-         painter.setFont(  font );
+     QRectF sceneSize = scene()->sceneRect();
+     scene()->adjust( 50 );
 
+     QPixmap image( scene()->width(), scene()->height() );
+     QPainter painter( &image );
+     painter.setRenderHint( QPainter::Antialiasing );
 
-         scene()->clearSelection();
-         scene()->render( &painter );
-         scene()->setSceneRect( sceneSize );
+     scene()->clearSelection();
+     scene()->render( &painter );
 
-
-}
-
-void TabWidget::exportToPdf() {
-
-    QString fichier = QFileDialog::getSaveFileName( this, "Enregistrer l'algorithme",
-                      pdfPath_, "Pdf (*.pdf)" );
-
-    if( fichier.isEmpty() ) {
-         return;
-    }
-
-    pdfPath_ = QFileInfo( fichier ).path();
-
-        QPrinter* printer = new QPrinter( QPrinter::HighResolution );
-        printer->setOutputFormat( QPrinter::PdfFormat );
-        printer->setOrientation( QPrinter::Portrait );
-        printer->setPaperSize( QSizeF( scene()->width(), scene()->height() ),
-                               QPrinter::Point );
-        printer->setOutputFileName( fichier );
-        printer->setPageMargins( 0, 0, 0, 0, QPrinter::Point );
+     image.save( fichier );
+     scene()->setSceneRect( sceneSize );
 
 
-        exportToPrinter( printer );
-        delete printer;
-}
+}/*}}}*/
+
+void TabWidget::exportToPrinter( QPrinter* printer )
+{/*{{{*/
+
+     QRectF sceneSize = scene()->sceneRect();
+     scene()->adjust( 50 );
+
+     QPainter painter( printer );
+     painter.setRenderHint( QPainter::Antialiasing );
+
+     QFont font = scene()->font();
+     font.setPixelSize( 10 );
+     painter.setFont(  font );
+
+
+     scene()->clearSelection();
+     scene()->render( &painter );
+     scene()->setSceneRect( sceneSize );
+
+
+}/*}}}*/
+
+void TabWidget::exportToPdf()
+{/*{{{*/
+
+     QString fichier = QFileDialog::getSaveFileName( this, "Enregistrer l'algorithme",
+                       pdfPath_, "Pdf (*.pdf)" );
+
+     if( fichier.isEmpty() ) {
+          return;
+     }
+
+     pdfPath_ = QFileInfo( fichier ).path();
+
+     QPrinter* printer = new QPrinter( QPrinter::HighResolution );
+     printer->setOutputFormat( QPrinter::PdfFormat );
+     printer->setOrientation( QPrinter::Portrait );
+     printer->setPaperSize( QSizeF( scene()->width(), scene()->height() ),
+                            QPrinter::Point );
+     printer->setOutputFileName( fichier );
+     printer->setPageMargins( 0, 0, 0, 0, QPrinter::Point );
+
+
+     exportToPrinter( printer );
+     delete printer;
+}/*}}}*/
