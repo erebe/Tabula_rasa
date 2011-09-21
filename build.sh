@@ -4,11 +4,11 @@ NORMAL="\\033[39;49;00m"
 ROUGE="\\033[1;31m"
 VERT="\\033[1;32m"
 
-QMAKE=`which qmake-qt4`
+QMAKE=$(which qmake-qt4 2> /dev/null)
 
 if [ -z "${QMAKE}" ]
 then
-    QMAKE=`which qmake`
+    QMAKE=$(which qmake)
 fi
 
 cd Sources
