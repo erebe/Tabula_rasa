@@ -24,12 +24,14 @@
 #include <QFileDialog>
 #include <QtSvg/QSvgGenerator>
 #include <QPrinter>
-
+#include <QTabWidget>
+#include <QDebug>
 
 TabWidget::TabWidget()
 {/*{{{*/
      scene_ = new AlgorithmeScene( 0, 0, 2000, 2000, this );
      scene_->setBackgroundBrush( Qt::white );
+     connect( scene_, SIGNAL( algorithmeChanged() ), this, SLOT( changeHappened() ) );
 
      vue_ = new QGraphicsView( this );
      vue_->setResizeAnchor( QGraphicsView::NoAnchor );
@@ -37,6 +39,8 @@ TabWidget::TabWidget()
      vue_->setRenderHint( QPainter::Antialiasing );
      vue_->setFont( QFont( "times", 10 ) );
      vue_->setScene( scene_ );
+
+
 
      layout_ = new QHBoxLayout( this );
      layout_->addWidget( vue_ );
@@ -179,27 +183,22 @@ void TabWidget::save()
      scene()->saveToXml( out );
      file.close();
 
+     QTabWidget* tab = static_cast<QTabWidget*>( this->parent()->parent() );
+     tab->setTabText( tab->currentIndex(), scene()->name() );
+
 }/*}}}*/
 
 void TabWidget::saveAs()
 {/*{{{*/
 
-     QString fichier = QFileDialog::getSaveFileName( this, "Enregistrer l'algorithme",
-                       QString( "algo.tbr" ), "Tabula Rasa (*.tbr *.xml  )" );
+     tbrPath_.clear();
+     save();
 
-     if( fichier.isEmpty() ) {
-          return;
-     }
+}/*}}}*/
 
-     tbrPath_ = fichier;
-     QFile file( tbrPath_ );
+void TabWidget::changeHappened()
+{/*{{{*/
 
-     if ( !file.open( QIODevice::Truncate | QIODevice::WriteOnly ) )
-          { return; }
-
-     QTextStream out( &file );
-
-     scene()->saveToXml( out );
-     file.close();
-
+     QTabWidget* tab = static_cast<QTabWidget*>( this->parent()->parent() );
+     tab->setTabText( tab->currentIndex(), scene()->name() + '*' );
 }/*}}}*/
