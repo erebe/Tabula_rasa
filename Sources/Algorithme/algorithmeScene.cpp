@@ -173,6 +173,7 @@ void AlgorithmeScene::mouseMoveEvent( QGraphicsSceneMouseEvent* mouseEvent )
 void AlgorithmeScene::mouseReleaseEvent( QGraphicsSceneMouseEvent* mouseEvent )
 {/*{{{*/
      mouseEvent->accept();
+     emit algorithmeChanged();
 
      if( mouseEvent->button() != Qt::LeftButton ) {
           return;
@@ -273,6 +274,7 @@ void AlgorithmeScene::mouseReleaseEvent( QGraphicsSceneMouseEvent* mouseEvent )
                emit modeChanged( AlgorithmeScene::MoveItem );
           }
      }/*}}}*/
+
 
      QGraphicsScene::mouseReleaseEvent( mouseEvent );
 }/*}}}*/

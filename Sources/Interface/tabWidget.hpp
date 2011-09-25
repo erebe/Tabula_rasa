@@ -27,6 +27,8 @@ class QPtrinter;
 
 class TabWidget : public QWidget {
 
+          Q_OBJECT
+
      public:
           TabWidget();
 
@@ -44,6 +46,10 @@ class TabWidget : public QWidget {
           void save();
           void saveAs();
           inline void setTbrPath( QString path ) { tbrPath_ = path; }
+
+
+     private slots:
+          void changeHappened();
 
      private:
           AlgorithmeScene* scene_;

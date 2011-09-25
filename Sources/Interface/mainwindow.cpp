@@ -103,6 +103,7 @@ TabWidget* MainWindow::createNewTab( QString name )
 
      ui->tabWidget->addTab( tab, name );
      ui->tabWidget->setCurrentWidget( tab );
+
      return tab;
 }/*}}}*/
 

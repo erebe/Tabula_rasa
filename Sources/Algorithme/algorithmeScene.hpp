@@ -46,6 +46,7 @@ class AlgorithmeScene: public QGraphicsScene {
           { mode_ = mode; }
           inline void setName( const QString& name )
           { name_ = name;}
+          inline QString name() { return name_; }
 
           void deleteItem( Pictogramme* item );
           void newItem( Pictogramme* ); //appelé par PictoBuilder
@@ -60,6 +61,7 @@ class AlgorithmeScene: public QGraphicsScene {
           void modeChanged( AlgorithmeScene::Mode mode ); //emit lorsqu'on change de mode
           void itemAdded( Pictogramme* picto ); //emit lors de l'ajout d'un Pictogramme sur la scène
           void liaisonError(); //Lorsqu'une liaison est impossible
+          void algorithmeChanged(); //Lorsque l'algorithme est modifié
 
 
 
