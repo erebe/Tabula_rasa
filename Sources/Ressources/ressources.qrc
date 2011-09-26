@@ -19,10 +19,10 @@
         <file>qt.png</file>
         <file>newFile.png</file>
         <file>ouvrir.png</file>
-        <file>linepointer.png</file>
         <file>icone_imprimante.png</file>
         <file>icone_sauvegarder.png</file>
         <file>export_pdf.png</file>
         <file>export_svg.png</file>
+        <file>liaison.png</file>
     </qresource>
 </RCC>
