@@ -42,14 +42,14 @@ class TabWidget : public QWidget {
           void exportToPdf();
           void exportToSvg();
           void exportToPng();
-          void exportToPrinter( QPrinter* printer );
+          void exportToPrinter( QPrinter* printer, int delta = 50 );
           void save();
           void saveAs();
           inline void setTbrPath( QString path ) { tbrPath_ = path; }
 
 
      private slots:
-          void changeHappened();
+          void changeHappened( );
 
      private:
           AlgorithmeScene* scene_;

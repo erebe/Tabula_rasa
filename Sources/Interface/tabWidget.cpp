@@ -112,11 +112,11 @@ void TabWidget::exportToPng()
 
 }/*}}}*/
 
-void TabWidget::exportToPrinter( QPrinter* printer )
+void TabWidget::exportToPrinter( QPrinter* printer, int delta )
 {/*{{{*/
 
      QRectF sceneSize = scene()->sceneRect();
-     scene()->adjust( 50 );
+     scene()->adjust( delta );
 
      QPainter painter( printer );
      painter.setRenderHint( QPainter::Antialiasing );
@@ -145,16 +145,21 @@ void TabWidget::exportToPdf()
 
      pdfPath_ = fichier;
 
+     QRectF sceneSize = scene()->sceneRect();
+     scene()->adjust( 10 );
+
+
      QPrinter* printer = new QPrinter( QPrinter::HighResolution );
      printer->setOutputFormat( QPrinter::PdfFormat );
      printer->setOrientation( QPrinter::Portrait );
+
      printer->setPaperSize( QSizeF( scene()->width(), scene()->height() ),
                             QPrinter::Point );
      printer->setOutputFileName( fichier );
      printer->setPageMargins( 0, 0, 0, 0, QPrinter::Point );
 
-
-     exportToPrinter( printer );
+     scene()->setSceneRect( sceneSize );
+     exportToPrinter( printer, 0 );
      delete printer;
 }/*}}}*/
 

@@ -29,6 +29,7 @@
 #include <QtGui>
 #include <QtSvg/QSvgGenerator>
 
+
 /*-----------------------------------------------------------------------------
  *  Constructeurs / Destructeurs
  *-----------------------------------------------------------------------------*/
@@ -198,15 +199,30 @@ void MainWindow::on_actionSortie_triggered( bool checked )
  *-----------------------------------------------------------------------------*/
 void MainWindow::on_tabWidget_tabCloseRequested( int index )
 {/*{{{*/
-     if ( QMessageBox::question( this, tr( "Fermer l'onglet ?" ),
+     int reponse = QMessageBox::Discard;
+     QChar c = ui->tabWidget->tabText( index )
+                     .at( ui->tabWidget->tabText( index ).size() - 1);
+
+     if( c == '*' ){
+
+     reponse = QMessageBox::question( this, tr( "Fermer l'onglet ?" ),
                                  tr( "Voulez-vous vraiment fermer l'onglet ?" ),
-                                 QMessageBox::Yes | QMessageBox::No ) == QMessageBox::Yes ) {
-          delete ui->tabWidget->widget( index );
+                                 QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel );
+        }
+        if( reponse == QMessageBox::Save ) {
+                     on_actionEnregistrer_triggered();
+
+        }
+
+        if( reponse != QMessageBox::Cancel ) {
+
+         delete ui->tabWidget->widget( index );
 
           if( ui->tabWidget->count() == 0 ) {
                createNewTab();
           }
-     }
+        }
+
 }/*}}}*/
 
 void MainWindow::on_actionNouveau_triggered()

@@ -179,7 +179,7 @@
    </property>
    <property name="icon">
     <iconset resource="../Ressources/ressources.qrc">
-     <normaloff>:/Icones/linepointer.png</normaloff>:/Icones/linepointer.png</iconset>
+     <normaloff>:/Icones/liaison.png</normaloff>:/Icones/liaison.png</iconset>
    </property>
    <property name="text">
     <string>Mode &amp;Edition</string>
@@ -515,7 +515,7 @@
      <normaloff>:/Icones/icone_sauvegarder.png</normaloff>:/Icones/icone_sauvegarder.png</iconset>
    </property>
    <property name="text">
-    <string>Sauvegarder sous</string>
+    <string>Enregistrer sous</string>
    </property>
    <property name="toolTip">
     <string>Sauvegarder l'agorithme vers un nouveau fichier</string>

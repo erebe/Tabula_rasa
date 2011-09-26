@@ -324,5 +324,4 @@ void AlgorithmeScene::adjust( int delta )
      setSceneRect( minX - delta , minY - delta,
                    maxX - minX + ( 2 * delta ),
                    maxY - minY + 50 + ( 2 * delta ) );
-
 }/*}}}*/
