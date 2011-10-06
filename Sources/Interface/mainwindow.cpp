@@ -201,27 +201,28 @@ void MainWindow::on_tabWidget_tabCloseRequested( int index )
 {/*{{{*/
      int reponse = QMessageBox::Discard;
      QChar c = ui->tabWidget->tabText( index )
-                     .at( ui->tabWidget->tabText( index ).size() - 1);
+               .at( ui->tabWidget->tabText( index ).size() - 1 );
 
-     if( c == '*' ){
+     if( c == '*' ) {
 
-     reponse = QMessageBox::question( this, tr( "Fermer l'onglet ?" ),
-                                 tr( "Voulez-vous vraiment fermer l'onglet ?" ),
-                                 QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel );
-        }
-        if( reponse == QMessageBox::Save ) {
-                     on_actionEnregistrer_triggered();
+          reponse = QMessageBox::question( this, tr( "Fermer l'onglet ?" ),
+                                           tr( "Voulez-vous vraiment fermer l'onglet ?" ),
+                                           QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel );
+     }
 
-        }
+     if( reponse == QMessageBox::Save ) {
+          on_actionEnregistrer_triggered();
 
-        if( reponse != QMessageBox::Cancel ) {
+     }
 
-         delete ui->tabWidget->widget( index );
+     if( reponse != QMessageBox::Cancel ) {
+
+          delete ui->tabWidget->widget( index );
 
           if( ui->tabWidget->count() == 0 ) {
                createNewTab();
           }
-        }
+     }
 
 }/*}}}*/
 
