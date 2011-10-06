@@ -6,6 +6,7 @@ A l'issue de ce projet qu'est ce que je voudrais améliorer ?
     + Mieux définir les rôles de chaques éléments d'interface (certaines méthodes ne sont pas à leur place)
     + Mettre des namespaces 
     + Mettre en place le design pattern "storable" pour les sauvegardes
+    + Arreter de se planter dans les commits...
 
 Apprentissage de Qt done ;)
 
