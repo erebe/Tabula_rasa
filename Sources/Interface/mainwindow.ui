@@ -98,15 +98,8 @@
     <addaction name="actionA_propos_de_Tabula_Rasa"/>
     <addaction name="actionA_propos_de_Qt"/>
    </widget>
-   <widget class="QMenu" name="menuAnalyse">
-    <property name="title">
-     <string>&amp;Analyse</string>
-    </property>
-    <addaction name="actionV_rifier_les_cycles"/>
-   </widget>
    <addaction name="menu_Fichier"/>
    <addaction name="menuEdition"/>
-   <addaction name="menuAnalyse"/>
    <addaction name="menuG_n_rer"/>
    <addaction name="menuA_propos"/>
   </widget>
