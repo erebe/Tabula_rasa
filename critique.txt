@@ -2,9 +2,11 @@ A l'issue de ce projet qu'est ce que je voudrais améliorer ?
 
     + Choisir dès le début une politique de nommage (Essentiellement tout francais ou anglais)
     + Commenter le code avec des tags doxygen pour faciliter la documentation;
-      Voir commenter le code tout court pour certaine partie développez rapidement
+      Voir commenter le code tout court pour certaines parties développées rapidements
     + Mieux définir les rôles de chaques éléments d'interface (certaines méthodes ne sont pas à leur place)
-    + Mettre des namespaces, 
-
+    + Mettre des namespaces 
 
 Apprentissage de Qt done ;)
+
+
+"Un programma n'est jamais fini, on arrête juste d'y travailler dessus"
