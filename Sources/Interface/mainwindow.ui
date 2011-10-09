@@ -358,7 +358,7 @@
      <normaloff>:/Icones/icone_resize.png</normaloff>:/Icones/icone_resize.png</iconset>
    </property>
    <property name="text">
-    <string>Redimensionner l'Algorithme</string>
+    <string>Redimensionner la feuille de dessin</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+Shift+R</string>
