@@ -110,28 +110,29 @@ TabWidget* MainWindow::createNewTab( QString name )
      return tab;
 }/*}}}*/
 
-void MainWindow::setDisabled( bool state ) {
+void MainWindow::setDisabled( bool state )
+{/*{{{*/
 
-        ui->actionAction->setDisabled( state );
-        ui->actionCondition->setDisabled( state );
-        ui->actionConditionMultiple->setDisabled( state );
-        ui->actionEnregistrer->setDisabled( state );
-        ui->actionExporter_en_PDF->setDisabled( state );
-        ui->actionExporter_SVG->setDisabled( state );
-        ui->actionExporter_vers_une_image->setDisabled( state );
-        ui->actionFermer_l_onglet->setDisabled( state );
-        ui->actionImprimer->setDisabled( state );
-        ui->actionIteration->setDisabled( state );
-        ui->actionMode_Edition->setDisabled( state );
-        ui->actionMode_Insertion->setDisabled( state );
-        ui->actionProcedure->setDisabled( state );
-        ui->actionRedimensionner_l_Algorithme->setDisabled( state );
-        ui->actionRenommer_l_algorithme->setDisabled( state );
-        ui->actionSauvegarder_sous->setDisabled( state );
-        ui->actionSortie->setDisabled( state );
-        ui->actionTout_s_lectionner->setDisabled( state );
+     ui->actionAction->setDisabled( state );
+     ui->actionCondition->setDisabled( state );
+     ui->actionConditionMultiple->setDisabled( state );
+     ui->actionEnregistrer->setDisabled( state );
+     ui->actionExporter_en_PDF->setDisabled( state );
+     ui->actionExporter_SVG->setDisabled( state );
+     ui->actionExporter_vers_une_image->setDisabled( state );
+     ui->actionFermer_l_onglet->setDisabled( state );
+     ui->actionImprimer->setDisabled( state );
+     ui->actionIteration->setDisabled( state );
+     ui->actionMode_Edition->setDisabled( state );
+     ui->actionMode_Insertion->setDisabled( state );
+     ui->actionProcedure->setDisabled( state );
+     ui->actionRedimensionner_l_Algorithme->setDisabled( state );
+     ui->actionRenommer_l_algorithme->setDisabled( state );
+     ui->actionSauvegarder_sous->setDisabled( state );
+     ui->actionSortie->setDisabled( state );
+     ui->actionTout_s_lectionner->setDisabled( state );
 
-}
+}/*}}}*/
 
 
 
@@ -231,7 +232,7 @@ void MainWindow::on_tabWidget_tabCloseRequested( int index )
 
      if( c == '*' ) {
 
-          QString name = static_cast<TabWidget*>(ui->tabWidget->widget( index ) )->scene()->name();
+          QString name = static_cast<TabWidget*>( ui->tabWidget->widget( index ) )->scene()->name();
 
           reponse = QMessageBox::question( this, tr( "Fermer l'onglet ?" ),
                                            tr( "Voulez-vous vraiment fermer \"" ) + name + tr( "\" ?" ),
@@ -245,9 +246,10 @@ void MainWindow::on_tabWidget_tabCloseRequested( int index )
      if( reponse != QMessageBox::Cancel ) {
 
           delete ui->tabWidget->widget( index );
-        if( ui->tabWidget->count() == 0 ) {
-                setDisabled( true );
-        }
+
+          if( ui->tabWidget->count() == 0 ) {
+               setDisabled( true );
+          }
      }
 
 }/*}}}*/
@@ -322,14 +324,16 @@ void MainWindow::on_actionImprimer_triggered()
 
 void MainWindow::on_actionEnregistrer_triggered( int i )
 {/*{{{*/
-        TabWidget* tab;
-        if( i == -1 ) {
-                tab = static_cast<TabWidget*>( ui->tabWidget->currentWidget() );
-        }else {
-                tab = static_cast<TabWidget*>( ui->tabWidget->widget( i ) );
-        }
+     TabWidget* tab;
 
-        tab->save();
+     if( i == -1 ) {
+          tab = static_cast<TabWidget*>( ui->tabWidget->currentWidget() );
+
+     } else {
+          tab = static_cast<TabWidget*>( ui->tabWidget->widget( i ) );
+     }
+
+     tab->save();
 
 }/*}}}*/
 
@@ -442,39 +446,47 @@ void MainWindow::on_actionSauvegarder_sous_triggered()
 }/*}}}*/
 
 void MainWindow::on_actionQuitter_triggered()
-{
-        QList< QPair<QString, bool> > algos;
+{/*{{{*/
+     QList< QPair<QString, bool> > algos;
+     int ASauvegarder = 0;
 
-        for( int i = 0; i < ui->tabWidget->count(); i++ ) {
-                const QString& tabText = ui->tabWidget->tabText( i );
+     for( int i = 0; i < ui->tabWidget->count(); i++ ) {
+          const QString& tabText = ui->tabWidget->tabText( i );
 
-                if( tabText.at( tabText.size() - 1 ) == '*' ) {
-                        algos << QPair<QString, bool>( static_cast<TabWidget*>( ui->tabWidget->widget( i ) )
-                                        ->scene()->name(), true );
-                }else {
-                        algos << QPair<QString, bool>( static_cast<TabWidget*>( ui->tabWidget->widget( i ) )
-                                        ->scene()->name(), false );
-                }
+          if( tabText.at( tabText.size() - 1 ) == '*' ) {
+               algos << QPair<QString, bool>( static_cast<TabWidget*>( ui->tabWidget->widget( i ) )
+                                              ->scene()->name(), true );
+               ASauvegarder++;
 
-        }
+          } else {
+               algos << QPair<QString, bool>( static_cast<TabWidget*>( ui->tabWidget->widget( i ) )
+                                              ->scene()->name(), false );
+          }
 
-        Sauvegarde fenetreSauvegarde( algos , this );
-        int action = fenetreSauvegarde.exec();
+     }
 
-        if( action == -1 ) {
-                qApp->quit();
-        }else if( action == 1 ) {
-
-                for( int i = 0; i < algos.size(); i++ ) {
-
-                        if( algos.at( i ).second ) {
-
-                                on_actionEnregistrer_triggered( i );
-                        }
-                }
-
-                qApp->quit();
-        }
+     if( ASauvegarder == 0 )
+          { qApp->quit(); }
 
 
-}
+     Sauvegarde fenetreSauvegarde( algos , this );
+     int action = fenetreSauvegarde.exec();
+
+     if( action == -1 ) {
+          qApp->quit();
+
+     } else if( action == 1 ) {
+
+          for( int i = 0; i < algos.size(); i++ ) {
+
+               if( algos.at( i ).second ) {
+
+                    on_actionEnregistrer_triggered( i );
+               }
+          }
+
+          qApp->quit();
+     }
+
+
+}/*}}}*/

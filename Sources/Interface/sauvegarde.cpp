@@ -5,67 +5,71 @@
 #include <QPushButton>
 #include <QDebug>
 
-Sauvegarde::Sauvegarde( QList< QPair<QString, bool> >& algos, QWidget *parent ) :
-    QDialog(parent),
-    ui(new Ui::Sauvegarde), algos_( algos )
-{
-    ui->setupUi(this);
+Sauvegarde::Sauvegarde( QList< QPair<QString, bool> >& algos, QWidget* parent ) :
+     QDialog( parent ),
+     ui( new Ui::Sauvegarde ), algos_( algos )
+{/*{{{*/
+     ui->setupUi( this );
 
-    QStandardItemModel* liste = new QStandardItemModel( this );
+     QStandardItemModel* liste = new QStandardItemModel( this );
 
      for( QList< QPair<QString, bool> >::const_iterator it = algos.constBegin();
           it != algos.constEnd(); it++ ) {
 
-                QStandardItem* item = new QStandardItem( it->first );
-                item->setFlags( Qt::ItemIsUserCheckable | Qt::ItemIsEnabled );
-                if( it->second )
-                        item->setData( QVariant( Qt::Checked ), Qt::CheckStateRole );
-                else
-                        item->setData( QVariant( Qt::Unchecked ), Qt::CheckStateRole );
+          QStandardItem* item = new QStandardItem( it->first );
+          item->setFlags( Qt::ItemIsUserCheckable | Qt::ItemIsEnabled );
 
-                liste->appendRow( item );
-    }
+          if( it->second )
+               { item->setData( QVariant( Qt::Checked ), Qt::CheckStateRole ); }
 
-    ui->listView->setModel( liste );
+          else
+               { item->setData( QVariant( Qt::Unchecked ), Qt::CheckStateRole ); }
 
-    QStandardItemModel* items =  static_cast<QStandardItemModel*>(ui->listView->model());
+          liste->appendRow( item );
+     }
 
-    for( int i = 0; i < items->rowCount(); i++ ) {
+     ui->listView->setModel( liste );
 
-            if( items->item(i)->checkState() == 0 ) {
-                    ui->listView->setRowHidden( i , true );
-            }
-    }
+     QStandardItemModel* items =  static_cast<QStandardItemModel*>( ui->listView->model() );
+
+     for( int i = 0; i < items->rowCount(); i++ ) {
+
+          if( items->item( i )->checkState() == 0 ) {
+               ui->listView->setRowHidden( i , true );
+          }
+     }
 
 
-    QAbstractButton* button =  ui->buttonBox->button(QDialogButtonBox::Discard);
-    connect( button, SIGNAL(clicked()),
-             this, SLOT( clickDiscard() ) );
+     QAbstractButton* button =  ui->buttonBox->button( QDialogButtonBox::Discard );
+     connect( button, SIGNAL( clicked() ),
+              this, SLOT( clickDiscard() ) );
 
-    button = ui->buttonBox->button(QDialogButtonBox::Save);
-    connect( button, SIGNAL(clicked()),
-             this, SLOT( clickSave() ) );
-}
+     button = ui->buttonBox->button( QDialogButtonBox::Save );
+     connect( button, SIGNAL( clicked() ),
+              this, SLOT( clickSave() ) );
+}/*}}}*/
 
 Sauvegarde::~Sauvegarde()
-{
-    delete ui;
-}
+{/*{{{*/
+     delete ui;
+}/*}}}*/
 
-void Sauvegarde::clickDiscard( ) {
+void Sauvegarde::clickDiscard( )
+{/*{{{*/
 
-        done(-1);
-}
+     done( -1 );
+}/*}}}*/
 
-void Sauvegarde::clickSave() {
+void Sauvegarde::clickSave()
+{/*{{{*/
 
-    QStandardItemModel* items =  static_cast<QStandardItemModel*>( ui->listView->model() );
+     QStandardItemModel* items =  static_cast<QStandardItemModel*>( ui->listView->model() );
 
-    for( int i = 0; i < items->rowCount(); i++ ) {
+     for( int i = 0; i < items->rowCount(); i++ ) {
 
-            if( items->item(i)->checkState() == 0 ) {
-                    algos_.replace( i , qMakePair( algos_.at( i ).first, false ) );
-            }
-    }
+          if( items->item( i )->checkState() == 0 ) {
+               algos_.replace( i , qMakePair( algos_.at( i ).first, false ) );
+          }
+     }
 
-}
+}/*}}}*/
