@@ -30,11 +30,13 @@ HEADERS += Algorithme/algorithmeScene.hpp \
            Algorithme/Pictogramme/pictoIteration.hpp \
            Algorithme/Pictogramme/pictoProcedure.hpp \
            Algorithme/Pictogramme/pictoSortie.hpp \
-    Interface/labeledit.hpp
+    Interface/labeledit.hpp \
+    Interface/sauvegarde.hpp
 FORMS += Interface/aboutDialog.ui \
          Interface/mainwindow.ui \
          Interface/resizeDialog.ui \
-    Interface/labeledit.ui
+    Interface/labeledit.ui \
+    Interface/sauvegarde.ui
 SOURCES += main.cpp \
            Algorithme/algorithmeScene.cpp \
            Algorithme/pictoBuilder.cpp \
@@ -52,8 +54,12 @@ SOURCES += main.cpp \
            Algorithme/Pictogramme/pictoIteration.cpp \
            Algorithme/Pictogramme/pictoProcedure.cpp \
            Algorithme/Pictogramme/pictoSortie.cpp \
-    Interface/labeledit.cpp
+    Interface/labeledit.cpp \
+    Interface/sauvegarde.cpp
 RESOURCES += Ressources/ressources.qrc
+
+
+
 
 
 

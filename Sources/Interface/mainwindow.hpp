@@ -51,6 +51,7 @@ class MainWindow : public QMainWindow {
            * Methodes privées
            *-----------------------------------------------------------------------------*/
           void selectQAction( AlgorithmeScene::Mode mode );
+          void setDisabled( bool state );
           TabWidget* createNewTab( QString name = "Algorithme" );
 
      private slots:
@@ -77,7 +78,7 @@ class MainWindow : public QMainWindow {
           void on_actionRedimensionner_l_Algorithme_triggered();
           void on_actionA_propos_de_Tabula_Rasa_triggered();
           void on_actionImprimer_triggered();
-          void on_actionEnregistrer_triggered();
+          void on_actionEnregistrer_triggered( int index = -1 );
           void on_actionOuvrir_triggered();
 
 
@@ -94,5 +95,6 @@ class MainWindow : public QMainWindow {
           void on_actionExporter_SVG_triggered();
           void on_actionExporter_en_PDF_triggered();
           void on_actionSauvegarder_sous_triggered();
+          void on_actionQuitter_triggered();
 };
 #endif                           // MAINWINDOW_HPP
