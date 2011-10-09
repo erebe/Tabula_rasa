@@ -53,6 +53,7 @@ class MainWindow : public QMainWindow {
           void selectQAction( AlgorithmeScene::Mode mode );
           void setDisabled( bool state );
           TabWidget* createNewTab( QString name = "Algorithme" );
+          virtual void closeEvent( QCloseEvent* event );
 
      private slots:
           /*-----------------------------------------------------------------------------
