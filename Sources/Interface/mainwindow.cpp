@@ -490,3 +490,11 @@ void MainWindow::on_actionQuitter_triggered()
 
 
 }/*}}}*/
+
+void MainWindow::closeEvent( QCloseEvent* event )
+{/*{{{*/
+
+     event->ignore();
+     on_actionQuitter_triggered();
+
+}/*}}}*/

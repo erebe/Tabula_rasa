@@ -46,6 +46,7 @@ class PictoIteration : public Pictogramme {
 
           void updateDimension();
           void toXml( QDomDocument& doc, QDomNode& node ) const;
+          void createLink();
 
      private:
           /*-----------------------------------------------------------------------------
