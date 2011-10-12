@@ -166,7 +166,7 @@ void PictoIteration::toXml( QDomDocument& doc, QDomNode& node ) const
 void PictoIteration::createLink()
 {/*{{{*/
      AncreItem::createLink();
-     liaison_->setStyle( LiaisonItem::Double );
+     liaison_->setStyle( LiaisonItem::Simple );
 }/*}}}*/
 
 /*-----------------------------------------------------------------------------
