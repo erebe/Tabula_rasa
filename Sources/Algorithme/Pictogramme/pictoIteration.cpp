@@ -163,7 +163,11 @@ void PictoIteration::toXml( QDomDocument& doc, QDomNode& node ) const
      static_cast<Pictogramme*>( picto )->toXml( doc, enfants );
 }/*}}}*/
 
-
+void PictoIteration::createLink()
+{/*{{{*/
+     AncreItem::createLink();
+     liaison_->setStyle( LiaisonItem::Simple );
+}/*}}}*/
 
 /*-----------------------------------------------------------------------------
  *  Gestionnaire évènements

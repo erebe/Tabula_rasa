@@ -169,7 +169,7 @@ void TabWidget::save()
      if( tbrPath_.isEmpty() ) {
 
           QString fichier = QFileDialog::getSaveFileName( this, "Enregistrer l'algorithme",
-                            QString( "algo.tbr" ), "Tabula Rasa (*.tbr *.xml  )" );
+                            QString( scene()->name() + ".tbr" ), "Tabula Rasa (*.tbr *.xml  )" );
 
           if( fichier.isEmpty() ) {
                return;

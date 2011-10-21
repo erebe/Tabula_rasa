@@ -8,7 +8,7 @@ Tabula rasa est un editeur d'algorithme conçu pour répondre aux spécification
 Installation pour Windows :
 	+ Se rendre sur https://github.com/erebe/Tabula_rasa
 	+ Cliquer sur le bouton "Download" en haut à droite
-	+ Télécharger la package "Tabula_Rasa-V0.9.zip"
+	+ Télécharger la package "Tabula_Rasa-VX.X.zip"
 	+ Extraire tous les fichiers et lancer l'executable
 
 
@@ -33,7 +33,7 @@ Fonctionnalités prévues :
 Pourquoi le C++ comme choix de langage ? :
 	Je connais le C#, Python et Java mais le C++ reste mon langage préféré
 	(surtout avec le dernier standard C++1x) et permet de produire des applications portables.
-	C'est plus un choix de goût que motivé par la raison.
+	C'est plus un choix de coeur que de raison.
 
 
 Pourquoi Qt ? :
