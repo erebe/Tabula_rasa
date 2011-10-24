@@ -19,6 +19,7 @@
 #include "pictoBuilder.hpp"
 #include "algorithmeScene.hpp"
 #include <QPainter>
+#include <QGraphicsSceneMouseEvent>
 
 /*-----------------------------------------------------------------------------
  *  Constructeurs / Destructeurs
@@ -30,6 +31,7 @@ PictoCondition::PictoCondition( const QString& label,
 {/*{{{*/
      labels_ << new LabelItem( label, 150, 25, 50, this, scene );
      labels_.at( 0 )->setAnchorType( AncreItem::Down );
+
      labels_ << new LabelItem( "Sinon", 150, 25, 50, this, scene );
      labels_.at( 1 )->setAnchorType( AncreItem::Down );
 
@@ -39,6 +41,9 @@ PictoCondition::PictoCondition( const QString& label,
 
      actions_["SingleOne"] = contexteMenu_.addAction( tr( "Condition unique" ) );
      actions_["SingleOne"]->setCheckable( true );
+
+     actions_["AjouterA"] = contexteMenu_.addAction( tr( "Ajouter une condition" ) );
+     actions_["SupprimerA"] = contexteMenu_.addAction( tr( "Supprimer la condition" ) );
 }/*}}}*/
 
 PictoCondition::PictoCondition( const QDomElement& node,
@@ -58,6 +63,8 @@ PictoCondition::PictoCondition( const QDomElement& node,
      actions_["SingleOne"] = contexteMenu_.addAction( tr( "Condition unique" ) );
      actions_["SingleOne"]->setCheckable( true );
      actions_["SingleOne"]->setChecked( isForeverAlone_ );
+     actions_["AjouterA"] = contexteMenu_.addAction( tr( "Ajouter une condition" ) );
+     actions_["SupprimerA"] = contexteMenu_.addAction( tr( "Supprimer la condition" ) );
 
      const QDomNodeList nodes = node.firstChildElement( "operationsLogiques" ).childNodes();
      Pictogramme* picto = 0;
@@ -106,15 +113,21 @@ void PictoCondition::paint( QPainter* painter,
      pos += labels_.at( 0 )->width() + 35;
 
      if( !isForeverAlone_ ) {
-          painter->drawLine( pos, 0, pos, 50 );
-          labels_.at( 1 )->setPos( pos + 10, 0 );
-          pos += labels_.at( 1 )->width() + 10;
-          labels_.at( 1 )->setEnabled( true );
-          labels_.at( 1 )->setVisible( true );
+
+             for( int i = 1; i< labels_.size(); i++ ) {
+                 painter->drawLine( pos, 0, pos, 50 );
+                 pos += labels_.at( i )->width() + 15;
+                 labels_[i]->setEnabled( true );
+                 labels_[i]->setVisible( true );
+             }
+
 
      } else {
-          labels_.at( 1 )->setEnabled( false );
-          labels_.at( 1 )->setVisible( false );
+         for( int i = 1; i < labels_.size(); i++ ) {
+             labels_[i]->setEnabled( false );
+             labels_[i]->setVisible( false );
+         }
+
      }
 
      painter->drawLine( 20, 0, pos, 0 );
@@ -133,23 +146,27 @@ QRectF PictoCondition::boundingRect() const
 void PictoCondition::updateDimension()
 {/*{{{*/
      qreal posAncre;
-     labels_.at( 0 )->setPos( 25, 0 );
-     labels_.at( 1 )->setPos( labels_.at( 0 )->width() + 45, 0 );
+     pos_ = 20;
 
      if( !isForeverAlone_ ) {
-          pos_ = labels_.at( 1 )->width()
-                 + labels_.at( 0 )->width() + 65;
 
+         for( int  i = 0; i < labels_.size(); i++ ) {
+              pos_ += 5;
+              labels_[i]->setPos( pos_, 0 );
+              pos_ += labels_[i]->width() + 10;
+         }
      } else {
-          pos_ = labels_.at( 0 )->width() + 55;
+          pos_ = labels_.at( 0 )->width() + 35;
      }
+
+     pos_ += 20;
 
      posAncre = ( pos_ / 2 );
      posBottomAnchor_.setX( posAncre );
      posUpAnchor_.setX( posAncre );
      updateLink();
-     AncreItem* item;
-     foreach( item, labels_ )
+
+     foreach( AncreItem* item, labels_ )
      item->updateLink();
 }/*}}}*/
 
@@ -221,13 +238,38 @@ void PictoCondition::processAction( QAction* action, QGraphicsSceneContextMenuEv
      if( action == actions_["SingleOne"] ) {
           isForeverAlone_ = !isForeverAlone_;
 
-          if( isForeverAlone_ )
-               { labels_.at( 1 )->detach(); }
+          if( isForeverAlone_ ) {
+                  for( int i = 1; i < labels_.size(); i++ ) {
+                          labels_[i]->detach();
+                  }
+          }
 
           prepareGeometryChange();
           updateDimension();
 
-     } else {
+     }else if( actions_["AjouterA"] == action ) {
+               LabelItem* item = new LabelItem( "", 150, 25, 50, this, scene() );
+               item->setAnchorType( AncreItem::Down );
+
+               labels_.insert( labels_.size() - 1, item );
+               prepareGeometryChange();
+               updateDimension();
+
+     } else if( actions_["SupprimerA"] == action ) {
+
+               LabelItem* tmp;
+               foreach( tmp, labels_ ) {
+                    if( ( tmp != labels_.at( 0 ) ) &&
+                        tmp->contains( event->pos() - tmp->pos() ) ) {
+                         labels_.removeOne( tmp );
+                         delete tmp;
+                         prepareGeometryChange();
+                         updateDimension();
+                         break;
+                    }
+               }
+
+      }else {
           Pictogramme::processAction( action, event );
      }
 }/*}}}*/
