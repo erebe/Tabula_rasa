@@ -360,6 +360,7 @@ void MainWindow::on_actionOuvrir_triggered()
      tab->setTbrPath( fichier );
      file.close();
      setMode( AlgorithmeScene::MoveItem );
+     setDisabled( false );
 }/*}}}*/
 
 

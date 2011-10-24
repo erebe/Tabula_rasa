@@ -163,14 +163,14 @@ void Pictogramme::processAction( QAction* action, QGraphicsSceneContextMenuEvent
      } else if( actions_["DelierP"] == action ) {
           deleteParent();
 
-     } else if( actions_["LSimple"] == action ) {
-          if( liaison_ ) {
-               liaison_->setStyle( LiaisonItem::Simple );
-          }
+//     } else if( actions_["LSimple"] == action ) {
+//          if( liaison_ ) {
+//               liaison_->setStyle( LiaisonItem::Simple );
+//          }
 
-          foreach( LabelItem * item, labels_ ) {
-               item->setLinkStyle( LiaisonItem::Simple );
-          }
+//          foreach( LabelItem * item, labels_ ) {
+//               item->setLinkStyle( LiaisonItem::Simple );
+//          }
 
      } else if( actions_["LDouble"] == action ) {
           if( liaison_ ) {
