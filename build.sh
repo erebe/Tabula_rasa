@@ -13,7 +13,7 @@ fi
 
 cd Sources
 ${QMAKE} || exit 0
-make || exit 0
+make -j3 || exit 0
 cp tabula_rasa ../
 
 
