@@ -36,7 +36,7 @@ Pictogramme::Pictogramme( QGraphicsItem* parent, QGraphicsScene* scene ):
      actions_["Supprimer"] = contexteMenu_.addAction( tr( "Supprimer" ) );
      sousMenu_ = contexteMenu_.addMenu( QIcon(), "Style des liaisons" );
 
-     //actions_["LSimple"] = sousMenu_->addAction( tr( "Simple" ) );
+     actions_["LSimple"] = sousMenu_->addAction( tr( "Simple" ) );
      actions_["LDouble"] = sousMenu_->addAction( tr( "Double" ) );
      actions_["LLineaire"] = sousMenu_->addAction( tr( "Linéaire" ) );
      contexteMenu_.addSeparator();
@@ -163,14 +163,14 @@ void Pictogramme::processAction( QAction* action, QGraphicsSceneContextMenuEvent
      } else if( actions_["DelierP"] == action ) {
           deleteParent();
 
-//     } else if( actions_["LSimple"] == action ) {
-//          if( liaison_ ) {
-//               liaison_->setStyle( LiaisonItem::Simple );
-//          }
+     } else if( actions_["LSimple"] == action ) {
+          if( liaison_ ) {
+               liaison_->setStyle( LiaisonItem::Simple );
+          }
 
-//          foreach( LabelItem * item, labels_ ) {
-//               item->setLinkStyle( LiaisonItem::Simple );
-//          }
+          foreach( LabelItem * item, labels_ ) {
+               item->setLinkStyle( LiaisonItem::Simple );
+          }
 
      } else if( actions_["LDouble"] == action ) {
           if( liaison_ ) {
