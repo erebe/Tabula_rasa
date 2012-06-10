@@ -17,7 +17,9 @@
  * =====================================================================================
  */
 #include "labelItem.hpp"
+#include "liaisonItem.hpp"
 #include <QPainter>
+#include <QDebug>
 
 /*-----------------------------------------------------------------------------
  *  Constructeurs / Destructeurs
@@ -113,4 +115,12 @@ void LabelItem::formatString()
 
      label_.first.replace( "->", "→" );
      label_.first.replace( "<-", "←" );
+}/*}}}*/
+
+void LabelItem::onChildrenChange()
+{/*{{{*/
+    if( children_.size() == 1 )
+        setLinkStyle( LiaisonItem::Linear );
+    else
+        setLinkStyle( LiaisonItem::Simple );
 }/*}}}*/

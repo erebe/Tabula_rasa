@@ -58,6 +58,7 @@ class LabelItem : public AncreItem {
            *-----------------------------------------------------------------------------*/
           unsigned int calculLargeurTexte() const; //retourne la largeur du texte
           void formatString(); //retourne la largeur du texte
+          virtual void onChildrenChange();
 
 };
 

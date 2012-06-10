@@ -71,10 +71,14 @@ void AncreItem::deleteParent()
           parent_->children_.removeOne( this );
 
           if( parent_->children_.count() )
-               { parent_->updateLink(); }
-
+          {
+              parent_->updateLink();
+              parent_->onChildrenChange();
+          }
           else
-               { parent_->deleteLink(); }
+          { 
+              parent_->deleteLink();
+          }
      }
 
      parent_ = 0;
@@ -118,9 +122,15 @@ bool AncreItem::addChild( AncreItem* child )
      } else {
           updateLink();
      }
+     onChildrenChange();
 
      return true;
 }/*}}}*/
+
+void AncreItem::onChildrenChange()
+/*{{{*/
+{}
+/*}}}*/
 
 void AncreItem::createLink()
 {/*{{{*/

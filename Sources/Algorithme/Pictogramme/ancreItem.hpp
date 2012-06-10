@@ -39,8 +39,8 @@ class AncreItem: public QGraphicsItem {
           inline QPointF positionAncreHaute() const { return posUpAnchor_; }
 
 
-          virtual void updateLink(); //Mets à jour le lien
           bool addChild( AncreItem* child );
+          void updateLink(); //Mets à jour le lien
 
           virtual int type() const { return Type; }
           inline bool isChild() { return ( parent_ ) ? true : false; }
@@ -80,6 +80,7 @@ class AncreItem: public QGraphicsItem {
 
           virtual void setParent( AncreItem* parent ); //Définit le parent de l'element
           virtual void createLink( );
+          virtual void onChildrenChange();
           bool childExist( AncreItem* parent, AncreItem* child );
 
 };
