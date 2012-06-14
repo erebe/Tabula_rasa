@@ -47,6 +47,14 @@ class LiaisonItem : public QGraphicsPathItem {
           QList<AncreItem*>& children_;
           QPainterPath path_;
           Style style_;
+
+          /*-----------------------------------------------------------------------------
+           *  Methodes protégées
+           *-----------------------------------------------------------------------------*/
+           void drawLinearLiaison();
+           void drawDoubleLiaison();
+           void drawSimpleLiaison();
+           void drawFullDouble();
 };
 
 
