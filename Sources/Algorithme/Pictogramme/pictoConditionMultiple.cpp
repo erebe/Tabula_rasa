@@ -159,10 +159,7 @@ void PictoConditionMultiple::toXml( QDomDocument& doc, QDomNode& node ) const
      item.appendChild( position );
 
      QDomElement style = doc.createElement( "StyleLien" );
-     style.appendChild( doc.createTextNode(
-                             ( labels_.last()->hasLink() ) ?
-                             QString::number( static_cast<int>( labels_.first()->linkStyle() ) ) :
-                             "1" ) ) ;
+     style.appendChild( doc.createTextNode(QString::number( static_cast<int>(linkStyle()))));
      item.appendChild( style );
 
      QDomElement titre = doc.createElement( "Titre" );
@@ -236,4 +233,17 @@ void PictoConditionMultiple::processAction( QAction* action, QGraphicsSceneConte
           Pictogramme::processAction( action, event );
      }
 }/*}}}*/
+
+
+LiaisonItem::Style PictoConditionMultiple::linkStyle() const
+{
+    LiaisonItem::Style style = LiaisonItem::Linear;
+
+    for(int i = 1; i < labels_.size(); ++i) {
+        if( labels_[i]->hasLink())
+            style = labels_[i]->linkStyle();
+    }
+
+    return style;
+}
 

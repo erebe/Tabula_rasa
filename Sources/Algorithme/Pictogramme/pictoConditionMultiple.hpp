@@ -50,6 +50,7 @@ class PictoConditionMultiple : public Pictogramme {
            *-----------------------------------------------------------------------------*/
           void processAction( QAction* action, QGraphicsSceneContextMenuEvent* event );
           QVariant itemChange( GraphicsItemChange change, const QVariant& value );
+          LiaisonItem::Style linkStyle() const;
 };
 
 #endif // PICTOCONDITIONMULTIPLE_HPP
