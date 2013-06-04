@@ -52,7 +52,7 @@
      <x>0</x>
      <y>0</y>
      <width>938</width>
-     <height>26</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_Fichier">
@@ -77,6 +77,7 @@
      <string>&amp;Edition</string>
     </property>
     <addaction name="actionTout_s_lectionner"/>
+    <addaction name="actionSupprimer_la_s_lection"/>
     <addaction name="separator"/>
     <addaction name="actionRenommer_l_algorithme"/>
     <addaction name="actionRedimensionner_l_Algorithme"/>
@@ -515,6 +516,14 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+Shift+S</string>
+   </property>
+  </action>
+  <action name="actionSupprimer_la_s_lection">
+   <property name="text">
+    <string>Supprimer la sélection</string>
+   </property>
+   <property name="shortcut">
+    <string>Del</string>
    </property>
   </action>
  </widget>

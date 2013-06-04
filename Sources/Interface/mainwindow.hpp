@@ -3,7 +3,7 @@
  *
  *       Filename:  mainwindow.hpp
  *
- *    Description:  Tabula Rasa : Classe gérant l'interface de l'application
+ *    Description:  Tabula Rasa : Classe grant l'interface de l'application
  *
  *        Version:  1.0
  *        Created:  15/08/2011 02:19:41
@@ -44,11 +44,11 @@ class MainWindow : public QMainWindow {
            *  Attributs
            *-----------------------------------------------------------------------------*/
           Ui::MainWindow* ui; // Interface
-          ResizeDialog* dialog; // Widget appelé pour redimensionner l'algorithme
+          ResizeDialog* dialog; // Widget appel pour redimensionner l'algorithme
           AboutDialog* about_; // Widget lors de la demande de l'A-propos
 
           /*-----------------------------------------------------------------------------
-           * Methodes privées
+           * Methodes prives
            *-----------------------------------------------------------------------------*/
           void selectQAction( AlgorithmeScene::Mode mode );
           void setDisabled( bool state );
@@ -86,16 +86,17 @@ class MainWindow : public QMainWindow {
           /*-----------------------------------------------------------------------------
            * Slots divers
            *-----------------------------------------------------------------------------*/
-          void resizeScene( int width, int height ); //redimensionne la scène
+          void resizeScene( int width, int height ); //redimensionne la scne
           void setMode( AlgorithmeScene::Mode mode ); //Change le mode
           void print( QPrinter* device ); // Imprime l'algorithme
           void itemAdded( Pictogramme* item ); //Pour connecter un labelItem ou slot changeLabel
-          void changeLabel( LabelItem* item ); //Appelé pour changer l'intitulé d'un LabelItem
+          void changeLabel( LabelItem* item ); //Appel pour changer l'intitul d'un LabelItem
           void liaisonError();
           void on_actionTout_s_lectionner_triggered();
           void on_actionExporter_SVG_triggered();
           void on_actionExporter_en_PDF_triggered();
           void on_actionSauvegarder_sous_triggered();
           void on_actionQuitter_triggered();
+          void on_actionSupprimer_la_s_lection_triggered();
 };
 #endif                           // MAINWINDOW_HPP

@@ -36,6 +36,16 @@ AlgorithmeScene::AlgorithmeScene(qreal x, qreal y, qreal width, qreal height, QO
     line_(0)
 {
     /*{{{*/
+
+    actions_["Supprimer"] = contexteMenu_.addAction( tr( "Supprimer" ) );
+    contexteMenu_.addSeparator();
+    actions_["Delier"] = contexteMenu_.addAction( tr( "Délier de tous" ) );
+    contexteMenu_.addSeparator();
+    actions_["Details"] = contexteMenu_.addAction( tr( "Masquer les assertions" ) );
+    actions_["EmptyDetails"] = contexteMenu_.addAction( tr( "Masquer les assertions vides" ) );
+
+
+
     selectionArea_.second = 0;
 }/*}}}*/
 
@@ -119,8 +129,7 @@ void AlgorithmeScene::loadFromXml(const QDomDocument &doc)
  *  Gestionnaires d'évènements
  *-----------------------------------------------------------------------------*/
 void AlgorithmeScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
-{
-    /*{{{*/
+{/*{{{*/
     mouseEvent->accept();
 
     if (mouseEvent->button() == Qt::LeftButton && mode_ == EditLink) {
@@ -138,8 +147,14 @@ void AlgorithmeScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
                     0, 0);
             QGraphicsScene::addItem(selectionArea_.second);
 
+            if(mouseEvent->modifiers() == Qt::ControlModifier) {
+                return; /* to avoid items get unselected when adding new ones */
+            }
+
         }
+
     }
+
 
     QGraphicsScene::mousePressEvent(mouseEvent);
 }/*}}}*/
@@ -172,6 +187,18 @@ void AlgorithmeScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
             QRectF rect(topLeft, bottomRight);
             selectionArea_.second->setRect(rect);
 
+            /* Control modifier means we want to add more items to the selection */
+            if(mouseEvent->modifiers() != Qt::ControlModifier) {
+                foreach(QGraphicsItem * item, selectedItems()) {
+                    item->setSelected(false);
+                }
+            }
+
+            /* select items */
+            foreach(QGraphicsItem * item, items(selectionArea_.second->rect())) {
+                item->setSelected(true);
+            }
+
         }
 
         QGraphicsScene::mouseMoveEvent(mouseEvent);
@@ -188,10 +215,8 @@ void AlgorithmeScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
         return;
     }
 
+    /* delete selection area */
     if (selectionArea_.second != 0) {
-        foreach(QGraphicsItem * item, items(selectionArea_.second->rect())) {
-            item->setSelected(true);
-        }
         delete selectionArea_.second;
         selectionArea_.second = 0;
     }
@@ -288,6 +313,31 @@ void AlgorithmeScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
     QGraphicsScene::mouseReleaseEvent(mouseEvent);
 }/*}}}*/
 
+void AlgorithmeScene::contextMenuEvent( QGraphicsSceneContextMenuEvent * contextMenuEvent ) {
+    contextMenuEvent->accept();
+
+//    /* Context menu on the sélection */
+//    if(selectedItems().count() > 1) {
+//        mouseGrabberItem()->ungrabMouse();
+
+//        QAction* selectedAction = contexteMenu_.exec( contextMenuEvent->screenPos() );
+//        if( selectedAction == actions_["Supprimer"]) {
+//            deleteSelectedItem();
+
+//        } else if(selectedAction == actions_["Delier"]) {
+//            foreach(QGraphicsItem* item, selectedItems()) {
+//                static_cast<Pictogramme*>(item)->detach();
+
+//            }
+//        }
+
+//    }else {
+//        QGraphicsScene::contextMenuEvent(contextMenuEvent);
+//    }
+
+    QGraphicsScene::contextMenuEvent(contextMenuEvent);
+}
+
 void AlgorithmeScene::selectAll()
 {
     /*{{{*/
@@ -297,6 +347,15 @@ void AlgorithmeScene::selectAll()
     }
 
 }/*}}}*/
+
+void AlgorithmeScene::deleteSelectedItem()
+{
+    foreach(Pictogramme * picto, items_) {
+        if( picto->isSelected())
+            this->deleteItem(picto);
+
+    }
+}
 
 void AlgorithmeScene::adjust(int delta)
 {

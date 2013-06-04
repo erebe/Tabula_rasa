@@ -20,6 +20,7 @@
 
 #include <QGraphicsScene>
 #include <QtXml>
+#include <QMenu>
 
 class QTextStream;
 class Pictogramme;
@@ -49,6 +50,7 @@ class AlgorithmeScene: public QGraphicsScene {
           inline QString name() { return name_; }
 
           void deleteItem( Pictogramme* item );
+          void deleteSelectedItem();
           void newItem( Pictogramme* ); //appelé par PictoBuilder
 
           //Sauvegarde et chargement au format XML
@@ -74,7 +76,8 @@ class AlgorithmeScene: public QGraphicsScene {
           QGraphicsLineItem* line_; //Line créée dans le mode edition lien
           QPair<QPointF, QGraphicsRectItem*> selectionArea_;
           QList<Pictogramme*> items_; //Liste de tous les pictogrammes de la scène (sans les liaisons)
-
+          QMenu contexteMenu_; //appelé lors du clic droit
+          QMap<QString, QAction*> actions_;
 
           /*-----------------------------------------------------------------------------
            *  Gestionnaire évènements
@@ -82,5 +85,6 @@ class AlgorithmeScene: public QGraphicsScene {
           void mousePressEvent( QGraphicsSceneMouseEvent* mouseEvent );
           void mouseMoveEvent( QGraphicsSceneMouseEvent* mouseEvent );
           void mouseReleaseEvent( QGraphicsSceneMouseEvent* mouseEvent );
+          void contextMenuEvent( QGraphicsSceneContextMenuEvent * contextMenuEvent );
 };
 #endif // ALGORITHMESCENE_HPP

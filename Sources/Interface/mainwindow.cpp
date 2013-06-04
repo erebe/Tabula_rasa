@@ -499,3 +499,9 @@ void MainWindow::closeEvent( QCloseEvent* event )
      on_actionQuitter_triggered();
 
 }/*}}}*/
+
+void MainWindow::on_actionSupprimer_la_s_lection_triggered()
+{
+    static_cast<TabWidget*>( ui->tabWidget->currentWidget() )
+    ->scene()->deleteSelectedItem();
+}
