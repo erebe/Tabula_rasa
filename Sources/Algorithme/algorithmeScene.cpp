@@ -122,6 +122,12 @@ void AlgorithmeScene::loadFromXml(const QDomDocument &doc)
             PictoBuilder::fromXml(nodes.at(i).toElement() , this);
         }
     }
+
+    /* Little hack to display liaisons, should refactor item insertion */
+    foreach( Pictogramme* item, items_) {
+        item->itemChange(QGraphicsItem::ItemPositionChange, QVariant());
+    }
+
 }/*}}}*/
 
 
