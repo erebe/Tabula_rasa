@@ -27,12 +27,12 @@ class PictoCondition : public Pictogramme {
      public:
           enum { Type = UserType + 3 };
 
-          PictoCondition( const QString& titre,
-                          QGraphicsItem* parent,
-                          QGraphicsScene* scene );
+          PictoCondition( const QString& titre );
 
           PictoCondition( const QDomElement& node,
                           AlgorithmeScene* scene = 0 );
+
+          PictoCondition( const PictoCondition& item);
 
           /*-----------------------------------------------------------------------------
            *  Méthodes
@@ -40,6 +40,7 @@ class PictoCondition : public Pictogramme {
           void paint( QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget );
           QRectF boundingRect() const;
           virtual int type() const { return Type; }
+          virtual Pictogramme* clone();
 
           void updateDimension();
           void toXml( QDomDocument& doc, QDomNode& node ) const;
@@ -53,6 +54,8 @@ class PictoCondition : public Pictogramme {
           QVariant itemChange( GraphicsItemChange change, const QVariant& value );
           void processAction( QAction* action, QGraphicsSceneContextMenuEvent* event );
 
+    private:
+          PictoCondition& operator=(const PictoCondition& item);
 
 };
 

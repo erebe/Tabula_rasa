@@ -37,6 +37,8 @@ class PictoAction: public Pictogramme {
           PictoAction( const QDomElement& node,
                        AlgorithmeScene* scene = 0 );
 
+          PictoAction(const PictoAction& item);
+
 
           /*-----------------------------------------------------------------------------
            *  Méthodes
@@ -44,6 +46,7 @@ class PictoAction: public Pictogramme {
           void paint( QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget );
           QRectF boundingRect() const;
           virtual int type() const { return Type; }
+          virtual Pictogramme* clone();
 
 
           void toXml( QDomDocument& doc, QDomNode& node ) const;
@@ -67,6 +70,9 @@ class PictoAction: public Pictogramme {
            *  Gestionnaire d'évènements
            *-----------------------------------------------------------------------------*/
           void processAction( QAction* action, QGraphicsSceneContextMenuEvent* event );
+
+    private:
+          PictoAction& operator= (const PictoAction& item);
 
 };
 

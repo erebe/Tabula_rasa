@@ -31,6 +31,10 @@ PictoSortie::PictoSortie( QGraphicsItem* parent,
      setAnchorType( AncreItem::Up );
 }/*}}}*/
 
+PictoSortie::PictoSortie(const PictoSortie &item):
+  Pictogramme(item)
+{}
+
 PictoSortie::PictoSortie( const QDomElement& node,
                           QGraphicsScene* scene ):
      Pictogramme( 0, scene )
@@ -84,3 +88,7 @@ void PictoSortie::toXml( QDomDocument& doc, QDomNode& node ) const
 
 void PictoSortie::updateDimension()
 {}
+
+Pictogramme* PictoSortie::clone() {
+    return new PictoSortie(*this);
+}

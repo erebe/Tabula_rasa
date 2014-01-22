@@ -9,18 +9,16 @@
 /*-----------------------------------------------------------------------------
  *  Constructeurs / Destructeurs
  *-----------------------------------------------------------------------------*/
-PictoConditionMultiple::PictoConditionMultiple( const QString& label,
-          QGraphicsItem* parent,
-          QGraphicsScene* scene ) :
-     Pictogramme( parent, scene )
+PictoConditionMultiple::PictoConditionMultiple(const QString& label) :
+     Pictogramme()
 {/*{{{*/
-     labels_ << new LabelItem( label, 150, 25, 25, this, scene );
+     labels_ << new LabelItem( label, 150, 25, 25, this );
      labels_.last()->setAnchorType( AncreItem::Down );
 
-     labels_ << new LabelItem( label, 150, 25, 25, this, scene );
+     labels_ << new LabelItem( label, 150, 25, 25, this );
      labels_.last()->setAnchorType( AncreItem::Down );
 
-     labels_ << new LabelItem( "Sinon", 150, 25, 25, this, scene );
+     labels_ << new LabelItem( "Sinon", 150, 25, 25, this );
      labels_.last()->setAnchorType( AncreItem::Down );
 
      setAnchorType( AncreItem::Up );
@@ -30,6 +28,10 @@ PictoConditionMultiple::PictoConditionMultiple( const QString& label,
      actions_["AjouterA"] = contexteMenu_.addAction( tr( "Ajouter une condition" ) );
      actions_["SupprimerA"] = contexteMenu_.addAction( tr( "Supprimer la condition" ) );
 }/*}}}*/
+
+PictoConditionMultiple::PictoConditionMultiple( const PictoConditionMultiple& item):
+  Pictogramme(item)
+{}
 
 PictoConditionMultiple::PictoConditionMultiple( const QDomElement& node,
           AlgorithmeScene* scene ):
@@ -247,3 +249,6 @@ LiaisonItem::Style PictoConditionMultiple::linkStyle() const
     return style;
 }
 
+Pictogramme* PictoConditionMultiple::clone() {
+    return new PictoConditionMultiple(*this);
+}

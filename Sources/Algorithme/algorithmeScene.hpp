@@ -58,6 +58,12 @@ class AlgorithmeScene: public QGraphicsScene {
           void loadFromXml( const QDomDocument& doc );
           void selectAll();
           void adjust( int delta = 0 );
+          QList<Pictogramme *> copySelected() const;
+          QList<Pictogramme *> copy(QList<Pictogramme*> items) const;
+          void paste(QList<Pictogramme*> items);
+
+          void drawLiaison(QPointF x, QPointF y);
+          void drawSelectionRect(QPointF topLeft, QPointF bottomRight);
 
      signals:
           void modeChanged( AlgorithmeScene::Mode mode ); //emit lorsqu'on change de mode

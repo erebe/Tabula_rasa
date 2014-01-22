@@ -47,6 +47,13 @@ PictoAction::PictoAction( QString titre,
      actions_["EmptyDetails"]->setCheckable( true );
 }/*}}}*/
 
+PictoAction::PictoAction(const PictoAction &item):
+    Pictogramme(item),
+    detail_(item.detail_), emptyDetail_(item.emptyDetail_)
+{
+
+}
+
 PictoAction::PictoAction( const QDomElement& node,
                           AlgorithmeScene* scene ):
      Pictogramme( 0, scene )
@@ -253,3 +260,7 @@ void PictoAction::processAction( QAction* action, QGraphicsSceneContextMenuEvent
           Pictogramme::processAction( action, event );
      }
 }/*}}}*/
+
+Pictogramme *PictoAction::clone() {
+    return new PictoAction(*this);
+}

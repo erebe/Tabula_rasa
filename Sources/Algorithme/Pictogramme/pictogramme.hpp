@@ -32,6 +32,7 @@ class Pictogramme : public QObject, public AncreItem {
 
      public:
           Pictogramme( QGraphicsItem* parent = 0, QGraphicsScene* scene = 0 );
+          Pictogramme( const Pictogramme& item);
           virtual ~Pictogramme();
 
 
@@ -43,6 +44,7 @@ class Pictogramme : public QObject, public AncreItem {
                               QWidget* widget );
 
           virtual void updateDimension() = 0; //met à jour la dimension de l'item
+          virtual Pictogramme* clone() = 0;
           inline unsigned int width() const { return pos_; }
 
           //A implémenter pour sauvegarder en XML
@@ -73,6 +75,9 @@ class Pictogramme : public QObject, public AncreItem {
           void contextMenuEvent( QGraphicsSceneContextMenuEvent* event );
           virtual void processAction( QAction* action, QGraphicsSceneContextMenuEvent* event );
 
+
+    private:
+        Pictogramme& operator=(const Pictogramme& item);
 };
 
 #endif // PICTOGRAMME_HPP

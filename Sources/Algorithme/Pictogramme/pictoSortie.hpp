@@ -30,6 +30,8 @@ class PictoSortie: public Pictogramme {
           PictoSortie( const QDomElement& node,
                        QGraphicsScene* scene = 0 );
 
+          PictoSortie( const PictoSortie& item);
+
 
           /*-----------------------------------------------------------------------------
            *  Méthodes
@@ -37,10 +39,13 @@ class PictoSortie: public Pictogramme {
           void paint( QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget );
           QRectF boundingRect() const;
           virtual int type() const { return Type; }
+          virtual Pictogramme* clone();
 
           void updateDimension();
           void toXml( QDomDocument& doc, QDomNode& node ) const;
 
+    private:
+          PictoSortie& operator=(const PictoSortie& item);
 };
 
 #endif // PICTOSORTIE_HPP

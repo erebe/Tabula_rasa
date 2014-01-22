@@ -35,6 +35,7 @@ class PictoProcedure : public Pictogramme {
           PictoProcedure( const QDomElement& node,
                           AlgorithmeScene* scene = 0 );
 
+          PictoProcedure( const PictoProcedure& item);
 
           /*-----------------------------------------------------------------------------
            *  Méthodes
@@ -42,6 +43,7 @@ class PictoProcedure : public Pictogramme {
           void paint( QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget );
           QRectF boundingRect() const;
           virtual int type() const { return Type; }
+          virtual Pictogramme* clone();
 
 
           void toXml( QDomDocument& doc, QDomNode& node ) const;
@@ -66,6 +68,8 @@ class PictoProcedure : public Pictogramme {
            *-----------------------------------------------------------------------------*/
           void processAction( QAction* action, QGraphicsSceneContextMenuEvent* event );
 
+    private:
+          PictoProcedure&  operator=(const PictoProcedure& item);
 
 
 };

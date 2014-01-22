@@ -46,6 +46,7 @@ class MainWindow : public QMainWindow {
           Ui::MainWindow* ui; // Interface
           ResizeDialog* dialog; // Widget appel pour redimensionner l'algorithme
           AboutDialog* about_; // Widget lors de la demande de l'A-propos
+          QList<Pictogramme*> copyBuffer_;
 
           /*-----------------------------------------------------------------------------
            * Methodes prives
@@ -98,5 +99,7 @@ class MainWindow : public QMainWindow {
           void on_actionSauvegarder_sous_triggered();
           void on_actionQuitter_triggered();
           void on_actionSupprimer_la_s_lection_triggered();
+          void on_actionCopier_la_s_lection_triggered();
+          void on_actionColler_la_s_lection_triggered();
 };
 #endif                           // MAINWINDOW_HPP

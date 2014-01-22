@@ -83,6 +83,9 @@ class AncreItem: public QGraphicsItem {
           virtual void onChildrenChange();
           bool childExist( AncreItem* parent, AncreItem* child );
 
+    private:
+          AncreItem& operator =(const AncreItem& copy);
+
 };
 
 #endif // ANCREITEM_HPP

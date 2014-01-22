@@ -505,3 +505,21 @@ void MainWindow::on_actionSupprimer_la_s_lection_triggered()
     static_cast<TabWidget*>( ui->tabWidget->currentWidget() )
     ->scene()->deleteSelectedItem();
 }
+
+void MainWindow::on_actionCopier_la_s_lection_triggered()
+{
+    copyBuffer_ = static_cast<TabWidget*>( ui->tabWidget->currentWidget() )
+    ->scene()->copySelected();
+}
+
+void MainWindow::on_actionColler_la_s_lection_triggered()
+{
+    QList<Pictogramme*> toPaste =   static_cast<TabWidget*>( ui->tabWidget->currentWidget() )
+            ->scene()->copy(copyBuffer_);
+
+    foreach (Pictogramme* picto, toPaste) {
+        picto->setX(picto->x() + 10);
+    }
+    static_cast<TabWidget*>( ui->tabWidget->currentWidget() )
+    ->scene()->paste(toPaste);
+}

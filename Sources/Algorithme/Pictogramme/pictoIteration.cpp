@@ -25,10 +25,10 @@
 /*-----------------------------------------------------------------------------
  *  Constructeurs / Destructeurs
  *-----------------------------------------------------------------------------*/
-PictoIteration::PictoIteration( QString titre, QGraphicsItem* parent, QGraphicsScene* scene ):
-     Pictogramme( parent, scene ), isNumberedLoop_( true )
+PictoIteration::PictoIteration(QString titre):
+     Pictogramme(), isNumberedLoop_( true )
 {/*{{{*/
-     labels_ << new LabelItem( titre, 150, 50, 50, this, scene );
+     labels_ << new LabelItem( titre, 150, 50, 50, this );
 
      points_[0].setX( 50 );
      points_[0].setY( 10 );
@@ -45,6 +45,15 @@ PictoIteration::PictoIteration( QString titre, QGraphicsItem* parent, QGraphicsS
      actions_["InfiniteLoop"] = contexteMenu_.addAction( tr( "Iteration non fixe" ) );
      actions_["InfiniteLoop"]->setCheckable( true );
 }/*}}}*/
+
+PictoIteration::PictoIteration(const PictoIteration &item):
+  Pictogramme(item),
+  isNumberedLoop_(item.isNumberedLoop_)
+{
+    for(unsigned long i = 0; i < sizeof(points_) / sizeof(points_[0]); i++) {
+        points_[i] = item.points_[i];
+    }
+}
 
 PictoIteration::PictoIteration( const QDomElement& node,
                                 AlgorithmeScene* scene ):
@@ -184,3 +193,6 @@ void PictoIteration::processAction( QAction* action, QGraphicsSceneContextMenuEv
      }
 }/*}}}*/
 
+Pictogramme* PictoIteration::clone() {
+    return new PictoIteration(*this);
+}

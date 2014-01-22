@@ -52,7 +52,7 @@
      <x>0</x>
      <y>0</y>
      <width>938</width>
-     <height>22</height>
+     <height>19</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_Fichier">
@@ -77,6 +77,8 @@
      <string>&amp;Edition</string>
     </property>
     <addaction name="actionTout_s_lectionner"/>
+    <addaction name="actionCopier_la_s_lection"/>
+    <addaction name="actionColler_la_s_lection"/>
     <addaction name="actionSupprimer_la_s_lection"/>
     <addaction name="separator"/>
     <addaction name="actionRenommer_l_algorithme"/>
@@ -466,6 +468,10 @@
    </property>
   </action>
   <action name="actionTout_s_lectionner">
+   <property name="icon">
+    <iconset resource="../Ressources/ressources.qrc">
+     <normaloff>:/Icones/select_all.png</normaloff>:/Icones/select_all.png</iconset>
+   </property>
    <property name="text">
     <string>Tout sélectionner</string>
    </property>
@@ -519,11 +525,39 @@
    </property>
   </action>
   <action name="actionSupprimer_la_s_lection">
+   <property name="icon">
+    <iconset resource="../Ressources/ressources.qrc">
+     <normaloff>:/Icones/delete.png</normaloff>:/Icones/delete.png</iconset>
+   </property>
    <property name="text">
     <string>Supprimer la sélection</string>
    </property>
    <property name="shortcut">
     <string>Del</string>
+   </property>
+  </action>
+  <action name="actionCopier_la_s_lection">
+   <property name="icon">
+    <iconset resource="../Ressources/ressources.qrc">
+     <normaloff>:/Icones/copy.png</normaloff>:/Icones/copy.png</iconset>
+   </property>
+   <property name="text">
+    <string>Copier la sélection</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+C</string>
+   </property>
+  </action>
+  <action name="actionColler_la_s_lection">
+   <property name="icon">
+    <iconset resource="../Ressources/ressources.qrc">
+     <normaloff>:/Icones/paste.png</normaloff>:/Icones/paste.png</iconset>
+   </property>
+   <property name="text">
+    <string>Coller la sélection</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+V</string>
    </property>
   </action>
  </widget>

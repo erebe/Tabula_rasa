@@ -28,13 +28,12 @@ class PictoIteration : public Pictogramme {
      public:
           enum { Type = UserType + 4 };
 
-          PictoIteration( QString titre,
-                          QGraphicsItem* parent,
-                          QGraphicsScene* scene );
+          PictoIteration( QString titre );
 
           PictoIteration( const QDomElement& node,
                           AlgorithmeScene* scene = 0 );
 
+          PictoIteration( const PictoIteration& item );
           /*-----------------------------------------------------------------------------
            *  Méthodes
            *-----------------------------------------------------------------------------*/
@@ -43,6 +42,7 @@ class PictoIteration : public Pictogramme {
                       QWidget* widget );
           QRectF boundingRect() const;
           virtual int type() const { return Type; }
+          virtual Pictogramme* clone();
 
           void updateDimension();
           void toXml( QDomDocument& doc, QDomNode& node ) const;
@@ -61,6 +61,8 @@ class PictoIteration : public Pictogramme {
            *-----------------------------------------------------------------------------*/
           void processAction( QAction* action, QGraphicsSceneContextMenuEvent* event );
 
+    private:
+          PictoIteration& operator=(const PictoIteration& item);
 };
 
 #endif // PICTOITERATION_HPP

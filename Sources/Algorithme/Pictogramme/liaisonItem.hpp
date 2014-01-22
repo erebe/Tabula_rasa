@@ -31,6 +31,7 @@ class LiaisonItem : public QGraphicsPathItem {
           LiaisonItem( AncreItem* parent, QList<AncreItem*>& enfants );
 
 
+
           /*-----------------------------------------------------------------------------
            *  Méthodes
            *-----------------------------------------------------------------------------*/
@@ -55,6 +56,10 @@ class LiaisonItem : public QGraphicsPathItem {
            void drawDoubleLiaison();
            void drawSimpleLiaison();
            void drawFullDouble();
+
+    private:
+           LiaisonItem& operator= (const LiaisonItem& item);
+           LiaisonItem(const LiaisonItem &item);
 };
 
 

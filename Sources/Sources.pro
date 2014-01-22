@@ -7,7 +7,7 @@ TARGET =
 TARGET = tabula_rasa
 DEPENDPATH += . Algorithme Interface Ressources Algorithme/Pictogramme
 INCLUDEPATH += . Interface Algorithme Algorithme/Pictogramme
-#CONFIG += debug
+CONFIG += debug
 RC_FILE = iconSetter.rc
 QT += xml svg
 

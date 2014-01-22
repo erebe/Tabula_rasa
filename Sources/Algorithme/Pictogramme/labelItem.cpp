@@ -38,6 +38,13 @@ LabelItem::LabelItem( const QString& texte,
      setLabel( texte );
 }/*}}}*/
 
+LabelItem::LabelItem(const LabelItem &item):
+    AncreItem(item),
+    label_(item.label_), height_(item.height_),
+    maxWidth_(item.maxWidth_), minWidth_(item.minWidth_)
+{
+    setLabel(item.label_.first);
+}
 
 /*-----------------------------------------------------------------------------
  *  Méthodes

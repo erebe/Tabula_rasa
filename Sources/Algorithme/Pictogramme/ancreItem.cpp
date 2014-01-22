@@ -26,15 +26,21 @@
  *  Constructeurs / Destructeurs
  *-----------------------------------------------------------------------------*/
 AncreItem::AncreItem( QGraphicsItem* parent, QGraphicsScene* scene ):
-     QGraphicsItem( parent, scene ), anchorType_( None ), parent_( 0 ), liaison_( 0 )
-{}
+     QGraphicsItem( parent, 0 ), anchorType_( None ), parent_( 0 ), liaison_( 0 )
+{
+    Q_UNUSED(scene); //passing scene into the constructor is deprecated by Qt
+}
 
-//AncreItem::AncreItem( const AncreItem& item ):
-//    QGraphicsItem( item.parentItem(), item.scene() ), anchorType_( item.anchorType() ),
-//    parent_( new AncreItem( item.parent_) ), liaison_
-//{
-//
-//}
+
+AncreItem::AncreItem( const AncreItem& item ):
+    QGraphicsItem( item.parentItem(), 0 ),
+    posBottomAnchor_(item.posBottomAnchor_), posUpAnchor_(item.posUpAnchor_),
+    anchorType_( item.anchorType() ), parent_( 0 ),
+    liaison_(0)
+{
+    setPos(item.pos());
+}
+
 AncreItem::~AncreItem()
 {/*{{{*/
      detach();
@@ -54,7 +60,6 @@ void AncreItem::detach()
 void AncreItem::deleteLink()
 {/*{{{*/
      if( liaison_ ) {
-          //scene()->removeItem(liaison_);
           delete liaison_;
           liaison_ = 0;
           AncreItem* ancre;
@@ -92,9 +97,15 @@ void AncreItem::setParent( AncreItem* parent )
 
 void AncreItem::updateLink()
 {/*{{{*/
-     if( liaison_ ) {
-          liaison_->updatePath();
-     }
+
+    if( liaison_ ) {
+        liaison_->updatePath();
+
+        if(scene() != NULL && !scene()->items().contains(liaison_)) {
+            scene()->addItem(liaison_);
+        }
+
+    }
 
      if( parent_ && parent_->liaison_ ) {
           parent_->liaison_->updatePath();
@@ -135,7 +146,7 @@ void AncreItem::onChildrenChange()
 void AncreItem::createLink()
 {/*{{{*/
      liaison_ = new LiaisonItem( this, children_ );
-     scene()->addItem( liaison_ );
+     updateLink();
 }/*}}}*/
 
 bool AncreItem::childExist( AncreItem* parent, AncreItem* child )
@@ -163,6 +174,7 @@ bool AncreItem::childExist( AncreItem* parent, AncreItem* child )
  *-----------------------------------------------------------------------------*/
 QVariant AncreItem::itemChange( GraphicsItemChange change, const QVariant& value )
 {/*{{{*/
+
      if ( change == QGraphicsItem::ItemPositionChange ) {
           updateLink();
      }

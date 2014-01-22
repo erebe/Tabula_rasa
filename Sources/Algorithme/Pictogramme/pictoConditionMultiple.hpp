@@ -25,12 +25,12 @@ class PictoConditionMultiple : public Pictogramme {
 
      public:
           enum { Type = UserType + 7 };
-          PictoConditionMultiple( const QString& titre,
-                                  QGraphicsItem* parent,
-                                  QGraphicsScene* scene );
+          PictoConditionMultiple( const QString& titre );
 
           PictoConditionMultiple( const QDomElement& node,
                                   AlgorithmeScene* scene = 0 );
+
+          PictoConditionMultiple( const PictoConditionMultiple& item);
 
 
           /*-----------------------------------------------------------------------------
@@ -39,6 +39,7 @@ class PictoConditionMultiple : public Pictogramme {
           void paint( QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget );
           QRectF boundingRect() const;
           virtual int type() const { return Type; }
+          virtual Pictogramme* clone();
 
 
           void toXml( QDomDocument& doc, QDomNode& node ) const;
@@ -51,6 +52,9 @@ class PictoConditionMultiple : public Pictogramme {
           void processAction( QAction* action, QGraphicsSceneContextMenuEvent* event );
           QVariant itemChange( GraphicsItemChange change, const QVariant& value );
           LiaisonItem::Style linkStyle() const;
+
+    private:
+          PictoConditionMultiple& operator= (const PictoConditionMultiple& item);
 };
 
 #endif // PICTOCONDITIONMULTIPLE_HPP

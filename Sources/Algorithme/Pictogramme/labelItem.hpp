@@ -30,6 +30,7 @@ class LabelItem : public AncreItem {
                      const int height = 50,
                      QGraphicsItem* parent = 0,
                      QGraphicsScene* scene = 0 );
+          LabelItem(const LabelItem& item);
 
           /*-----------------------------------------------------------------------------
            *  Méthodes
@@ -59,6 +60,10 @@ class LabelItem : public AncreItem {
           unsigned int calculLargeurTexte() const; //retourne la largeur du texte
           void formatString(); //retourne la largeur du texte
           virtual void onChildrenChange();
+
+
+    private:
+          LabelItem& operator= (const LabelItem& item);
 
 };
 

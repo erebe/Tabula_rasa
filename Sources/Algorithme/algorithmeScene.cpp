@@ -34,8 +34,7 @@ AlgorithmeScene::AlgorithmeScene(qreal x, qreal y, qreal width, qreal height, QO
     QGraphicsScene(x, y, width, height, parent),
     mode_(MoveItem), name_("Algorithme"),
     line_(0)
-{
-    /*{{{*/
+{/*{{{*/
 
     actions_["Supprimer"] = contexteMenu_.addAction( tr( "Supprimer" ) );
     contexteMenu_.addSeparator();
@@ -54,7 +53,7 @@ AlgorithmeScene::~AlgorithmeScene()
     /*{{{*/
     Pictogramme *picto;
     foreach(picto, items_)
-    delete picto;
+        delete picto;
 }/*}}}*/
 
 
@@ -74,6 +73,7 @@ void AlgorithmeScene::newItem(Pictogramme *picto)
     /*{{{*/
     if (picto) {
         items_.push_back(picto);
+        addItem(picto);
         emit itemAdded(picto);
     }
 }/*}}}*/
@@ -110,8 +110,8 @@ void AlgorithmeScene::saveToXml(QTextStream &out) const
 }/*}}}*/
 
 void AlgorithmeScene::loadFromXml(const QDomDocument &doc)
-{
-    /*{{{*/
+{/*{{{*/
+
     QDomElement racine = doc.documentElement();
     name_ = racine.firstChildElement("nom").firstChild().toText().data();
 
@@ -132,77 +132,103 @@ void AlgorithmeScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {/*{{{*/
     mouseEvent->accept();
 
-    if (mouseEvent->button() == Qt::LeftButton && mode_ == EditLink) {
+    if(mouseEvent->button() != Qt::LeftButton) {
+        QGraphicsScene::mousePressEvent(mouseEvent);
+        return;
+    }
 
-        line_ = new QGraphicsLineItem(QLineF(mouseEvent->scenePos(),
-                                             mouseEvent->scenePos()));
-        QGraphicsScene::addItem(line_);
+    switch (mode_) {
 
-    } else if (mouseEvent->button() == Qt::LeftButton && mode_ == MoveItem) {
+    case EditLink:
+        drawLiaison(mouseEvent->scenePos(), mouseEvent->scenePos());
+        break;
+
+    case MoveItem:
+
         if (!items(mouseEvent->scenePos()).count()) {
-
-            selectionArea_.first = mouseEvent->scenePos();
-            selectionArea_.second = new QGraphicsRectItem(mouseEvent->scenePos().x(),
-                    mouseEvent->scenePos().y(),
-                    0, 0);
-            QGraphicsScene::addItem(selectionArea_.second);
+            drawSelectionRect(mouseEvent->scenePos(), QPointF(0,0));
 
             if(mouseEvent->modifiers() == Qt::ControlModifier) {
                 return; /* to avoid items get unselected when adding new ones */
             }
 
         }
+        break;
 
+    default:
+        break;
     }
 
-
     QGraphicsScene::mousePressEvent(mouseEvent);
+
 }/*}}}*/
+
+void AlgorithmeScene::drawSelectionRect(QPointF topLeft, QPointF bottomRight) {
+
+    QPointF topL;
+    QPointF bottomR;
+
+    if(!selectionArea_.second) {
+        selectionArea_.first = topLeft;
+        selectionArea_.second = new QGraphicsRectItem();
+        QGraphicsScene::addItem(selectionArea_.second);
+        topL = topLeft;
+        bottomR = topLeft;
+    } else {
+
+        //Be sure that the rectangle is right oriented
+        topL.setX((topLeft.x() < bottomRight.x()) ? topLeft.x() : bottomRight.x());
+        topL.setY((topLeft.y() < bottomRight.y()) ? topLeft.y() : bottomRight.y());
+
+        bottomR.setX((topLeft.x() > bottomRight.x()) ? topLeft.x() : bottomRight.x());
+        bottomR.setY((topLeft.y() > bottomRight.y()) ? topLeft.y() : bottomRight.y());
+    }
+
+    selectionArea_.second->setRect(QRectF(topL, bottomR));
+
+}
+
+void AlgorithmeScene::drawLiaison(QPointF x, QPointF y) {
+
+    if(!line_) {
+        line_ = new QGraphicsLineItem();
+        QGraphicsScene::addItem(line_);
+    }
+
+    line_->setLine(QLineF(x, y));
+}
 
 void AlgorithmeScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
     /*{{{*/
     mouseEvent->accept();
 
-    if (mode_ == EditLink && line_ != 0) {
-        QLineF newLine(line_->line().p1(), mouseEvent->scenePos());
-        line_->setLine(newLine);
+    //Attempt to link pictogramme
+    if (mode_ == EditLink && line_ != NULL) {
+        drawLiaison(line_->line().p1(), mouseEvent->scenePos());
+        return;
+    }
 
-    } else if (mode_ == MoveItem) {
-        if (selectionArea_.second != 0) {
+    //Attempt to select pictogrammes
+    if (mode_ == MoveItem && selectionArea_.second != NULL) {
+        drawSelectionRect(selectionArea_.first,  mouseEvent->scenePos());
 
-            QPointF topLeft((selectionArea_.first.x() < mouseEvent->scenePos().x()) ?
-                            selectionArea_.first.x() : mouseEvent->scenePos().x(),
-
-                            (selectionArea_.first.y() < mouseEvent->scenePos().y()) ?
-                            selectionArea_.first.y() : mouseEvent->scenePos().y());
-
-            QPointF bottomRight((selectionArea_.first.x() > mouseEvent->scenePos().x()) ?
-                                selectionArea_.first.x() : mouseEvent->scenePos().x(),
-
-                                (selectionArea_.first.y() > mouseEvent->scenePos().y()) ?
-                                selectionArea_.first.y() : mouseEvent->scenePos().y());
-
-
-            QRectF rect(topLeft, bottomRight);
-            selectionArea_.second->setRect(rect);
-
-            /* Control modifier means we want to add more items to the selection */
-            if(mouseEvent->modifiers() != Qt::ControlModifier) {
-                foreach(QGraphicsItem * item, selectedItems()) {
-                    item->setSelected(false);
-                }
+        /* Control modifier means we want to add more items to the selection */
+        if(mouseEvent->modifiers() != Qt::ControlModifier) {
+            foreach(QGraphicsItem * item, selectedItems()) {
+                item->setSelected(false);
             }
-
-            /* select items */
-            foreach(QGraphicsItem * item, items(selectionArea_.second->rect())) {
-                item->setSelected(true);
-            }
-
         }
 
-        QGraphicsScene::mouseMoveEvent(mouseEvent);
+        /* select items */
+        foreach(QGraphicsItem * item, items(selectionArea_.second->rect())) {
+            item->setSelected(true);
+        }
     }
+
+    QGraphicsScene::mouseMoveEvent(mouseEvent);
+
+
 }/*}}}*/
 
 void AlgorithmeScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
@@ -265,8 +291,8 @@ void AlgorithmeScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
             }
 
             if (endItems.first()->parentItem() != 0 &&
-                !qgraphicsitem_cast<PictoCondition *>(endItems.first()->parentItem())
-                && !qgraphicsitem_cast<PictoConditionMultiple *>(endItems.first()->parentItem())) {
+                    !qgraphicsitem_cast<PictoCondition *>(endItems.first()->parentItem())
+                    && !qgraphicsitem_cast<PictoConditionMultiple *>(endItems.first()->parentItem())) {
                 parent = static_cast<Pictogramme *>(endItems.first()->parentItem());
 
             } else if (!qgraphicsitem_cast<PictoCondition *>(endItems.first())
@@ -275,7 +301,7 @@ void AlgorithmeScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
             }
 
             if (qgraphicsitem_cast<PictoIteration *>(parent) &&
-                qgraphicsitem_cast<PictoSortie *>(enfant)) {
+                    qgraphicsitem_cast<PictoSortie *>(enfant)) {
 
                 emit liaisonError();
                 return;
@@ -316,24 +342,24 @@ void AlgorithmeScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 void AlgorithmeScene::contextMenuEvent( QGraphicsSceneContextMenuEvent * contextMenuEvent ) {
     contextMenuEvent->accept();
 
-//    /* Context menu on the sélection */
-//    if(selectedItems().count() > 1) {
-//        mouseGrabberItem()->ungrabMouse();
+    //    /* Context menu on the sélection */
+    //    if(selectedItems().count() > 1) {
+    //        mouseGrabberItem()->ungrabMouse();
 
-//        QAction* selectedAction = contexteMenu_.exec( contextMenuEvent->screenPos() );
-//        if( selectedAction == actions_["Supprimer"]) {
-//            deleteSelectedItem();
+    //        QAction* selectedAction = contexteMenu_.exec( contextMenuEvent->screenPos() );
+    //        if( selectedAction == actions_["Supprimer"]) {
+    //            deleteSelectedItem();
 
-//        } else if(selectedAction == actions_["Delier"]) {
-//            foreach(QGraphicsItem* item, selectedItems()) {
-//                static_cast<Pictogramme*>(item)->detach();
+    //        } else if(selectedAction == actions_["Delier"]) {
+    //            foreach(QGraphicsItem* item, selectedItems()) {
+    //                static_cast<Pictogramme*>(item)->detach();
 
-//            }
-//        }
+    //            }
+    //        }
 
-//    }else {
-//        QGraphicsScene::contextMenuEvent(contextMenuEvent);
-//    }
+    //    }else {
+    //        QGraphicsScene::contextMenuEvent(contextMenuEvent);
+    //    }
 
     QGraphicsScene::contextMenuEvent(contextMenuEvent);
 }
@@ -395,3 +421,52 @@ void AlgorithmeScene::adjust(int delta)
                  maxX - minX + (2 * delta),
                  maxY - minY + 50 + (2 * delta));
 }/*}}}*/
+
+
+QList<Pictogramme *> AlgorithmeScene::copySelected() const
+{
+
+    QList<Pictogramme*> selected;
+    foreach(Pictogramme * picto, items_) {
+        if(picto->isSelected())
+            selected.append(picto);
+    }
+
+    return copy(selected);
+}
+
+QList<Pictogramme *> AlgorithmeScene::copy(QList<Pictogramme*> items) const
+{
+    QMap<Pictogramme*, Pictogramme*> oldNewTable;
+    foreach(Pictogramme * picto, items) {
+        oldNewTable.insert(picto, picto->clone());
+    }
+
+    QList<Pictogramme*> copies = oldNewTable.values();
+    foreach(Pictogramme* picto, oldNewTable.keys()) {
+
+
+        foreach (AncreItem* child, picto->childrenList()) {
+            if(oldNewTable.contains(static_cast<Pictogramme*>(child))) {
+                oldNewTable[picto]->addChild(oldNewTable[static_cast<Pictogramme*>(child)]);
+                oldNewTable[picto]->setLinkStyle(picto->linkStyle());
+            }
+        }
+    }
+
+    return copies;
+
+}
+
+void AlgorithmeScene::paste(QList<Pictogramme *> items)
+{
+    clearSelection();
+    foreach(Pictogramme* picto, items) {
+        newItem(picto);
+        picto->setSelected(true);
+        picto->updateLink();
+    }
+
+    setMode(AlgorithmeScene::MoveItem);
+    emit modeChanged(AlgorithmeScene::MoveItem);
+}

@@ -24,15 +24,13 @@
 /*-----------------------------------------------------------------------------
  *  Constructeurs / Destructeurs
  *-----------------------------------------------------------------------------*/
-PictoCondition::PictoCondition( const QString& label,
-                                QGraphicsItem* parent,
-                                QGraphicsScene* scene ) :
-     Pictogramme( parent, scene ), isForeverAlone_( false )
+PictoCondition::PictoCondition(const QString& label) :
+     Pictogramme(), isForeverAlone_( false )
 {/*{{{*/
-     labels_ << new LabelItem( label, 150, 25, 50, this, scene );
+     labels_ << new LabelItem( label, 150, 25, 50, this );
      labels_.at( 0 )->setAnchorType( AncreItem::Down );
 
-     labels_ << new LabelItem( "Sinon", 150, 25, 50, this, scene );
+     labels_ << new LabelItem( "Sinon", 150, 25, 50, this );
      labels_.at( 1 )->setAnchorType( AncreItem::Down );
 
      setAnchorType( AncreItem::Up );
@@ -45,6 +43,13 @@ PictoCondition::PictoCondition( const QString& label,
      actions_["AjouterA"] = contexteMenu_.addAction( tr( "Ajouter une condition" ) );
      actions_["SupprimerA"] = contexteMenu_.addAction( tr( "Supprimer la condition" ) );
 }/*}}}*/
+
+PictoCondition::PictoCondition(const PictoCondition &item):
+    Pictogramme(item),
+    isForeverAlone_(item.isForeverAlone_)
+{
+
+}
 
 PictoCondition::PictoCondition( const QDomElement& node,
                                 AlgorithmeScene* scene ):
@@ -273,4 +278,8 @@ void PictoCondition::processAction( QAction* action, QGraphicsSceneContextMenuEv
           Pictogramme::processAction( action, event );
      }
 }/*}}}*/
+
+Pictogramme* PictoCondition::clone() {
+    return new PictoCondition(*this);
+}
 
