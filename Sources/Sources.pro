@@ -9,7 +9,7 @@ DEPENDPATH += . Algorithme Interface Ressources Algorithme/Pictogramme
 INCLUDEPATH += . Interface Algorithme Algorithme/Pictogramme
 CONFIG += debug
 RC_FILE = iconSetter.rc
-QT += xml svg
+QT += xml svg printsupport widgets
 
 target.path += /usr/bin/
 INSTALLS += target

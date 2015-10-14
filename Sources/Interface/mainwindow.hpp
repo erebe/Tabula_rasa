@@ -26,6 +26,7 @@ class ResizeDialog;
 class TabWidget;
 class AboutDialog;
 class LabelItem;
+class QPrinter;
 
 namespace Ui {
 class MainWindow;

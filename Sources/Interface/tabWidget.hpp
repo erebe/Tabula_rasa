@@ -23,7 +23,7 @@ class AlgorithmeScene;
 class QGraphicsView;
 class QHBoxLayout;
 class QHBoxLayout;
-class QPtrinter;
+class QPrinter;
 
 class TabWidget : public QWidget {
 

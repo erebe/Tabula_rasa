@@ -29,6 +29,10 @@
 #include <QFileDialog>
 #include <QtGui>
 #include <QtSvg/QSvgGenerator>
+#include <QMessageBox>
+#include <QPrinter>
+#include <QPrintPreviewDialog>
+#include <QGraphicsView>
 
 
 /*-----------------------------------------------------------------------------
