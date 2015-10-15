@@ -168,7 +168,10 @@ void Pictogramme::contextMenuEvent( QGraphicsSceneContextMenuEvent* event )
      }
 
      QAction* selectedAction = contexteMenu_.exec( event->screenPos() );
-     processAction( selectedAction, event );
+     if (selectedAction) {
+         // do not process if the menu has been closed (no selected action)
+        processAction( selectedAction, event );
+     }
 }/*}}}*/
 
 void Pictogramme::processAction( QAction* action, QGraphicsSceneContextMenuEvent* event )
