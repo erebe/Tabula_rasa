@@ -25,7 +25,7 @@ class PictoConditionMultiple : public Pictogramme {
 
      public:
           enum { Type = UserType + 7 };
-          PictoConditionMultiple( const QString& titre );
+          PictoConditionMultiple( const QString& titre = QString( "?" ) );
 
           PictoConditionMultiple( const QDomElement& node,
                                   AlgorithmeScene* scene = 0 );

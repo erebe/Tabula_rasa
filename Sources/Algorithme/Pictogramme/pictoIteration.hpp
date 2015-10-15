@@ -28,7 +28,7 @@ class PictoIteration : public Pictogramme {
      public:
           enum { Type = UserType + 4 };
 
-          PictoIteration( QString titre );
+          PictoIteration( QString titre = QString( "?" ));
 
           PictoIteration( const QDomElement& node,
                           AlgorithmeScene* scene = 0 );

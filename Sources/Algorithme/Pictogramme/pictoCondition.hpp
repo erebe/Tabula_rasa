@@ -27,7 +27,7 @@ class PictoCondition : public Pictogramme {
      public:
           enum { Type = UserType + 3 };
 
-          PictoCondition( const QString& titre );
+          PictoCondition( const QString& titre = QString( "?" ) );
 
           PictoCondition( const QDomElement& node,
                           AlgorithmeScene* scene = 0 );

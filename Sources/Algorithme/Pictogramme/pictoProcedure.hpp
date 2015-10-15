@@ -26,9 +26,9 @@ class PictoProcedure : public Pictogramme {
      public:
           enum { Type = UserType + 5 };
 
-          PictoProcedure(QString titre,
-                          QString preCondition,
-                          QString postCondition,
+          PictoProcedure(QString titre = QString( "?" ),
+                          QString preCondition = QString( "∅" ),
+                          QString postCondition = QString( "∅" ),
                           QGraphicsItem* parent = 0);
 
           PictoProcedure( const QDomElement& node,

@@ -60,22 +60,22 @@ Pictogramme* PictoBuilder::fromMode( AlgorithmeScene::Mode mode,
      Pictogramme* picto = 0;
 
      if( mode == AlgorithmeScene::InsertAction ) {
-          picto = new PictoAction( "", "", "" );
+          picto = new PictoAction();
 
      } else if( mode == AlgorithmeScene::InsertLoop ) {
-          picto = new PictoIteration( "");
+          picto = new PictoIteration();
 
      } else if( mode == AlgorithmeScene::InsertProcedure ) {
-          picto = new PictoProcedure( "", "", "" );
+          picto = new PictoProcedure();
 
      } else if( mode == AlgorithmeScene::InsertCondition ) {
-          picto = new PictoCondition( "" );
+          picto = new PictoCondition();
 
      } else if( mode == AlgorithmeScene::InsertExit ) {
           picto = new PictoSortie();
 
      } else if( mode == AlgorithmeScene::InsertMultiCondition ) {
-          picto = new PictoConditionMultiple( "" );
+          picto = new PictoConditionMultiple();
      }
 
      scene->newItem( picto );
