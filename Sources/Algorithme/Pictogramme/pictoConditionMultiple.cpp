@@ -25,8 +25,8 @@ PictoConditionMultiple::PictoConditionMultiple(const QString& label) :
      posUpAnchor_.setY( 0 );
      updateDimension();
 
-     actions_["AjouterA"] = contexteMenu_.addAction( tr( "Ajouter une condition" ) );
-     actions_["SupprimerA"] = contexteMenu_.addAction( tr( "Supprimer la condition" ) );
+     addContextMenuEntry("AjouterA", "Ajouter une condition");
+     addContextMenuEntry("SupprimerA", "Supprimer la condition");
 }/*}}}*/
 
 PictoConditionMultiple::PictoConditionMultiple( const PictoConditionMultiple& item):
@@ -47,8 +47,8 @@ PictoConditionMultiple::PictoConditionMultiple( const QDomElement& node,
      setAnchorType( AncreItem::Up );
      posUpAnchor_.setY( 0 );
 
-     actions_["AjouterA"] = contexteMenu_.addAction( tr( "Ajouter une condition" ) );
-     actions_["SupprimerA"] = contexteMenu_.addAction( tr( "Supprimer la condition" ) );
+     addContextMenuEntry("AjouterA", "Ajouter une condition");
+     addContextMenuEntry("SupprimerA", "Supprimer la condition");
 
      const QDomNodeList nodes = node.firstChildElement( "operationsLogiques" ).childNodes();
      Pictogramme* picto = 0;
@@ -209,7 +209,7 @@ QVariant PictoConditionMultiple::itemChange( GraphicsItemChange change, const QV
 
 void PictoConditionMultiple::processAction( QAction* action, QGraphicsSceneContextMenuEvent* event )
 {/*{{{*/
-     if( actions_["AjouterA"] == action ) {
+     if( getContextMenuAction("AjouterA") == action ) {
           LabelItem* item = new LabelItem( "", 150, 25, 25, this, scene() );
           item->setAnchorType( AncreItem::Down );
 
@@ -217,7 +217,7 @@ void PictoConditionMultiple::processAction( QAction* action, QGraphicsSceneConte
           prepareGeometryChange();
           updateDimension();
 
-     } else if( actions_["SupprimerA"] == action ) {
+     } else if( getContextMenuAction("SupprimerA") == action ) {
 
           LabelItem* tmp;
           foreach( tmp, labels_ ) {

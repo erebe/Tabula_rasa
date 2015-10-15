@@ -37,11 +37,10 @@ PictoCondition::PictoCondition(const QString& label) :
      posUpAnchor_.setY( 0 );
      updateDimension();
 
-     actions_["SingleOne"] = contexteMenu_.addAction( tr( "Condition unique" ) );
-     actions_["SingleOne"]->setCheckable( true );
 
-     actions_["AjouterA"] = contexteMenu_.addAction( tr( "Ajouter une condition" ) );
-     actions_["SupprimerA"] = contexteMenu_.addAction( tr( "Supprimer la condition" ) );
+     addContextMenuEntry("SingleOne", "Condition unique", true);
+     addContextMenuEntry("AjouterA", "Ajouter une condition");
+     addContextMenuEntry("SupprimerA", "Supprimer la condition");
 }/*}}}*/
 
 PictoCondition::PictoCondition(const PictoCondition &item):
@@ -65,11 +64,9 @@ PictoCondition::PictoCondition( const QDomElement& node,
      setAnchorType( AncreItem::Up );
      posUpAnchor_.setY( 0 );
 
-     actions_["SingleOne"] = contexteMenu_.addAction( tr( "Condition unique" ) );
-     actions_["SingleOne"]->setCheckable( true );
-     actions_["SingleOne"]->setChecked( isForeverAlone_ );
-     actions_["AjouterA"] = contexteMenu_.addAction( tr( "Ajouter une condition" ) );
-     actions_["SupprimerA"] = contexteMenu_.addAction( tr( "Supprimer la condition" ) );
+     addContextMenuEntry("SingleOne", "Condition unique", true, isForeverAlone_);
+     addContextMenuEntry("AjouterA", "Ajouter une condition");
+     addContextMenuEntry("SupprimerA", "Supprimer la condition");
 
      const QDomNodeList nodes = node.firstChildElement( "operationsLogiques" ).childNodes();
      Pictogramme* picto = 0;
@@ -240,7 +237,7 @@ QVariant PictoCondition::itemChange( GraphicsItemChange change, const QVariant& 
 
 void PictoCondition::processAction( QAction* action, QGraphicsSceneContextMenuEvent* event )
 {/*{{{*/
-     if( action == actions_["SingleOne"] ) {
+     if( action == getContextMenuAction("SingleOne") ) {
           isForeverAlone_ = !isForeverAlone_;
 
           if( isForeverAlone_ ) {
@@ -252,7 +249,7 @@ void PictoCondition::processAction( QAction* action, QGraphicsSceneContextMenuEv
           prepareGeometryChange();
           updateDimension();
 
-     }else if( actions_["AjouterA"] == action ) {
+     }else if( getContextMenuAction("AjouterA") == action ) {
                LabelItem* item = new LabelItem( "", 150, 25, 50, this, scene() );
                item->setAnchorType( AncreItem::Down );
 
@@ -260,7 +257,7 @@ void PictoCondition::processAction( QAction* action, QGraphicsSceneContextMenuEv
                prepareGeometryChange();
                updateDimension();
 
-     } else if( actions_["SupprimerA"] == action ) {
+     } else if( getContextMenuAction("SupprimerA") == action ) {
 
                LabelItem* tmp;
                foreach( tmp, labels_ ) {

@@ -40,10 +40,8 @@ PictoProcedure::PictoProcedure( QString titre,
      posUpAnchor_.setY( 5 );
      updateDimension();
 
-     actions_["Details"] = contexteMenu_.addAction( tr( "Masquer les assertions" ) );
-     actions_["Details"]->setCheckable( true );
-     actions_["EmptyDetails"] = contexteMenu_.addAction( tr( "Masquer les assertions vides" ) );
-     actions_["EmptyDetails"]->setCheckable( true );
+     addContextMenuEntry("Details", "Masquer les assertions", true);
+     addContextMenuEntry("EmptyDetails", "Masquer les assertions vides", true);
 }/*}}}*/
 
 PictoProcedure::PictoProcedure( const PictoProcedure& item):
@@ -79,12 +77,9 @@ PictoProcedure::PictoProcedure( const QDomElement& node,
      posUpAnchor_.setY( 5 );
      updateDimension();
 
-     actions_["Details"] = contexteMenu_.addAction( tr( "Masquer les assertions" ) );
-     actions_["Details"]->setCheckable( true );
-     actions_["Details"]->setChecked( !detail_ );
-     actions_["EmptyDetails"] = contexteMenu_.addAction( tr( "Masquer les assertions vides" ) );
-     actions_["EmptyDetails"]->setCheckable( true );
-     actions_["EmptyDetails"]->setChecked( !emptyDetail_ );
+
+     addContextMenuEntry("Details", "Masquer les assertions", true, !detail_);
+     addContextMenuEntry("EmptyDetails", "Masquer les assertions vides", true, !emptyDetail_);
 
      const QDomNodeList nodes = node.firstChildElement( "Enfants" ).childNodes();
      Pictogramme* picto = 0;
@@ -233,12 +228,12 @@ int PictoProcedure::drawDetails( QPainter* painter, LabelItem* texte, int pos ) 
  *-----------------------------------------------------------------------------*/
 void PictoProcedure::processAction( QAction* action, QGraphicsSceneContextMenuEvent* event )
 {/*{{{*/
-     if( action == actions_["Details"] ) {
+     if( action == getContextMenuAction("Details") ) {
           detail_ = !detail_;
           prepareGeometryChange();
           updateDimension();
 
-     } else if ( action == actions_["EmptyDetails"] ) {
+     } else if ( action == getContextMenuAction("EmptyDetails") ) {
           emptyDetail_ = !emptyDetail_;
           prepareGeometryChange();
           updateDimension();

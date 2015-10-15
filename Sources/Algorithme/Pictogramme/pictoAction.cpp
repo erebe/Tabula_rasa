@@ -41,10 +41,8 @@ PictoAction::PictoAction( QString titre,
 
      updateDimension();
 
-     actions_["Details"] = contexteMenu_.addAction( tr( "Masquer les assertions" ) );
-     actions_["Details"]->setCheckable( true );
-     actions_["EmptyDetails"] = contexteMenu_.addAction( tr( "Masquer les assertions vides" ) );
-     actions_["EmptyDetails"]->setCheckable( true );
+     addContextMenuEntry("Details", "Masquer les assertions", true);
+     addContextMenuEntry("EmptyDetails", "Masquer les assertions vides", true);
 }/*}}}*/
 
 PictoAction::PictoAction(const PictoAction &item):
@@ -82,12 +80,8 @@ PictoAction::PictoAction( const QDomElement& node,
      posUpAnchor_.setY( 5 );
      updateDimension();
 
-     actions_["Details"] = contexteMenu_.addAction( tr( "Masquer les assertions" ) );
-     actions_["Details"]->setCheckable( true );
-     actions_["Details"]->setChecked( !detail_ );
-     actions_["EmptyDetails"] = contexteMenu_.addAction( tr( "Masquer les assertions vides" ) );
-     actions_["EmptyDetails"]->setCheckable( true );
-     actions_["EmptyDetails"]->setChecked( !emptyDetail_ );
+     addContextMenuEntry("Details", "Masquer les assertions", true, !detail_);
+     addContextMenuEntry("EmptyDetails", "Masquer les assertions vides", true, !emptyDetail_);
 
      const QDomNodeList nodes = node.firstChildElement( "Enfants" ).childNodes();
      Pictogramme* picto = 0;
@@ -246,12 +240,12 @@ void PictoAction::createLink()
  *-----------------------------------------------------------------------------*/
 void PictoAction::processAction( QAction* action, QGraphicsSceneContextMenuEvent* event )
 {/*{{{*/
-     if( action == actions_["Details"] ) {
+     if( action == getContextMenuAction("Details") ) {
           detail_ = !detail_;
           prepareGeometryChange();
           updateDimension();
 
-     } else if ( action == actions_["EmptyDetails"] ) {
+     } else if ( action == getContextMenuAction("EmptyDetails") ) {
           emptyDetail_ = !emptyDetail_;
           prepareGeometryChange();
           updateDimension();

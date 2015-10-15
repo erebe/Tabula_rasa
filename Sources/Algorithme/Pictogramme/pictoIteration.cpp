@@ -42,8 +42,7 @@ PictoIteration::PictoIteration(QString titre):
      posUpAnchor_ = QPoint( 27, 0 );
      updateDimension();
 
-     actions_["InfiniteLoop"] = contexteMenu_.addAction( tr( "Iteration non fixe" ) );
-     actions_["InfiniteLoop"]->setCheckable( true );
+     addContextMenuEntry("InfiniteLoop", "Iteration non fixe", true);
 }/*}}}*/
 
 PictoIteration::PictoIteration(const PictoIteration &item):
@@ -81,9 +80,7 @@ PictoIteration::PictoIteration( const QDomElement& node,
      posUpAnchor_ = QPoint( 27, 0 );
      updateDimension();
 
-     actions_["InfiniteLoop"] = contexteMenu_.addAction( tr( "Iteration non fixe" ) );
-     actions_["InfiniteLoop"]->setCheckable( true );
-     actions_["InfiniteLoop"]->setChecked( !isNumberedLoop_ );
+     addContextMenuEntry("InfiniteLoop", "Iteration non fixe", true, !isNumberedLoop_);
 
      const QDomNodeList nodes = node.firstChildElement( "Enfants" ).childNodes();
      Pictogramme* picto = 0;
@@ -183,7 +180,7 @@ void PictoIteration::createLink()
  *-----------------------------------------------------------------------------*/
 void PictoIteration::processAction( QAction* action, QGraphicsSceneContextMenuEvent* event )
 {/*{{{*/
-     if( action == actions_["InfiniteLoop"] ) {
+     if( action == getContextMenuAction("InfiniteLoop") ) {
           isNumberedLoop_ = !isNumberedLoop_;
           prepareGeometryChange();
           updateDimension();
