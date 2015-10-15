@@ -28,11 +28,10 @@ class PictoAction: public Pictogramme {
      public:
           enum { Type = UserType + 2 };
 
-          PictoAction( QString titre = QString( "?" ),
+          PictoAction(QString titre = QString( "?" ),
                        QString preCondition = QString( "∅" ),
                        QString postCondition = QString( "∅" ),
-                       QGraphicsItem* parent = 0,
-                       QGraphicsScene* scene = 0 );
+                       QGraphicsItem* parent = 0);
 
           PictoAction( const QDomElement& node,
                        AlgorithmeScene* scene = 0 );

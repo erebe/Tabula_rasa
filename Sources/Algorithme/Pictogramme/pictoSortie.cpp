@@ -21,9 +21,8 @@
 /*-----------------------------------------------------------------------------
  *  Constructeurs / Destructeurs
  *-----------------------------------------------------------------------------*/
-PictoSortie::PictoSortie( QGraphicsItem* parent,
-                          QGraphicsScene* scene ):
-     Pictogramme( parent, scene )
+PictoSortie::PictoSortie( QGraphicsItem* parent):
+     Pictogramme( parent )
 {/*{{{*/
      posUpAnchor_.setX( 20 );
      posUpAnchor_.setY( 0 );
@@ -35,9 +34,8 @@ PictoSortie::PictoSortie(const PictoSortie &item):
   Pictogramme(item)
 {}
 
-PictoSortie::PictoSortie( const QDomElement& node,
-                          QGraphicsScene* scene ):
-     Pictogramme( 0, scene )
+PictoSortie::PictoSortie( const QDomElement& node):
+     Pictogramme( 0 )
 {/*{{{*/
      setAnchorType( AncreItem::Up );
      posUpAnchor_.setX( 20 );

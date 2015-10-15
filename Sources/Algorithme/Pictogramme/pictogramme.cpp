@@ -26,8 +26,8 @@
 /*-----------------------------------------------------------------------------
  *  Constructeurs / Destructeurs
  *-----------------------------------------------------------------------------*/
-Pictogramme::Pictogramme( QGraphicsItem* parent, QGraphicsScene* scene ):
-     AncreItem( parent, scene ), pos_( 0 )
+Pictogramme::Pictogramme( QGraphicsItem* parent ):
+     AncreItem( parent ), pos_( 0 )
 {/*{{{*/
      setFlags( QGraphicsItem::ItemIsMovable |
                QGraphicsItem::ItemIsSelectable |

@@ -44,7 +44,7 @@ Pictogramme* PictoBuilder::fromXml( const QDomElement& node,
           picto = new PictoConditionMultiple( node, scene );
 
      } else if( tagName == "Sortie" ) {
-          picto = new PictoSortie( node, scene );
+          picto = new PictoSortie( node );
 
      } else if( tagName == "Iteration" ) {
           picto = new PictoIteration( node, scene );

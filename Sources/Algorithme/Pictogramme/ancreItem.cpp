@@ -25,10 +25,9 @@
 /*-----------------------------------------------------------------------------
  *  Constructeurs / Destructeurs
  *-----------------------------------------------------------------------------*/
-AncreItem::AncreItem( QGraphicsItem* parent, QGraphicsScene* scene ):
+AncreItem::AncreItem( QGraphicsItem* parent):
      QGraphicsItem( parent), anchorType_( None ), parent_( 0 ), liaison_( 0 )
 {
-    Q_UNUSED(scene); //passing scene into the constructor is deprecated by Qt
 }
 
 

@@ -56,10 +56,10 @@ PictoIteration::PictoIteration(const PictoIteration &item):
 
 PictoIteration::PictoIteration( const QDomElement& node,
                                 AlgorithmeScene* scene ):
-     Pictogramme( 0, scene )
+     Pictogramme( 0 )
 {/*{{{*/
      QString label = node.firstChildElement( "Titre" ).firstChild().toText().data();
-     labels_ << new LabelItem( label, 150, 50, 50, this, scene );
+     labels_ << new LabelItem( label, 150, 50, 50, this );
 
      label = node.firstChildElement( "Position" ).firstChild().toText().data();
      QStringList position = label.split( QRegExp( ";" ) );

@@ -27,13 +27,12 @@
 PictoProcedure::PictoProcedure( QString titre,
                                 QString preCondition,
                                 QString postCondition,
-                                QGraphicsItem* parent,
-                                QGraphicsScene* scene ) :
-     Pictogramme( parent, scene ), detail_( true ), emptyDetail_( true )
+                                QGraphicsItem* parent ) :
+     Pictogramme( parent ), detail_( true ), emptyDetail_( true )
 {/*{{{*/
-     labels_ << new LabelItem( preCondition, 150, 15, 50, this, scene );
-     labels_ << new LabelItem( titre, 200, 50, 50, this, scene );
-     labels_ << new LabelItem( postCondition, 150, 15, 50, this, scene );
+     labels_ << new LabelItem( preCondition, 150, 15, 50, this );
+     labels_ << new LabelItem( titre, 200, 50, 50, this );
+     labels_ << new LabelItem( postCondition, 150, 15, 50, this );
 
      setAnchorType( AncreItem::Up );
      posBottomAnchor_.setY( 55 );
@@ -51,16 +50,16 @@ PictoProcedure::PictoProcedure( const PictoProcedure& item):
 
 PictoProcedure::PictoProcedure( const QDomElement& node,
                                 AlgorithmeScene* scene ):
-     Pictogramme( 0, scene )
+     Pictogramme( 0 )
 {/*{{{*/
      QString label = node.firstChildElement( "PreAssertion" ).firstChild().toText().data();
-     labels_ << new LabelItem( label, 150, 15, 50, this, scene );
+     labels_ << new LabelItem( label, 150, 15, 50, this );
 
      label = node.firstChildElement( "Titre" ).firstChild().toText().data();
-     labels_ << new LabelItem( label, 200, 50, 50, this, scene );
+     labels_ << new LabelItem( label, 200, 50, 50, this );
 
      label = node.firstChildElement( "PostAssertion" ).firstChild().toText().data();
-     labels_ << new LabelItem( label, 150, 15, 50, this, scene );
+     labels_ << new LabelItem( label, 150, 15, 50, this );
 
      label = node.firstChildElement( "Position" ).firstChild().toText().data();
      QStringList position = label.split( ';' );

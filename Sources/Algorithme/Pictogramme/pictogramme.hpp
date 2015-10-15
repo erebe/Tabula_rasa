@@ -31,7 +31,7 @@ class Pictogramme : public QObject, public AncreItem {
           Q_OBJECT
 
      public:
-          Pictogramme( QGraphicsItem* parent = 0, QGraphicsScene* scene = 0 );
+          Pictogramme(QGraphicsItem* parent = 0);
           Pictogramme( const Pictogramme& item);
           virtual ~Pictogramme();
 

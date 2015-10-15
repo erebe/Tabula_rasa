@@ -35,14 +35,14 @@ PictoConditionMultiple::PictoConditionMultiple( const PictoConditionMultiple& it
 
 PictoConditionMultiple::PictoConditionMultiple( const QDomElement& node,
           AlgorithmeScene* scene ):
-     Pictogramme( 0, scene )
+     Pictogramme( 0 )
 {/*{{{*/
      QString label = node.firstChildElement( "Position" ).firstChild().toText().data();
      QStringList position = label.split( QRegExp( ";" ) );
      setPos( position.at( 0 ).toDouble(), position.at( 1 ).toDouble() );
 
      label = node.firstChildElement( "Titre" ).firstChild().toText().data();
-     labels_ << new LabelItem( label, 150, 25, 25, this, scene );
+     labels_ << new LabelItem( label, 150, 25, 25, this );
 
      setAnchorType( AncreItem::Up );
      posUpAnchor_.setY( 0 );
@@ -56,7 +56,7 @@ PictoConditionMultiple::PictoConditionMultiple( const QDomElement& node,
      for( int i = 0; i < nodes.count(); i++ ) {
           if( nodes.at( i ).isElement() ) {
                label = nodes.at( i ).firstChildElement( "Titre" ).firstChild().toText().data();
-               labels_ << new LabelItem( label, 150, 25, 25, this, scene );
+               labels_ << new LabelItem( label, 150, 25, 25, this );
                labels_.last()->setAnchorType( AncreItem::Down );
 
 
@@ -210,7 +210,7 @@ QVariant PictoConditionMultiple::itemChange( GraphicsItemChange change, const QV
 void PictoConditionMultiple::processAction( QAction* action, QGraphicsSceneContextMenuEvent* event )
 {/*{{{*/
      if( getContextMenuAction("AjouterA") == action ) {
-          LabelItem* item = new LabelItem( "", 150, 25, 25, this, scene() );
+          LabelItem* item = new LabelItem( "", 150, 25, 25, this );
           item->setAnchorType( AncreItem::Down );
 
           labels_.insert( labels_.size() - 1, item );

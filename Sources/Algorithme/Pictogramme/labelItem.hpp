@@ -24,12 +24,11 @@ class LabelItem : public AncreItem {
      public:
           enum { Type = UserType + 1 };
 
-          LabelItem( const QString& texte,
+          LabelItem(const QString& texte,
                      const int maxWidth = 150,
                      const int minWidth = 50,
                      const int height = 50,
-                     QGraphicsItem* parent = 0,
-                     QGraphicsScene* scene = 0 );
+                     QGraphicsItem* parent = 0);
           LabelItem(const LabelItem& item);
 
           /*-----------------------------------------------------------------------------
