@@ -26,7 +26,6 @@ class PictoSortie: public Pictogramme {
           enum { Type = UserType + 6 };
 
           PictoSortie(QGraphicsItem* parent = 0);
-          PictoSortie(const QDomElement& node);
 
           PictoSortie( const PictoSortie& item);
 

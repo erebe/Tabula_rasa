@@ -31,7 +31,9 @@ HEADERS += Algorithme/algorithmeScene.hpp \
            Algorithme/Pictogramme/pictoProcedure.hpp \
            Algorithme/Pictogramme/pictoSortie.hpp \
     Interface/labeledit.hpp \
-    Interface/sauvegarde.hpp
+    Interface/sauvegarde.hpp \
+    Algorithme/XML/PictoSortieParser.hpp \
+    Algorithme/XML/PictoParser.hpp
 FORMS += Interface/aboutDialog.ui \
          Interface/mainwindow.ui \
          Interface/resizeDialog.ui \
@@ -55,7 +57,9 @@ SOURCES += main.cpp \
            Algorithme/Pictogramme/pictoProcedure.cpp \
            Algorithme/Pictogramme/pictoSortie.cpp \
     Interface/labeledit.cpp \
-    Interface/sauvegarde.cpp
+    Interface/sauvegarde.cpp \
+    Algorithme/XML/PictoSortieParser.cpp \
+    Algorithme/XML/PictoParser.cpp
 RESOURCES += Ressources/ressources.qrc
 
 

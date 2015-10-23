@@ -1,7 +1,11 @@
-#include "PictoParser.h"
+#include "PictoParser.hpp"
 
 PictoParser::PictoParser()
 {
 
 }
 
+PictoParser::~PictoParser()
+{
+
+}

@@ -24,6 +24,7 @@
 #include "Pictogramme/pictoProcedure.hpp"
 #include "Pictogramme/pictoCondition.hpp"
 #include "Pictogramme/pictoConditionMultiple.hpp"
+#include "XML/PictoSortieParser.hpp"
 
 Pictogramme* PictoBuilder::fromXml( const QDomElement& node,
                                     AlgorithmeScene* scene )
@@ -44,7 +45,9 @@ Pictogramme* PictoBuilder::fromXml( const QDomElement& node,
           picto = new PictoConditionMultiple( node, scene );
 
      } else if( tagName == "Sortie" ) {
-          picto = new PictoSortie( node );
+         PictoSortieParser *parser = new PictoSortieParser();
+         picto = parser->parse(node);
+         delete parser;
 
      } else if( tagName == "Iteration" ) {
           picto = new PictoIteration( node, scene );
