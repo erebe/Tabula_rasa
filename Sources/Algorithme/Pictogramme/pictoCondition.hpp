@@ -27,11 +27,10 @@ class PictoCondition : public Pictogramme {
      public:
           enum { Type = UserType + 3 };
 
-          PictoCondition( const QString& titre = QString( "?" ) );
-
-          PictoCondition( const QDomElement& node,
-                          AlgorithmeScene* scene = 0 );
-
+          // empty picto
+          PictoCondition();
+          // default picto : ? / sinon
+          PictoCondition( const QString& titre);
           PictoCondition( const PictoCondition& item);
 
           /*-----------------------------------------------------------------------------
@@ -44,6 +43,8 @@ class PictoCondition : public Pictogramme {
 
           void updateDimension();
           void toXml( QDomDocument& doc, QDomNode& node ) const;
+          void addLabel(LabelItem *item);
+          void setIsForeverAlone(bool foreverAlone);
 
      protected:
           bool isForeverAlone_; //Doit on afficher le sinon ou pas

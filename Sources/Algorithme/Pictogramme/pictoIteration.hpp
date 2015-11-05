@@ -29,10 +29,6 @@ class PictoIteration : public Pictogramme {
           enum { Type = UserType + 4 };
 
           PictoIteration( QString titre = QString( "?" ));
-
-          PictoIteration( const QDomElement& node,
-                          AlgorithmeScene* scene = 0 );
-
           PictoIteration( const PictoIteration& item );
           /*-----------------------------------------------------------------------------
            *  Méthodes
@@ -47,6 +43,7 @@ class PictoIteration : public Pictogramme {
           void updateDimension();
           void toXml( QDomDocument& doc, QDomNode& node ) const;
           void createLink();
+          void setIsNumberedLoop(bool numbered);
 
      private:
           /*-----------------------------------------------------------------------------

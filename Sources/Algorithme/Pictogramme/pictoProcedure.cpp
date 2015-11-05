@@ -48,60 +48,18 @@ PictoProcedure::PictoProcedure( const PictoProcedure& item):
     detail_(item.detail_), emptyDetail_(item.emptyDetail_)
 {}
 
-PictoProcedure::PictoProcedure( const QDomElement& node,
-                                AlgorithmeScene* scene ):
-     Pictogramme( 0 )
-{/*{{{*/
-     QString label = node.firstChildElement( "PreAssertion" ).firstChild().toText().data();
-     labels_ << new LabelItem( label, 150, 15, 50, this );
-
-     label = node.firstChildElement( "Titre" ).firstChild().toText().data();
-     labels_ << new LabelItem( label, 200, 50, 50, this );
-
-     label = node.firstChildElement( "PostAssertion" ).firstChild().toText().data();
-     labels_ << new LabelItem( label, 150, 15, 50, this );
-
-     label = node.firstChildElement( "Position" ).firstChild().toText().data();
-     QStringList position = label.split( ';' );
-     setPos( position.at( 0 ).toDouble(), position.at( 1 ).toDouble() );
-
-     label = node.firstChildElement( "DetailsVisible" ).firstChild().toText().data();
-     detail_ = ( label == "1" ) ? true : false;
-
-     label = node.firstChildElement( "DetailsVideVisible" ).firstChild().toText().data();
-     emptyDetail_ = ( label == "1" ) ? true : false;
-
-     setAnchorType( AncreItem::Up );
-     posBottomAnchor_.setY( 55 );
-     posUpAnchor_.setY( 5 );
-     updateDimension();
-
-
-     addContextMenuEntry("Details", "Masquer les assertions", true, !detail_);
-     addContextMenuEntry("EmptyDetails", "Masquer les assertions vides", true, !emptyDetail_);
-
-     const QDomNodeList nodes = node.firstChildElement( "Enfants" ).childNodes();
-     Pictogramme* picto = 0;
-
-     for( int i = 0; i < nodes.count(); i++ ) {
-          if( nodes.at( i ).isElement() ) {
-               picto = PictoBuilder::fromXml( nodes.at( i ).toElement(), scene );
-
-               if( picto ) {
-                    addChild( picto );
-                    picto = 0;
-               }
-          }
-     }
-
-     label = node.firstChildElement( "StyleLien" ).firstChild().toText().data();
-     setLinkStyle( static_cast<LiaisonItem::Style>( label.toInt() ) );
-}/*}}}*/
-
 
 /*-----------------------------------------------------------------------------
  *  Méthodes
  *-----------------------------------------------------------------------------*/
+void PictoProcedure::setDetailsVisible(bool visible) {
+    detail_ = visible;
+}
+
+void PictoProcedure::setEmptyDetailsVisible(bool visible) {
+    emptyDetail_ = visible;
+}
+
 void PictoProcedure::paint( QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget )
 {/*{{{*/
      Q_UNUSED( option );

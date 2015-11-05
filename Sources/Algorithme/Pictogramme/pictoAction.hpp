@@ -33,9 +33,6 @@ class PictoAction: public Pictogramme {
                        QString postCondition = QString( "∅" ),
                        QGraphicsItem* parent = 0);
 
-          PictoAction( const QDomElement& node,
-                       AlgorithmeScene* scene = 0 );
-
           PictoAction(const PictoAction& item);
 
 
@@ -51,6 +48,8 @@ class PictoAction: public Pictogramme {
           void toXml( QDomDocument& doc, QDomNode& node ) const;
           void updateDimension();
           inline bool detail() const { return detail_; }
+          void setDetailsVisible(bool visible);
+          void setEmptyDetailsVisible(bool visible);
 
      protected:
           /*-----------------------------------------------------------------------------

@@ -5,11 +5,11 @@
 #include "pictoSortie.hpp"
 class QDomElement;
 
-class PictoSortieParser : PictoParser
+class PictoSortieParser : public PictoParser
 {
 public:
     PictoSortieParser();
-    PictoSortie* parse(const QDomElement &element);
+    Pictogramme* parse(const QDomElement & element, AlgorithmeScene* scene = 0 );
 };
 
 #endif // PICTOSORTIEPARSER_H

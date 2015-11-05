@@ -31,9 +31,6 @@ class PictoProcedure : public Pictogramme {
                           QString postCondition = QString( "∅" ),
                           QGraphicsItem* parent = 0);
 
-          PictoProcedure( const QDomElement& node,
-                          AlgorithmeScene* scene = 0 );
-
           PictoProcedure( const PictoProcedure& item);
 
           /*-----------------------------------------------------------------------------
@@ -48,6 +45,8 @@ class PictoProcedure : public Pictogramme {
           void toXml( QDomDocument& doc, QDomNode& node ) const;
           void updateDimension();
           inline bool detail() const { return detail_; }
+          void setDetailsVisible(bool visible);
+          void setEmptyDetailsVisible(bool visible);
 
 
      private:

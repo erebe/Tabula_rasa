@@ -25,11 +25,10 @@ class PictoConditionMultiple : public Pictogramme {
 
      public:
           enum { Type = UserType + 7 };
-          PictoConditionMultiple( const QString& titre = QString( "?" ) );
-
-          PictoConditionMultiple( const QDomElement& node,
-                                  AlgorithmeScene* scene = 0 );
-
+          // empty picto
+          PictoConditionMultiple();
+          // default picto : ? / sinon
+          PictoConditionMultiple(const QString& titre);
           PictoConditionMultiple( const PictoConditionMultiple& item);
 
 
@@ -44,6 +43,7 @@ class PictoConditionMultiple : public Pictogramme {
 
           void toXml( QDomDocument& doc, QDomNode& node ) const;
           void updateDimension();
+          void addLabel(LabelItem *item);
 
      protected:
           /*-----------------------------------------------------------------------------
