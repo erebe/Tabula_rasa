@@ -38,7 +38,8 @@ HEADERS += Algorithme/algorithmeScene.hpp \
     Algorithme/XML/PictoIterationParser.hpp \
     Algorithme/XML/PictoActionParser.hpp \
     Algorithme/XML/PictoConditionParser.hpp \
-    Algorithme/XML/PictoConditionMultipleParser.hpp
+    Algorithme/XML/PictoConditionMultipleParser.hpp \
+    Algorithme/Model/Algorithm.hpp
 FORMS += Interface/aboutDialog.ui \
          Interface/mainwindow.ui \
          Interface/resizeDialog.ui \
@@ -69,7 +70,8 @@ SOURCES += main.cpp \
     Algorithme/XML/PictoIterationParser.cpp \
     Algorithme/XML/PictoActionParser.cpp \
     Algorithme/XML/PictoConditionParser.cpp \
-    Algorithme/XML/PictoConditionMultipleParser.cpp
+    Algorithme/XML/PictoConditionMultipleParser.cpp \
+    Algorithme/Model/Algorithm.cpp
 RESOURCES += Ressources/ressources.qrc
 
 
