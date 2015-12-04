@@ -6,7 +6,7 @@ PictoSortieParser::PictoSortieParser()
 
 }
 
-Pictogramme* PictoSortieParser::parse(const QDomElement &element, AlgorithmeScene *scene) {
+Pictogramme* PictoSortieParser::parse(const QDomElement &element, Algorithm *algorithm) {
     PictoSortie * sortie = new PictoSortie();
     QStringList position = readText(element, "Position").split( QRegExp( ";" ) );
     sortie->setPos( position.at( 0 ).toDouble(), position.at( 1 ).toDouble() );

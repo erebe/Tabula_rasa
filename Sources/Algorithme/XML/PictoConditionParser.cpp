@@ -7,7 +7,7 @@ PictoConditionParser::PictoConditionParser()
 
 }
 
-Pictogramme* PictoConditionParser::parse(const QDomElement & element, AlgorithmeScene* scene) {
+Pictogramme* PictoConditionParser::parse(const QDomElement & element, Algorithm* algorithm) {
     PictoCondition *picto = new PictoCondition();
 
     QStringList position = readText(element, "Position").split( QRegExp( ";" ) );
@@ -28,7 +28,7 @@ Pictogramme* PictoConditionParser::parse(const QDomElement & element, Algorithme
 
               for( int j = 0; j < enfants.count(); j++ ) {
                    if( enfants.at( j ).isElement() ) {
-                        childPicto = PictoBuilder::fromXml( enfants.at( j ).toElement(), scene );
+                        childPicto = PictoBuilder::fromXml( enfants.at( j ).toElement(), algorithm );
 
                         if( childPicto ) {
                              labelItem->addChild( childPicto );

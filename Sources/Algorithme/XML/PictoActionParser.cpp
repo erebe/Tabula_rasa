@@ -7,7 +7,7 @@ PictoActionParser::PictoActionParser()
 
 }
 
-Pictogramme* PictoActionParser::parse(const QDomElement & element, AlgorithmeScene* scene) {
+Pictogramme* PictoActionParser::parse(const QDomElement & element, Algorithm* algorithm) {
     PictoAction *picto = new PictoAction(readText(element, "Titre"), readText(element, "PreAssertion"), readText(element, "PostAssertion"));
 
     QStringList position = readText(element, "Position").split( QRegExp( ";" ) );
@@ -21,7 +21,7 @@ Pictogramme* PictoActionParser::parse(const QDomElement & element, AlgorithmeSce
 
     for( int i = 0; i < nodes.count(); i++ ) {
          if( nodes.at( i ).isElement() ) {
-              childPicto = PictoBuilder::fromXml( nodes.at( i ).toElement(), scene );
+              childPicto = PictoBuilder::fromXml( nodes.at( i ).toElement(), algorithm );
 
               if( childPicto ) {
                    picto->addChild( childPicto );

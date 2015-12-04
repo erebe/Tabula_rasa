@@ -30,9 +30,10 @@
 #include "XML/PictoIterationParser.hpp"
 #include "XML/PictoProcedureParser.hpp"
 #include "XML/PictoSortieParser.hpp"
+#include "Model/Algorithm.hpp"
 
 Pictogramme* PictoBuilder::fromXml( const QDomElement& node,
-                                    AlgorithmeScene* scene )
+                                    Algorithm* algorithm )
 {/*{{{*/
      QString tagName = node.tagName();
      PictoParser *parser = 0;
@@ -49,14 +50,13 @@ Pictogramme* PictoBuilder::fromXml( const QDomElement& node,
      } else if( tagName == "Iteration" ) {
          parser = new PictoIterationParser();
      }
-     Pictogramme* picto = parser->parse(node, scene);
+     Pictogramme* picto = parser->parse(node, algorithm);
      delete parser;
-     scene->newItem( picto );
+     algorithm->addPictogram( picto );
      return picto;
 }/*}}}*/
 
-Pictogramme* PictoBuilder::fromMode( AlgorithmeScene::Mode mode,
-                                     AlgorithmeScene* scene )
+Pictogramme* PictoBuilder::fromMode( AlgorithmeScene::Mode mode)
 {/*{{{*/
      Pictogramme* picto = 0;
 
@@ -78,7 +78,5 @@ Pictogramme* PictoBuilder::fromMode( AlgorithmeScene::Mode mode,
      } else if( mode == AlgorithmeScene::InsertMultiCondition ) {
           picto = new PictoConditionMultiple("?");
      }
-
-     scene->newItem( picto );
      return picto;
 }/*}}}*/

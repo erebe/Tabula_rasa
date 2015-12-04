@@ -23,14 +23,14 @@
 
 #include "algorithmeScene.hpp"
 
+class Algorithm;
 class Pictogramme;
 
 class PictoBuilder {
      public:
-          static Pictogramme* fromXml( const QDomElement& node,
-                                       AlgorithmeScene* scene );
+          static Pictogramme* fromXml(const QDomElement& node,
+                                       Algorithm *algorithm );
 
-          static Pictogramme* fromMode( AlgorithmeScene::Mode mode,
-                                        AlgorithmeScene* scene );
+          static Pictogramme* fromMode( AlgorithmeScene::Mode mode);
 };
 #endif // PICTOBUILDER_H

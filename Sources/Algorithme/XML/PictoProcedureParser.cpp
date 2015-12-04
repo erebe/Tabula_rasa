@@ -7,7 +7,7 @@ PictoProcedureParser::PictoProcedureParser()
 
 }
 
-Pictogramme* PictoProcedureParser::parse(const QDomElement & element, AlgorithmeScene* scene) {
+Pictogramme* PictoProcedureParser::parse(const QDomElement & element, Algorithm* algorithm) {
     PictoProcedure * picto = new PictoProcedure(readText(element,"Titre"), readText(element, "PreAssertion"), readText(element, "PostAssertion"));
 
     QStringList position = readText(element, "Position").split(';');
@@ -21,7 +21,7 @@ Pictogramme* PictoProcedureParser::parse(const QDomElement & element, Algorithme
 
     for( int i = 0; i < nodes.count(); i++ ) {
          if( nodes.at( i ).isElement() ) {
-              childPicto = PictoBuilder::fromXml( nodes.at( i ).toElement(), scene );
+              childPicto = PictoBuilder::fromXml( nodes.at( i ).toElement(), algorithm );
 
               if( childPicto ) {
                    picto->addChild( childPicto );

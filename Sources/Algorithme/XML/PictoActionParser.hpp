@@ -7,7 +7,7 @@ class PictoActionParser : public PictoParser
 {
 public:
     PictoActionParser();
-    Pictogramme* parse(const QDomElement & element, AlgorithmeScene* scene = 0 );
+    Pictogramme* parse(const QDomElement & element, Algorithm* algorithm = 0 );
 };
 
 #endif // PICTOACTIONPARSER_H

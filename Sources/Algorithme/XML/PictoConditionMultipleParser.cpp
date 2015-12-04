@@ -7,7 +7,7 @@ PictoConditionMultipleParser::PictoConditionMultipleParser()
 
 }
 
-Pictogramme* PictoConditionMultipleParser::parse(const QDomElement & element, AlgorithmeScene* scene) {
+Pictogramme* PictoConditionMultipleParser::parse(const QDomElement & element, Algorithm* algorithm) {
     PictoConditionMultiple *picto = new PictoConditionMultiple();
 
     QStringList position = readText(element, "Position").split( QRegExp( ";" ) );
@@ -29,7 +29,7 @@ Pictogramme* PictoConditionMultipleParser::parse(const QDomElement & element, Al
 
               for( int j = 0; j < enfants.count(); j++ ) {
                    if( enfants.at( j ).isElement() ) {
-                        childPicto = PictoBuilder::fromXml( enfants.at( j ).toElement(), scene );
+                        childPicto = PictoBuilder::fromXml( enfants.at( j ).toElement(), algorithm );
 
                         if( childPicto ) {
                              labelItem->addChild( childPicto );

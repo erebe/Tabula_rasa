@@ -7,7 +7,7 @@ class PictoConditionParser : public PictoParser
 {
 public:
     PictoConditionParser();
-    Pictogramme* parse(const QDomElement & element, AlgorithmeScene* scene = 0 );
+    Pictogramme* parse(const QDomElement & element, Algorithm* algorithm = 0 );
 };
 
 #endif // PICTOCONDITIONPARSER_H

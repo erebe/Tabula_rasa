@@ -25,6 +25,8 @@
 #include "Pictogramme/pictoSortie.hpp"
 #include "Pictogramme/pictoIteration.hpp"
 
+#include "XML/AlgorithmParser.hpp"
+
 #include <QGraphicsSceneMouseEvent>
 #include <QGraphicsLineItem>
 
@@ -122,19 +124,12 @@ void AlgorithmeScene::saveToXml(QTextStream &out) const
 void AlgorithmeScene::loadFromXml(const QDomDocument &doc)
 {/*{{{*/
 
-    QDomElement racine = doc.documentElement();
-    algorithm = new Algorithm(racine.firstChildElement("nom").firstChild().toText().data());
-
-    const QDomNodeList nodes = racine.firstChildElement("Elements").childNodes();
-
-    for (int i = 0; i < nodes.count(); i++) {
-        if (nodes.at(i).isElement()) {
-            PictoBuilder::fromXml(nodes.at(i).toElement() , this);
-        }
-    }
+    AlgorithmParser parser;
+    algorithm = parser.parse(doc.documentElement());
 
     /* Little hack to display liaisons, should refactor item insertion */
     foreach( Pictogramme* item, algorithm->allPictograms()) {
+        addItem(item);
         item->itemChange(QGraphicsItem::ItemPositionChange, QVariant());
     }
 
@@ -337,9 +332,10 @@ void AlgorithmeScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
      *  Mode d'insertion d'item
      *-----------------------------------------------------------------------------*/
     if ((mode_ != EditLink) && (mode_ != MoveItem)) {     /*{{{*/
-        Pictogramme *picto = PictoBuilder::fromMode(mode_, this);
+        Pictogramme *picto = PictoBuilder::fromMode(mode_);
 
         if (picto) {
+            newItem( picto );
             QRectF size = picto->boundingRect();
             picto->setPos(mouseEvent->scenePos().x() - (size.width() / 2),
                           mouseEvent->scenePos().y() - (size.height() / 2));
