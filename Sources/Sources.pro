@@ -40,7 +40,9 @@ HEADERS += Algorithme/algorithmeScene.hpp \
     Algorithme/XML/PictoConditionParser.hpp \
     Algorithme/XML/PictoConditionMultipleParser.hpp \
     Algorithme/Model/Algorithm.hpp \
-    Algorithme/XML/AlgorithmParser.hpp
+    Algorithme/XML/AlgorithmParser.hpp \
+    Algorithme/Model/Dictionary.hpp \
+    Algorithme/Model/DictionaryEntry.hpp
 FORMS += Interface/aboutDialog.ui \
          Interface/mainwindow.ui \
          Interface/resizeDialog.ui \
@@ -73,7 +75,9 @@ SOURCES += main.cpp \
     Algorithme/XML/PictoConditionParser.cpp \
     Algorithme/XML/PictoConditionMultipleParser.cpp \
     Algorithme/Model/Algorithm.cpp \
-    Algorithme/XML/AlgorithmParser.cpp
+    Algorithme/XML/AlgorithmParser.cpp \
+    Algorithme/Model/Dictionary.cpp \
+    Algorithme/Model/DictionaryEntry.cpp
 RESOURCES += Ressources/ressources.qrc
 
 
