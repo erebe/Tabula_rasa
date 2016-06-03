@@ -1,8 +1,7 @@
 #include "Algorithm.hpp"
 
-Algorithm::Algorithm(const QString& name)
+Algorithm::Algorithm(const QString& name, Dictionary* dictionary) : name_(name), dictionary_(*dictionary)
 {
-    name_ = name;
 }
 
 void Algorithm::addPictogram(Pictogramme* picto) {

@@ -13,7 +13,7 @@ private:
     QList<Pictogramme*> pictos_; //Liste de tous les pictogrammes de l'algorithme (sans les liaisons)
     Dictionary dictionary_;
 public:
-    Algorithm(const QString& name);
+    Algorithm(const QString& name, Dictionary* dictionary);
     inline QString name() { return name_; }
     inline void setName( const QString& name ) { name_ = name; }
     void addPictogram(Pictogramme* picto);

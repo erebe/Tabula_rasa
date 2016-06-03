@@ -48,6 +48,7 @@ class AlgorithmeScene: public QGraphicsScene {
           { mode_ = mode; }
           void setName( const QString& name );
           QString name();
+          inline Algorithm* algorithm() const { return algorithm_; }
 
           void deleteItem( Pictogramme* item );
           void deleteSelectedItem();
@@ -78,7 +79,7 @@ class AlgorithmeScene: public QGraphicsScene {
            *  Attributs
            *-----------------------------------------------------------------------------*/
           Mode mode_;
-          Algorithm *algorithm;
+          Algorithm *algorithm_;
           QGraphicsLineItem* line_; //Line créée dans le mode edition lien
           QPair<QPointF, QGraphicsRectItem*> selectionArea_;
           QMenu contexteMenu_; //appelé lors du clic droit

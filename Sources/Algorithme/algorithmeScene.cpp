@@ -26,6 +26,8 @@
 #include "Pictogramme/pictoIteration.hpp"
 
 #include "XML/AlgorithmParser.hpp"
+#include "XML/DictionaryWriter.hpp"
+#include "XML/XMLNodeCreator.hpp"
 
 #include <QGraphicsSceneMouseEvent>
 #include <QGraphicsLineItem>
@@ -37,7 +39,7 @@ AlgorithmeScene::AlgorithmeScene(qreal x, qreal y, qreal width, qreal height, QO
     QGraphicsScene(x, y, width, height, parent),
     mode_(MoveItem), line_(0)
 {/*{{{*/
-    algorithm = new Algorithm("Algorithme");
+    algorithm_ = new Algorithm("Algorithme", new Dictionary);
     actions_["Supprimer"] = contexteMenu_.addAction( tr( "Supprimer" ) );
     contexteMenu_.addSeparator();
     actions_["Delier"] = contexteMenu_.addAction( tr( "Délier de tous" ) );
@@ -54,7 +56,7 @@ AlgorithmeScene::~AlgorithmeScene()
 {
     /*{{{*/
     Pictogramme *picto;
-    foreach(picto, algorithm->allPictograms())
+    foreach(picto, algorithm()->allPictograms())
         delete picto;
 }/*}}}*/
 
@@ -64,18 +66,18 @@ AlgorithmeScene::~AlgorithmeScene()
  *-----------------------------------------------------------------------------*/
 void AlgorithmeScene::setName( const QString& name )
 {
-    algorithm->setName(name);
+    algorithm()->setName(name);
 }
 
 QString AlgorithmeScene::name()
 {
-    return algorithm->name();
+    return algorithm()->name();
 }
 
 void AlgorithmeScene::deleteItem(Pictogramme *item)
 {
     /*{{{*/
-    algorithm->removePictogram(item);
+    algorithm()->removePictogram(item);
     removeItem(item);
     delete item;
 }/*}}}*/
@@ -84,7 +86,7 @@ void AlgorithmeScene::newItem(Pictogramme *picto)
 {
     /*{{{*/
     if (picto) {
-        algorithm->addPictogram(picto);
+        algorithm()->addPictogram(picto);
         addItem(picto);
         emit itemAdded(picto);
     }
@@ -102,7 +104,7 @@ void AlgorithmeScene::saveToXml(QTextStream &out) const
     doc.appendChild(root);
 
     QDomElement name = doc.createElement("nom");
-    name.appendChild(doc.createTextNode(algorithm->name()));
+    name.appendChild(doc.createTextNode(algorithm()->name()));
     root.appendChild(name);
 
     QDomElement date = doc.createElement("date_creation");
@@ -112,12 +114,19 @@ void AlgorithmeScene::saveToXml(QTextStream &out) const
     QDomElement elements = doc.createElement("Elements");
 
     Pictogramme *picto;
-    foreach(picto, algorithm->allPictograms()) {
+    foreach(picto, algorithm()->allPictograms()) {
         if (!picto->isChild()) {
             picto->toXml(doc, elements);
         }
     }
     root.appendChild(elements);
+
+    XMLNodeCreator nodeCreator(doc);
+    DictionaryWriter dictionaryWriter(nodeCreator);
+    QDomElement dictionaryNode = dictionaryWriter.write(algorithm()->dictionary());
+    root.appendChild(dictionaryNode);
+
+
     doc.save(out, 2);
 }/*}}}*/
 
@@ -125,10 +134,10 @@ void AlgorithmeScene::loadFromXml(const QDomDocument &doc)
 {/*{{{*/
 
     AlgorithmParser parser;
-    algorithm = parser.parse(doc.documentElement());
+    algorithm_ = parser.parse(doc.documentElement());
 
     /* Little hack to display liaisons, should refactor item insertion */
-    foreach( Pictogramme* item, algorithm->allPictograms()) {
+    foreach( Pictogramme* item, algorithm()->allPictograms()) {
         addItem(item);
         item->itemChange(QGraphicsItem::ItemPositionChange, QVariant());
     }
@@ -380,7 +389,7 @@ void AlgorithmeScene::selectAll()
 {
     /*{{{*/
 
-    foreach(Pictogramme * picto, algorithm->allPictograms()) {
+    foreach(Pictogramme * picto, algorithm()->allPictograms()) {
         picto->setSelected(true);
     }
 
@@ -388,7 +397,7 @@ void AlgorithmeScene::selectAll()
 
 void AlgorithmeScene::deleteSelectedItem()
 {
-    foreach(Pictogramme * picto, algorithm->allPictograms()) {
+    foreach(Pictogramme * picto, algorithm()->allPictograms()) {
         if( picto->isSelected())
             this->deleteItem(picto);
 
@@ -407,7 +416,7 @@ void AlgorithmeScene::adjust(int delta)
     Pictogramme *item;
     QPointF point;
 
-    foreach(item, algorithm->allPictograms()) {
+    foreach(item, algorithm()->allPictograms()) {
 
         point = item->scenePos();
 
@@ -439,7 +448,7 @@ QList<Pictogramme *> AlgorithmeScene::copySelected() const
 {
 
     QList<Pictogramme*> selected;
-    foreach(Pictogramme * picto, algorithm->allPictograms()) {
+    foreach(Pictogramme * picto, algorithm()->allPictograms()) {
         if(picto->isSelected())
             selected.append(picto);
     }
