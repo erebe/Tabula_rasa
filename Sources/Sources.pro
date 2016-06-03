@@ -3,7 +3,7 @@
 ######################################################################
 
 TEMPLATE = app
-TARGET = 
+TARGET =
 TARGET = tabula_rasa
 DEPENDPATH += . Algorithme Interface Ressources Algorithme/Pictogramme
 INCLUDEPATH += . Interface Algorithme Algorithme/Pictogramme
@@ -42,7 +42,13 @@ HEADERS += Algorithme/algorithmeScene.hpp \
     Algorithme/Model/Algorithm.hpp \
     Algorithme/XML/AlgorithmParser.hpp \
     Algorithme/Model/Dictionary.hpp \
-    Algorithme/Model/DictionaryEntry.hpp
+    Algorithme/Model/DictionaryEntry.hpp \
+    Algorithme/XML/DictionaryEntryAttributes.hpp \
+    Algorithme/XML/DictionaryEntryParser.hpp \
+    Algorithme/XML/DictionaryEntryWriter.hpp \
+    Algorithme/XML/DictionaryParser.hpp \
+    Algorithme/XML/DictionaryWriter.hpp \
+    Algorithme/XML/XMLNodeCreator.hpp
 FORMS += Interface/aboutDialog.ui \
          Interface/mainwindow.ui \
          Interface/resizeDialog.ui \
@@ -77,7 +83,13 @@ SOURCES += main.cpp \
     Algorithme/Model/Algorithm.cpp \
     Algorithme/XML/AlgorithmParser.cpp \
     Algorithme/Model/Dictionary.cpp \
-    Algorithme/Model/DictionaryEntry.cpp
+    Algorithme/Model/DictionaryEntry.cpp \
+    Algorithme/XML/DictionaryEntryAttributes.cpp \
+    Algorithme/XML/DictionaryEntryParser.cpp \
+    Algorithme/XML/DictionaryEntryWriter.cpp \
+    Algorithme/XML/DictionaryParser.cpp \
+    Algorithme/XML/DictionaryWriter.cpp \
+    Algorithme/XML/XMLNodeCreator.cpp
 RESOURCES += Ressources/ressources.qrc
 
 
