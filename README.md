@@ -1,4 +1,7 @@
-Tabula Rasa
+<p align="center">
+  <img src="https://github.com/erebe/Tabula_rasa/raw/master/logo.png" alt="logo"/>
+</p>
+
 -----------
 
 Tabula rasa est un editeur d'algorithme conçu pour répondre aux spécifications de l'IUT de Bayonne
