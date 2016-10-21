@@ -43,6 +43,7 @@ HEADERS += Algorithme/algorithmeScene.hpp \
     Algorithme/XML/AlgorithmParser.hpp \
     Algorithme/Model/Dictionary.hpp \
     Algorithme/Model/DictionaryEntry.hpp \
+    Algorithme/ViewModel/DictionaryTableViewModel.hpp \
     Algorithme/XML/DictionaryEntryAttributes.hpp \
     Algorithme/XML/DictionaryEntryParser.hpp \
     Algorithme/XML/DictionaryEntryWriter.hpp \
@@ -84,6 +85,7 @@ SOURCES += main.cpp \
     Algorithme/XML/AlgorithmParser.cpp \
     Algorithme/Model/Dictionary.cpp \
     Algorithme/Model/DictionaryEntry.cpp \
+    Algorithme/ViewModel/DictionaryTableViewModel.cpp \
     Algorithme/XML/DictionaryEntryAttributes.cpp \
     Algorithme/XML/DictionaryEntryParser.cpp \
     Algorithme/XML/DictionaryEntryWriter.cpp \

@@ -17,15 +17,21 @@
  */
 #include "tabWidget.hpp"
 #include "Algorithme/algorithmeScene.hpp"
+#include "ViewModel/DictionaryTableViewModel.hpp"
+#include "Model/Algorithm.hpp"
 
 #include <QGraphicsView>
 #include <QGraphicsScene>
 #include <QHBoxLayout>
+#include <QDockWidget>
 #include <QFileDialog>
 #include <QtSvg/QSvgGenerator>
 #include <QPrinter>
 #include <QTabWidget>
 #include <QDebug>
+#include <QTableView>
+#include <QHeaderView>
+#include <QToolBar>
 
 TabWidget::TabWidget()
 {/*{{{*/
@@ -40,9 +46,33 @@ TabWidget::TabWidget()
      vue_->setFont( QFont( "times", 10 ) );
      vue_->setScene( scene_ );
 
+     // construct the dock that will be used to display the dictionary corresponding to this algorithm
+     dictionaryDock_ = new QDockWidget(tr("Dictionnaire des éléments"), this);
+     dictionaryDock_->setFeatures(QDockWidget::DockWidgetClosable);
+     dictionaryDock_->setAllowedAreas(Qt::BottomDockWidgetArea);
 
+     // the child of a dock must be a widget, so create this fake one
+     QWidget *fakeWidget = new QWidget(dictionaryDock_);
+     QHBoxLayout *dictionaryLayout = new QHBoxLayout(fakeWidget);
 
-     layout_ = new QHBoxLayout( this );
+     QToolBar *dictionaryToolbar = new QToolBar(fakeWidget);
+     dictionaryToolbar->setOrientation(Qt::Vertical);
+     dictionaryToolbar->addAction(QIcon(":/Icones/add.png"), "Add row", this, SLOT(addNewRow()));
+     dictionaryLayout->addWidget(dictionaryToolbar);
+
+     QTableView *dictionaryView = new QTableView(fakeWidget);
+     this->dictionaryViewModel = new DictionaryTableViewModel(scene_->algorithm()->dictionary());
+     dictionaryView->setModel(this->dictionaryViewModel);
+     dictionaryView->setSelectionMode(QTableView::SingleSelection);
+     dictionaryView->setEditTriggers(QTableView::SelectedClicked | QTableView::DoubleClicked);
+     dictionaryView->setMinimumHeight(70);
+     dictionaryView->horizontalHeader()->setStretchLastSection(true);
+     dictionaryLayout->addWidget(dictionaryView);
+
+     fakeWidget->setLayout(dictionaryLayout);
+     dictionaryDock_->setWidget(fakeWidget);
+
+     layout_ = new QHBoxLayout(this);
      layout_->addWidget( vue_ );
      layout_->setMargin( 0 );
 
@@ -53,6 +83,10 @@ TabWidget::TabWidget()
 
 }/*}}}*/
 
+void TabWidget::addNewRow()
+{
+    dictionaryViewModel->appendEmptyEntryRow();
+}
 
 void TabWidget::exportToSvg()
 {/*{{{*/

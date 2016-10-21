@@ -1,5 +1,5 @@
 <RCC>
-    <qresource lang="Francais" prefix="/Icones">
+    <qresource prefix="/Icones" lang="Francais">
         <file>pointer.png</file>
         <file>vignette_action.png</file>
         <file>vignette_boucle.png</file>
@@ -28,5 +28,6 @@
         <file>paste.png</file>
         <file>delete.png</file>
         <file>select_all.png</file>
+        <file>add.png</file>
     </qresource>
 </RCC>

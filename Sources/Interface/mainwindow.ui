@@ -101,8 +101,14 @@
     <addaction name="actionA_propos_de_Tabula_Rasa"/>
     <addaction name="actionA_propos_de_Qt"/>
    </widget>
+   <widget class="QMenu" name="displayMenu">
+    <property name="title">
+     <string>Affichage</string>
+    </property>
+   </widget>
    <addaction name="menu_Fichier"/>
    <addaction name="menuEdition"/>
+   <addaction name="displayMenu"/>
    <addaction name="menuG_n_rer"/>
    <addaction name="menuA_propos"/>
   </widget>

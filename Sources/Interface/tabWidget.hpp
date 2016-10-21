@@ -22,8 +22,9 @@
 class AlgorithmeScene;
 class QGraphicsView;
 class QHBoxLayout;
-class QHBoxLayout;
 class QPrinter;
+class QDockWidget;
+class DictionaryTableViewModel;
 
 class TabWidget : public QWidget {
 
@@ -38,7 +39,6 @@ class TabWidget : public QWidget {
           inline QGraphicsView* view() const {
                return vue_;
           }
-
           void exportToPdf();
           void exportToSvg();
           void exportToPng();
@@ -46,16 +46,20 @@ class TabWidget : public QWidget {
           void save();
           void saveAs();
           inline void setTbrPath( QString path ) { tbrPath_ = path; }
+          inline QDockWidget * dictionaryDock() { return dictionaryDock_; }
 
 
      private slots:
           void changeHappened( );
+          void addNewRow();
 
      private:
           AlgorithmeScene* scene_;
           QGraphicsView* vue_;
           QHBoxLayout* layout_;
           QString svgPath_, pngPath_, pdfPath_, tbrPath_;
+          DictionaryTableViewModel *dictionaryViewModel;
+          QDockWidget *dictionaryDock_;
 };
 
 #endif // TABWIDGET_HPP

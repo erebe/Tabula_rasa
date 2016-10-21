@@ -27,6 +27,7 @@ class TabWidget;
 class AboutDialog;
 class LabelItem;
 class QPrinter;
+class QDockWidget;
 
 namespace Ui {
 class MainWindow;
@@ -45,6 +46,7 @@ class MainWindow : public QMainWindow {
            *  Attributs
            *-----------------------------------------------------------------------------*/
           Ui::MainWindow* ui; // Interface
+          QDockWidget* currentDock_;
           ResizeDialog* dialog; // Widget appel pour redimensionner l'algorithme
           AboutDialog* about_; // Widget lors de la demande de l'A-propos
           QList<Pictogramme*> copyBuffer_;
@@ -54,13 +56,17 @@ class MainWindow : public QMainWindow {
            *-----------------------------------------------------------------------------*/
           void selectQAction( AlgorithmeScene::Mode mode );
           void setDisabled( bool state );
-          TabWidget* createNewTab( QString name = "Algorithme" );
+          TabWidget* createNewTab(QString name = "Algorithme");
+          void removeCurrentDictionaryDock();
+          void showDictionaryDock(QDockWidget* dockToShow);
+          TabWidget* getTabWidgetAt(int index);
           virtual void closeEvent( QCloseEvent* event );
 
      private slots:
           /*-----------------------------------------------------------------------------
            *  Slots des actions de la barre de gauche
            *-----------------------------------------------------------------------------*/
+          void selectedTabChanged(int);
           void on_actionMode_Edition_triggered( bool checked );
           void on_actionMode_Insertion_triggered( bool checked );
           void on_actionAction_triggered( bool checked );

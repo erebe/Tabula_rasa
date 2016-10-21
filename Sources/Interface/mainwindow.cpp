@@ -33,18 +33,23 @@
 #include <QPrinter>
 #include <QPrintPreviewDialog>
 #include <QGraphicsView>
+#include <QDockWidget>
 
 
 /*-----------------------------------------------------------------------------
  *  Constructeurs / Destructeurs
  *-----------------------------------------------------------------------------*/
 MainWindow::MainWindow( QWidget* parent )
-     : QMainWindow( parent ), ui( new Ui::MainWindow )
+     : QMainWindow( parent ), ui( new Ui::MainWindow ), currentDock_(NULL)
 {/*{{{*/
      ui->setupUi( this );
-     createNewTab();
+
      connect( ui->actionA_propos_de_Qt, SIGNAL( triggered() ), qApp, SLOT( aboutQt() ) );
+     connect(ui->tabWidget, SIGNAL(currentChanged(int)), this, SLOT(selectedTabChanged(int)));
      //connect( ui->actionQuitter, SIGNAL( triggered() ), qApp, SLOT( quit() ) );
+
+     // this must come after registering selectedTabChanged
+     createNewTab();
 }/*}}}*/
 
 MainWindow::~MainWindow()
@@ -100,7 +105,7 @@ void MainWindow::selectQAction( AlgorithmeScene::Mode mode )
      }
 }/*}}}*/
 
-TabWidget* MainWindow::createNewTab( QString name )
+TabWidget* MainWindow::createNewTab(QString name)
 {/*{{{*/
      TabWidget* tab = new TabWidget();
      tab->scene()->setName( name );
@@ -109,10 +114,41 @@ TabWidget* MainWindow::createNewTab( QString name )
      connect( tab->scene(), SIGNAL( liaisonError() ), this, SLOT( liaisonError() ) );
 
      ui->tabWidget->addTab( tab, name );
-     ui->tabWidget->setCurrentWidget( tab );
+
+     // this method may call the selectedTabChanged callback
+     ui->tabWidget->setCurrentWidget(tab);
 
      return tab;
 }/*}}}*/
+
+void MainWindow::selectedTabChanged(int selectedIndex)
+{
+    removeCurrentDictionaryDock();
+    if (selectedIndex > -1) {
+        showDictionaryDock(getTabWidgetAt(selectedIndex)->dictionaryDock());
+    }
+}
+
+void MainWindow::removeCurrentDictionaryDock()
+{
+    if (this->currentDock_ != NULL) {
+        removeDockWidget(this->currentDock_);
+        ui->displayMenu->removeAction(this->currentDock_->toggleViewAction());
+        this->currentDock_ = NULL;
+    }
+}
+
+void MainWindow::showDictionaryDock(QDockWidget* dockToShow)
+{
+    this->currentDock_ = dockToShow;
+    ui->displayMenu->addAction(this->currentDock_->toggleViewAction());
+    addDockWidget(Qt::BottomDockWidgetArea, this->currentDock_);
+    this->currentDock_->setHidden(false);
+}
+
+TabWidget* MainWindow::getTabWidgetAt(int index) {
+    return (TabWidget*) ui->tabWidget->widget(index);
+}
 
 void MainWindow::setDisabled( bool state )
 {/*{{{*/
@@ -359,7 +395,8 @@ void MainWindow::on_actionOuvrir_triggered()
 
      QDomElement racine = doc.documentElement();
      QString name = racine.firstChildElement( "nom" ).firstChild().toText().data();
-     TabWidget* tab = createNewTab( name );
+
+     TabWidget* tab = createNewTab(name);
      tab->scene()->loadFromXml( doc );
      tab->setTbrPath( fichier );
      file.close();
