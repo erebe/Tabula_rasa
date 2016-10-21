@@ -19,6 +19,8 @@
 #include "Algorithme/algorithmeScene.hpp"
 #include "ViewModel/DictionaryTableViewModel.hpp"
 #include "Model/Algorithm.hpp"
+#include "Pictogramme/pictogramme.hpp"
+#include "XML/AlgorithmParser.hpp"
 
 #include <QGraphicsView>
 #include <QGraphicsScene>
@@ -33,9 +35,9 @@
 #include <QHeaderView>
 #include <QToolBar>
 
-TabWidget::TabWidget()
+TabWidget::TabWidget(Algorithm *algorithm)
 {/*{{{*/
-     scene_ = new AlgorithmeScene( 0, 0, 2000, 2000, this );
+     scene_ = new AlgorithmeScene( algorithm, 0, 0, 2000, 2000, this );
      scene_->setBackgroundBrush( Qt::white );
      connect( scene_, SIGNAL( algorithmeChanged() ), this, SLOT( changeHappened() ) );
 

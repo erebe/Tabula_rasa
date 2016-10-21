@@ -19,6 +19,7 @@
 #include <QWidget>
 #include <QtXml>
 
+class Algorithm;
 class AlgorithmeScene;
 class QGraphicsView;
 class QHBoxLayout;
@@ -31,7 +32,7 @@ class TabWidget : public QWidget {
           Q_OBJECT
 
      public:
-          TabWidget();
+          TabWidget(Algorithm *algorithm);
 
           inline AlgorithmeScene* scene() const {
                return scene_;

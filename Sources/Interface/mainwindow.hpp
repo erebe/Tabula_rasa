@@ -56,7 +56,7 @@ class MainWindow : public QMainWindow {
            *-----------------------------------------------------------------------------*/
           void selectQAction( AlgorithmeScene::Mode mode );
           void setDisabled( bool state );
-          TabWidget* createNewTab(QString name = "Algorithme");
+          TabWidget* createNewTab(Algorithm* algorithm);
           void removeCurrentDictionaryDock();
           void showDictionaryDock(QDockWidget* dockToShow);
           TabWidget* getTabWidgetAt(int index);

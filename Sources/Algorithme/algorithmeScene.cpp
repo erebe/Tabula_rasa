@@ -25,7 +25,6 @@
 #include "Pictogramme/pictoSortie.hpp"
 #include "Pictogramme/pictoIteration.hpp"
 
-#include "XML/AlgorithmParser.hpp"
 #include "XML/DictionaryWriter.hpp"
 #include "XML/XMLNodeCreator.hpp"
 
@@ -35,11 +34,11 @@
 /*-----------------------------------------------------------------------------
  *  Constructeurs / Destructeurs
  *-----------------------------------------------------------------------------*/
-AlgorithmeScene::AlgorithmeScene(qreal x, qreal y, qreal width, qreal height, QObject *parent):
+AlgorithmeScene::AlgorithmeScene(Algorithm *algorithm, qreal x, qreal y, qreal width, qreal height, QObject *parent):
     QGraphicsScene(x, y, width, height, parent),
     mode_(MoveItem), line_(0)
 {/*{{{*/
-    algorithm_ = new Algorithm("Algorithme", new Dictionary);
+    algorithm_ = algorithm;
     actions_["Supprimer"] = contexteMenu_.addAction( tr( "Supprimer" ) );
     contexteMenu_.addSeparator();
     actions_["Delier"] = contexteMenu_.addAction( tr( "Délier de tous" ) );
@@ -48,6 +47,11 @@ AlgorithmeScene::AlgorithmeScene(qreal x, qreal y, qreal width, qreal height, QO
     actions_["EmptyDetails"] = contexteMenu_.addAction( tr( "Masquer les assertions vides" ) );
 
 
+    /* Little hack to display liaisons, should refactor item insertion */
+    foreach( Pictogramme* item, algorithm->allPictograms()) {
+        addItem(item);
+        item->itemChange(QGraphicsItem::ItemPositionChange, QVariant());
+    }
 
     selectionArea_.second = 0;
 }/*}}}*/
@@ -128,20 +132,6 @@ void AlgorithmeScene::saveToXml(QTextStream &out) const
 
 
     doc.save(out, 2);
-}/*}}}*/
-
-void AlgorithmeScene::loadFromXml(const QDomDocument &doc)
-{/*{{{*/
-
-    AlgorithmParser parser;
-    algorithm_ = parser.parse(doc.documentElement());
-
-    /* Little hack to display liaisons, should refactor item insertion */
-    foreach( Pictogramme* item, algorithm()->allPictograms()) {
-        addItem(item);
-        item->itemChange(QGraphicsItem::ItemPositionChange, QVariant());
-    }
-
 }/*}}}*/
 
 

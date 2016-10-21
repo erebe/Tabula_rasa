@@ -37,7 +37,7 @@ class AlgorithmeScene: public QGraphicsScene {
                       InsertCondition, InsertMultiCondition, InsertExit
                     };
 
-          AlgorithmeScene( qreal x, qreal y, qreal width, qreal height, QObject* parent = 0 );
+          AlgorithmeScene( Algorithm *algorithm, qreal x, qreal y, qreal width, qreal height, QObject* parent = 0 );
           ~AlgorithmeScene();
 
 
@@ -56,7 +56,6 @@ class AlgorithmeScene: public QGraphicsScene {
 
           //Sauvegarde et chargement au format XML
           void saveToXml( QTextStream& out ) const;
-          void loadFromXml( const QDomDocument& doc );
           void selectAll();
           void adjust( int delta = 0 );
           QList<Pictogramme *> copySelected() const;
