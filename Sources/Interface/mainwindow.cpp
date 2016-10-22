@@ -144,7 +144,9 @@ void MainWindow::removeCurrentDictionaryDock()
 void MainWindow::showDictionaryDock(QDockWidget* dockToShow)
 {
     this->currentDock_ = dockToShow;
-    ui->displayMenu->addAction(this->currentDock_->toggleViewAction());
+    QAction *menuAction = this->currentDock_->toggleViewAction();
+    menuAction->setIcon(QIcon(":/Icones/table.png"));
+    ui->displayMenu->addAction(menuAction);
     addDockWidget(Qt::BottomDockWidgetArea, this->currentDock_);
     this->currentDock_->setHidden(false);
 }

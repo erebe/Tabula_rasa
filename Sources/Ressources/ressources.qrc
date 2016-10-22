@@ -29,5 +29,6 @@
         <file>delete.png</file>
         <file>select_all.png</file>
         <file>add.png</file>
+        <file>table.png</file>
     </qresource>
 </RCC>
