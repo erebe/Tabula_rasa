@@ -60,16 +60,17 @@ TabWidget::TabWidget(Algorithm *algorithm)
      QToolBar *dictionaryToolbar = new QToolBar(fakeWidget);
      dictionaryToolbar->setOrientation(Qt::Vertical);
      dictionaryToolbar->addAction(QIcon(":/Icones/add.png"), "Add row", this, SLOT(addNewRow()));
+     dictionaryToolbar->addAction(QIcon(":/Icones/delete.png"), "Remove selected row", this, SLOT(removeSelectedRow()));
      dictionaryLayout->addWidget(dictionaryToolbar);
 
-     QTableView *dictionaryView = new QTableView(fakeWidget);
+     dictionaryTableView = new QTableView(fakeWidget);
      this->dictionaryViewModel = new DictionaryTableViewModel(scene_->algorithm()->dictionary());
-     dictionaryView->setModel(this->dictionaryViewModel);
-     dictionaryView->setSelectionMode(QTableView::SingleSelection);
-     dictionaryView->setEditTriggers(QTableView::SelectedClicked | QTableView::DoubleClicked);
-     dictionaryView->setMinimumHeight(70);
-     dictionaryView->horizontalHeader()->setStretchLastSection(true);
-     dictionaryLayout->addWidget(dictionaryView);
+     dictionaryTableView->setModel(this->dictionaryViewModel);
+     dictionaryTableView->setSelectionMode(QTableView::SingleSelection);
+     dictionaryTableView->setEditTriggers(QTableView::SelectedClicked | QTableView::DoubleClicked);
+     dictionaryTableView->setMinimumHeight(70);
+     dictionaryTableView->horizontalHeader()->setStretchLastSection(true);
+     dictionaryLayout->addWidget(dictionaryTableView);
 
      fakeWidget->setLayout(dictionaryLayout);
      dictionaryDock_->setWidget(fakeWidget);
@@ -88,6 +89,11 @@ TabWidget::TabWidget(Algorithm *algorithm)
 void TabWidget::addNewRow()
 {
     dictionaryViewModel->appendEmptyEntryRow();
+}
+
+void TabWidget::removeSelectedRow()
+{
+    dictionaryViewModel->removeRowAtIndex(dictionaryTableView->currentIndex().row());
 }
 
 void TabWidget::exportToSvg()

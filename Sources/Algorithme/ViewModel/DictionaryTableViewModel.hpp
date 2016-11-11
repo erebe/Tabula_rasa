@@ -19,6 +19,7 @@ public:
     Qt::ItemFlags flags(const QModelIndex &index) const;
 
     void appendEmptyEntryRow();
+    void removeRowAtIndex(int index);
 private:
     Dictionary &dictionary_;
 };

@@ -56,3 +56,10 @@ void DictionaryTableViewModel::appendEmptyEntryRow() {
     dictionary_.addEntry(DictionaryEntry());
     endInsertRows();
 }
+
+void DictionaryTableViewModel::removeRowAtIndex(int index)
+{
+    beginRemoveRows(QModelIndex(), index, index);
+    dictionary_.removeEntryAt(index);
+    endRemoveRows();
+}

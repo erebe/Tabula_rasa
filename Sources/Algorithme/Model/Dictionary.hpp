@@ -11,6 +11,7 @@ private:
 public:
     Dictionary();
     void addEntry(const DictionaryEntry &e);
+    void removeEntryAt(int index);
     inline QList<DictionaryEntry> * entries() const { return entries_; }
     inline int size() const { return entries_->size(); }
     inline DictionaryEntry& elementAt(int index) const { return (*entries_)[index]; }

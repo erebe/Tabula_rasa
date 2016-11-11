@@ -25,6 +25,7 @@ class QGraphicsView;
 class QHBoxLayout;
 class QPrinter;
 class QDockWidget;
+class QTableView;
 class DictionaryTableViewModel;
 
 class TabWidget : public QWidget {
@@ -53,6 +54,7 @@ class TabWidget : public QWidget {
      private slots:
           void changeHappened( );
           void addNewRow();
+          void removeSelectedRow();
 
      private:
           AlgorithmeScene* scene_;
@@ -61,6 +63,7 @@ class TabWidget : public QWidget {
           QString svgPath_, pngPath_, pdfPath_, tbrPath_;
           DictionaryTableViewModel *dictionaryViewModel;
           QDockWidget *dictionaryDock_;
+          QTableView *dictionaryTableView;
 };
 
 #endif // TABWIDGET_HPP
