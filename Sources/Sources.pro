@@ -3,13 +3,13 @@
 ######################################################################
 
 TEMPLATE = app
-TARGET = 
+TARGET =
 TARGET = tabula_rasa
 DEPENDPATH += . Algorithme Interface Ressources Algorithme/Pictogramme
 INCLUDEPATH += . Interface Algorithme Algorithme/Pictogramme
 CONFIG += debug
 RC_FILE = iconSetter.rc
-QT += xml svg
+QT += xml svg printsupport widgets
 
 target.path += /usr/bin/
 INSTALLS += target
@@ -31,7 +31,25 @@ HEADERS += Algorithme/algorithmeScene.hpp \
            Algorithme/Pictogramme/pictoProcedure.hpp \
            Algorithme/Pictogramme/pictoSortie.hpp \
     Interface/labeledit.hpp \
-    Interface/sauvegarde.hpp
+    Interface/sauvegarde.hpp \
+    Algorithme/XML/PictoSortieParser.hpp \
+    Algorithme/XML/PictoParser.hpp \
+    Algorithme/XML/PictoProcedureParser.hpp \
+    Algorithme/XML/PictoIterationParser.hpp \
+    Algorithme/XML/PictoActionParser.hpp \
+    Algorithme/XML/PictoConditionParser.hpp \
+    Algorithme/XML/PictoConditionMultipleParser.hpp \
+    Algorithme/Model/Algorithm.hpp \
+    Algorithme/XML/AlgorithmParser.hpp \
+    Algorithme/Model/Dictionary.hpp \
+    Algorithme/Model/DictionaryEntry.hpp \
+    Algorithme/ViewModel/DictionaryTableViewModel.hpp \
+    Algorithme/XML/DictionaryEntryAttributes.hpp \
+    Algorithme/XML/DictionaryEntryParser.hpp \
+    Algorithme/XML/DictionaryEntryWriter.hpp \
+    Algorithme/XML/DictionaryParser.hpp \
+    Algorithme/XML/DictionaryWriter.hpp \
+    Algorithme/XML/XMLNodeCreator.hpp
 FORMS += Interface/aboutDialog.ui \
          Interface/mainwindow.ui \
          Interface/resizeDialog.ui \
@@ -55,7 +73,25 @@ SOURCES += main.cpp \
            Algorithme/Pictogramme/pictoProcedure.cpp \
            Algorithme/Pictogramme/pictoSortie.cpp \
     Interface/labeledit.cpp \
-    Interface/sauvegarde.cpp
+    Interface/sauvegarde.cpp \
+    Algorithme/XML/PictoSortieParser.cpp \
+    Algorithme/XML/PictoParser.cpp \
+    Algorithme/XML/PictoProcedureParser.cpp \
+    Algorithme/XML/PictoIterationParser.cpp \
+    Algorithme/XML/PictoActionParser.cpp \
+    Algorithme/XML/PictoConditionParser.cpp \
+    Algorithme/XML/PictoConditionMultipleParser.cpp \
+    Algorithme/Model/Algorithm.cpp \
+    Algorithme/XML/AlgorithmParser.cpp \
+    Algorithme/Model/Dictionary.cpp \
+    Algorithme/Model/DictionaryEntry.cpp \
+    Algorithme/ViewModel/DictionaryTableViewModel.cpp \
+    Algorithme/XML/DictionaryEntryAttributes.cpp \
+    Algorithme/XML/DictionaryEntryParser.cpp \
+    Algorithme/XML/DictionaryEntryWriter.cpp \
+    Algorithme/XML/DictionaryParser.cpp \
+    Algorithme/XML/DictionaryWriter.cpp \
+    Algorithme/XML/XMLNodeCreator.cpp
 RESOURCES += Ressources/ressources.qrc
 
 

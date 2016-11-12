@@ -16,7 +16,7 @@
  *
  * =====================================================================================
  */
-#include <QtGui/QApplication>
+#include <QApplication>
 #include <QTextCodec>
 #include <QTranslator>
 #include <QLocale>
@@ -26,8 +26,10 @@
 int main( int argc, char* argv[] )
 {/*{{{*/
      QApplication a( argc, argv );
-     QTextCodec::setCodecForCStrings( QTextCodec::codecForName( "UTF-8" ) );
-     QTextCodec::setCodecForTr( QTextCodec::codecForName( "UTF-8" ) );
+
+     // FIXME is this necessary in Qt 5.5 ?
+     //QTextCodec::setCodecForCStrings( QTextCodec::codecForName( "UTF-8" ) );
+     //QTextCodec::setCodecForTr( QTextCodec::codecForName( "UTF-8" ) );
 
      QString locale = QLocale::system().name().section( '_', 0, 0 );
      QTranslator translator;

@@ -27,13 +27,12 @@
 PictoAction::PictoAction( QString titre,
                           QString preCondition,
                           QString postCondition,
-                          QGraphicsItem* parent,
-                          QGraphicsScene* scene ) :
-     Pictogramme( parent, scene ), detail_( true ), emptyDetail_( true )
+                          QGraphicsItem* parent ) :
+     Pictogramme( parent ), detail_( true ), emptyDetail_( true )
 {/*{{{*/
-     labels_ << new LabelItem( preCondition, 150, 15, 50, this, scene );
-     labels_ << new LabelItem( titre, 200, 50, 50, this, scene );
-     labels_ << new LabelItem( postCondition, 150, 15, 50, this, scene );
+     labels_ << new LabelItem( preCondition, 150, 15, 50, this );
+     labels_ << new LabelItem( titre, 200, 50, 50, this );
+     labels_ << new LabelItem( postCondition, 150, 15, 50, this );
 
      setAnchorType( AncreItem::Both );
      posBottomAnchor_.setY( 55 );
@@ -41,10 +40,8 @@ PictoAction::PictoAction( QString titre,
 
      updateDimension();
 
-     actions_["Details"] = contexteMenu_.addAction( tr( "Masquer les assertions" ) );
-     actions_["Details"]->setCheckable( true );
-     actions_["EmptyDetails"] = contexteMenu_.addAction( tr( "Masquer les assertions vides" ) );
-     actions_["EmptyDetails"]->setCheckable( true );
+     addContextMenuEntry("Details", "Masquer les assertions", true);
+     addContextMenuEntry("EmptyDetails", "Masquer les assertions vides", true);
 }/*}}}*/
 
 PictoAction::PictoAction(const PictoAction &item):
@@ -54,64 +51,17 @@ PictoAction::PictoAction(const PictoAction &item):
 
 }
 
-PictoAction::PictoAction( const QDomElement& node,
-                          AlgorithmeScene* scene ):
-     Pictogramme( 0, scene )
-{/*{{{*/
-     QString label = node.firstChildElement( "PreAssertion" ).firstChild().toText().data();
-     labels_ << new LabelItem( label, 150, 15, 50, this, scene );
-
-     label = node.firstChildElement( "Titre" ).firstChild().toText().data();
-     labels_ << new LabelItem( label, 200, 50, 50, this, scene );
-
-     label = node.firstChildElement( "PostAssertion" ).firstChild().toText().data();
-     labels_ << new LabelItem( label, 150, 15, 50, this, scene );
-
-     label = node.firstChildElement( "Position" ).firstChild().toText().data();
-     QStringList position = label.split( QRegExp( ";" ) );
-     setPos( position.at( 0 ).toDouble(), position.at( 1 ).toDouble() );
-
-     label = node.firstChildElement( "DetailsVisible" ).firstChild().toText().data();
-     detail_ = ( label == "1" ) ? true : false;
-
-     label = node.firstChildElement( "DetailsVideVisible" ).firstChild().toText().data();
-
-     setAnchorType( AncreItem::Both );
-     emptyDetail_ = ( label == "1" ) ? true : false;
-     posBottomAnchor_.setY( 55 );
-     posUpAnchor_.setY( 5 );
-     updateDimension();
-
-     actions_["Details"] = contexteMenu_.addAction( tr( "Masquer les assertions" ) );
-     actions_["Details"]->setCheckable( true );
-     actions_["Details"]->setChecked( !detail_ );
-     actions_["EmptyDetails"] = contexteMenu_.addAction( tr( "Masquer les assertions vides" ) );
-     actions_["EmptyDetails"]->setCheckable( true );
-     actions_["EmptyDetails"]->setChecked( !emptyDetail_ );
-
-     const QDomNodeList nodes = node.firstChildElement( "Enfants" ).childNodes();
-     Pictogramme* picto = 0;
-
-     for( int i = 0; i < nodes.count(); i++ ) {
-          if( nodes.at( i ).isElement() ) {
-               picto = PictoBuilder::fromXml( nodes.at( i ).toElement(), scene );
-
-               if( picto ) {
-                    addChild( picto );
-                    picto = 0;
-               }
-          }
-     }
-
-     label = node.firstChildElement( "StyleLien" ).firstChild().toText().data();
-     setLinkStyle( static_cast<LiaisonItem::Style>( label.toInt() ) );
-}/*}}}*/
-
-
-
 /*-----------------------------------------------------------------------------
  *  Méthodes
  *-----------------------------------------------------------------------------*/
+void PictoAction::setDetailsVisible(bool visible) {
+    detail_ = visible;
+}
+
+void PictoAction::setEmptyDetailsVisible(bool visible) {
+    emptyDetail_ = visible;
+}
+
 void PictoAction::paint( QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget )
 {/*{{{*/
      Q_UNUSED( option );
@@ -246,12 +196,12 @@ void PictoAction::createLink()
  *-----------------------------------------------------------------------------*/
 void PictoAction::processAction( QAction* action, QGraphicsSceneContextMenuEvent* event )
 {/*{{{*/
-     if( action == actions_["Details"] ) {
+     if( action == getContextMenuAction("Details") ) {
           detail_ = !detail_;
           prepareGeometryChange();
           updateDimension();
 
-     } else if ( action == actions_["EmptyDetails"] ) {
+     } else if ( action == getContextMenuAction("EmptyDetails") ) {
           emptyDetail_ = !emptyDetail_;
           prepareGeometryChange();
           updateDimension();

@@ -26,14 +26,10 @@ class PictoProcedure : public Pictogramme {
      public:
           enum { Type = UserType + 5 };
 
-          PictoProcedure( QString titre,
-                          QString preCondition,
-                          QString postCondition,
-                          QGraphicsItem* parent = 0,
-                          QGraphicsScene* scene = 0 );
-
-          PictoProcedure( const QDomElement& node,
-                          AlgorithmeScene* scene = 0 );
+          PictoProcedure(QString titre = QString( "?" ),
+                          QString preCondition = QString( "∅" ),
+                          QString postCondition = QString( "∅" ),
+                          QGraphicsItem* parent = 0);
 
           PictoProcedure( const PictoProcedure& item);
 
@@ -49,6 +45,8 @@ class PictoProcedure : public Pictogramme {
           void toXml( QDomDocument& doc, QDomNode& node ) const;
           void updateDimension();
           inline bool detail() const { return detail_; }
+          void setDetailsVisible(bool visible);
+          void setEmptyDetailsVisible(bool visible);
 
 
      private:

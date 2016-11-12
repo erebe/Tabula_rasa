@@ -28,7 +28,7 @@ class AncreItem: public QGraphicsItem {
      public:
           enum AnchorType { None = 0, Up = 1, Down = 2, Both = 3  };
 
-          AncreItem( QGraphicsItem* parent = 0, QGraphicsScene* scene = 0 );
+          AncreItem(QGraphicsItem* parent = 0);
           AncreItem( const AncreItem& ancre );
           virtual ~AncreItem();
 

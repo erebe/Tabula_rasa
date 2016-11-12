@@ -31,7 +31,7 @@ class Pictogramme : public QObject, public AncreItem {
           Q_OBJECT
 
      public:
-          Pictogramme( QGraphicsItem* parent = 0, QGraphicsScene* scene = 0 );
+          Pictogramme(QGraphicsItem* parent = 0);
           Pictogramme( const Pictogramme& item);
           virtual ~Pictogramme();
 
@@ -65,8 +65,13 @@ class Pictogramme : public QObject, public AncreItem {
 
           QMenu contexteMenu_; //appelé lors du clic droit
           QMenu* sousMenu_;
-          QMap<QString, QAction*> actions_;
 
+          /*-----------------------------------------------------------------------------
+           *  Methodes
+           *-----------------------------------------------------------------------------*/
+          void addContextMenuEntry(QString key, const char* text, bool checkable = false, bool checked = false);
+          void addContextMenuEntry(QMenu *menu, QString key, const char* text, bool checkable = false, bool checked = false);
+          QAction *getContextMenuAction(QString key);
 
           /*-----------------------------------------------------------------------------
            *  Gestionnaire évènements
@@ -77,6 +82,9 @@ class Pictogramme : public QObject, public AncreItem {
 
 
     private:
+        QMap<QString, QAction*> actions_;
+        void prepareContextMenu();
+        void fillContextMenuWithDefaultActions();
         Pictogramme& operator=(const Pictogramme& item);
 };
 

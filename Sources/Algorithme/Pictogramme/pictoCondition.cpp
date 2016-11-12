@@ -24,6 +24,19 @@
 /*-----------------------------------------------------------------------------
  *  Constructeurs / Destructeurs
  *-----------------------------------------------------------------------------*/
+PictoCondition::PictoCondition() :
+     Pictogramme(), isForeverAlone_( false ) {
+
+    setAnchorType( AncreItem::Up );
+    posUpAnchor_.setY( 0 );
+    updateDimension();
+
+
+    addContextMenuEntry("SingleOne", "Condition unique", true);
+    addContextMenuEntry("AjouterA", "Ajouter une condition");
+    addContextMenuEntry("SupprimerA", "Supprimer la condition");
+}
+
 PictoCondition::PictoCondition(const QString& label) :
      Pictogramme(), isForeverAlone_( false )
 {/*{{{*/
@@ -37,11 +50,10 @@ PictoCondition::PictoCondition(const QString& label) :
      posUpAnchor_.setY( 0 );
      updateDimension();
 
-     actions_["SingleOne"] = contexteMenu_.addAction( tr( "Condition unique" ) );
-     actions_["SingleOne"]->setCheckable( true );
 
-     actions_["AjouterA"] = contexteMenu_.addAction( tr( "Ajouter une condition" ) );
-     actions_["SupprimerA"] = contexteMenu_.addAction( tr( "Supprimer la condition" ) );
+     addContextMenuEntry("SingleOne", "Condition unique", true);
+     addContextMenuEntry("AjouterA", "Ajouter une condition");
+     addContextMenuEntry("SupprimerA", "Supprimer la condition");
 }/*}}}*/
 
 PictoCondition::PictoCondition(const PictoCondition &item):
@@ -51,61 +63,18 @@ PictoCondition::PictoCondition(const PictoCondition &item):
 
 }
 
-PictoCondition::PictoCondition( const QDomElement& node,
-                                AlgorithmeScene* scene ):
-     Pictogramme( 0, scene )
-{/*{{{*/
-     QString label = node.firstChildElement( "Position" ).firstChild().toText().data();
-     QStringList position = label.split( QRegExp( ";" ) );
-     setPos( position.at( 0 ).toDouble(), position.at( 1 ).toDouble() );
-
-     label = node.firstChildElement( "estUnique" ).firstChild().toText().data();
-     isForeverAlone_ = ( label == "1" ) ? true : false;
-
-     setAnchorType( AncreItem::Up );
-     posUpAnchor_.setY( 0 );
-
-     actions_["SingleOne"] = contexteMenu_.addAction( tr( "Condition unique" ) );
-     actions_["SingleOne"]->setCheckable( true );
-     actions_["SingleOne"]->setChecked( isForeverAlone_ );
-     actions_["AjouterA"] = contexteMenu_.addAction( tr( "Ajouter une condition" ) );
-     actions_["SupprimerA"] = contexteMenu_.addAction( tr( "Supprimer la condition" ) );
-
-     const QDomNodeList nodes = node.firstChildElement( "operationsLogiques" ).childNodes();
-     Pictogramme* picto = 0;
-
-     for( int i = 0; i < nodes.count(); i++ ) {
-          if( nodes.at( i ).isElement() ) {
-               label = nodes.at( i ).firstChildElement( "Titre" ).firstChild().toText().data();
-               labels_ << new LabelItem( label, 150, 25, 50, this, scene );
-               labels_.last()->setAnchorType( AncreItem::Down );
-
-               const QDomNodeList enfants = nodes.at( i ).firstChildElement( "Enfants" ).childNodes();
-
-               for( int j = 0; j < enfants.count(); j++ ) {
-                    if( enfants.at( j ).isElement() ) {
-                         picto = PictoBuilder::fromXml( enfants.at( j ).toElement(), scene );
-
-                         if( picto ) {
-                              labels_.last()->addChild( picto );
-                              picto = 0;
-                         }
-                    }
-               }
-
-               label = node.firstChildElement( "StyleLien" ).firstChild().toText().data();
-               labels_.last()->setLinkStyle( static_cast<LiaisonItem::Style>( label.toInt() ) );
-          }
-     }
-
-     updateDimension();
-}/*}}}*/
-
-
-
 /*-----------------------------------------------------------------------------
  *  Méthodes
  *-----------------------------------------------------------------------------*/
+void PictoCondition::addLabel(LabelItem *item) {
+    labels_ << item;
+    updateDimension();
+}
+
+void PictoCondition::setIsForeverAlone(bool foreverAlone) {
+    isForeverAlone_ = foreverAlone;
+}
+
 void PictoCondition::paint( QPainter* painter,
                             const QStyleOptionGraphicsItem* option,
                             QWidget* widget )
@@ -240,7 +209,7 @@ QVariant PictoCondition::itemChange( GraphicsItemChange change, const QVariant& 
 
 void PictoCondition::processAction( QAction* action, QGraphicsSceneContextMenuEvent* event )
 {/*{{{*/
-     if( action == actions_["SingleOne"] ) {
+     if( action == getContextMenuAction("SingleOne") ) {
           isForeverAlone_ = !isForeverAlone_;
 
           if( isForeverAlone_ ) {
@@ -252,15 +221,15 @@ void PictoCondition::processAction( QAction* action, QGraphicsSceneContextMenuEv
           prepareGeometryChange();
           updateDimension();
 
-     }else if( actions_["AjouterA"] == action ) {
-               LabelItem* item = new LabelItem( "", 150, 25, 50, this, scene() );
+     }else if( getContextMenuAction("AjouterA") == action ) {
+               LabelItem* item = new LabelItem( "", 150, 25, 50, this );
                item->setAnchorType( AncreItem::Down );
 
                labels_.insert( labels_.size() - 1, item );
                prepareGeometryChange();
                updateDimension();
 
-     } else if( actions_["SupprimerA"] == action ) {
+     } else if( getContextMenuAction("SupprimerA") == action ) {
 
                LabelItem* tmp;
                foreach( tmp, labels_ ) {

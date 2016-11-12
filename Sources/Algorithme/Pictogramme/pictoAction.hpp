@@ -28,14 +28,10 @@ class PictoAction: public Pictogramme {
      public:
           enum { Type = UserType + 2 };
 
-          PictoAction( QString titre = QString( "?" ),
+          PictoAction(QString titre = QString( "?" ),
                        QString preCondition = QString( "∅" ),
                        QString postCondition = QString( "∅" ),
-                       QGraphicsItem* parent = 0,
-                       QGraphicsScene* scene = 0 );
-
-          PictoAction( const QDomElement& node,
-                       AlgorithmeScene* scene = 0 );
+                       QGraphicsItem* parent = 0);
 
           PictoAction(const PictoAction& item);
 
@@ -52,6 +48,8 @@ class PictoAction: public Pictogramme {
           void toXml( QDomDocument& doc, QDomNode& node ) const;
           void updateDimension();
           inline bool detail() const { return detail_; }
+          void setDetailsVisible(bool visible);
+          void setEmptyDetailsVisible(bool visible);
 
      protected:
           /*-----------------------------------------------------------------------------

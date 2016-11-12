@@ -17,19 +17,27 @@
  */
 #include "tabWidget.hpp"
 #include "Algorithme/algorithmeScene.hpp"
+#include "ViewModel/DictionaryTableViewModel.hpp"
+#include "Model/Algorithm.hpp"
+#include "Pictogramme/pictogramme.hpp"
+#include "XML/AlgorithmParser.hpp"
 
 #include <QGraphicsView>
 #include <QGraphicsScene>
 #include <QHBoxLayout>
+#include <QDockWidget>
 #include <QFileDialog>
 #include <QtSvg/QSvgGenerator>
 #include <QPrinter>
 #include <QTabWidget>
 #include <QDebug>
+#include <QTableView>
+#include <QHeaderView>
+#include <QToolBar>
 
-TabWidget::TabWidget()
+TabWidget::TabWidget(Algorithm *algorithm)
 {/*{{{*/
-     scene_ = new AlgorithmeScene( 0, 0, 2000, 2000, this );
+     scene_ = new AlgorithmeScene( algorithm, 0, 0, 2000, 2000, this );
      scene_->setBackgroundBrush( Qt::white );
      connect( scene_, SIGNAL( algorithmeChanged() ), this, SLOT( changeHappened() ) );
 
@@ -40,9 +48,34 @@ TabWidget::TabWidget()
      vue_->setFont( QFont( "times", 10 ) );
      vue_->setScene( scene_ );
 
+     // construct the dock that will be used to display the dictionary corresponding to this algorithm
+     dictionaryDock_ = new QDockWidget(tr("Dictionnaire des éléments"), this);
+     dictionaryDock_->setFeatures(QDockWidget::DockWidgetClosable);
+     dictionaryDock_->setAllowedAreas(Qt::BottomDockWidgetArea);
 
+     // the child of a dock must be a widget, so create this fake one
+     QWidget *fakeWidget = new QWidget(dictionaryDock_);
+     QHBoxLayout *dictionaryLayout = new QHBoxLayout(fakeWidget);
 
-     layout_ = new QHBoxLayout( this );
+     QToolBar *dictionaryToolbar = new QToolBar(fakeWidget);
+     dictionaryToolbar->setOrientation(Qt::Vertical);
+     dictionaryToolbar->addAction(QIcon(":/Icones/add.png"), "Add row", this, SLOT(addNewRow()));
+     dictionaryToolbar->addAction(QIcon(":/Icones/delete.png"), "Remove selected row", this, SLOT(removeSelectedRow()));
+     dictionaryLayout->addWidget(dictionaryToolbar);
+
+     dictionaryTableView = new QTableView(fakeWidget);
+     this->dictionaryViewModel = new DictionaryTableViewModel(scene_->algorithm()->dictionary());
+     dictionaryTableView->setModel(this->dictionaryViewModel);
+     dictionaryTableView->setSelectionMode(QTableView::SingleSelection);
+     dictionaryTableView->setEditTriggers(QTableView::SelectedClicked | QTableView::DoubleClicked);
+     dictionaryTableView->setMinimumHeight(70);
+     dictionaryTableView->horizontalHeader()->setStretchLastSection(true);
+     dictionaryLayout->addWidget(dictionaryTableView);
+
+     fakeWidget->setLayout(dictionaryLayout);
+     dictionaryDock_->setWidget(fakeWidget);
+
+     layout_ = new QHBoxLayout(this);
      layout_->addWidget( vue_ );
      layout_->setMargin( 0 );
 
@@ -53,6 +86,15 @@ TabWidget::TabWidget()
 
 }/*}}}*/
 
+void TabWidget::addNewRow()
+{
+    dictionaryViewModel->appendEmptyEntryRow();
+}
+
+void TabWidget::removeSelectedRow()
+{
+    dictionaryViewModel->removeRowAtIndex(dictionaryTableView->currentIndex().row());
+}
 
 void TabWidget::exportToSvg()
 {/*{{{*/

@@ -24,60 +24,59 @@
 #include "Pictogramme/pictoProcedure.hpp"
 #include "Pictogramme/pictoCondition.hpp"
 #include "Pictogramme/pictoConditionMultiple.hpp"
+#include "XML/PictoActionParser.hpp"
+#include "XML/PictoConditionParser.hpp"
+#include "XML/PictoConditionMultipleParser.hpp"
+#include "XML/PictoIterationParser.hpp"
+#include "XML/PictoProcedureParser.hpp"
+#include "XML/PictoSortieParser.hpp"
+#include "Model/Algorithm.hpp"
 
 Pictogramme* PictoBuilder::fromXml( const QDomElement& node,
-                                    AlgorithmeScene* scene )
+                                    Algorithm* algorithm )
 {/*{{{*/
      QString tagName = node.tagName();
-     Pictogramme* picto = 0;
-
+     PictoParser *parser = 0;
      if( tagName == "Action" ) {
-          picto = new PictoAction( node, scene );
-
+         parser = new PictoActionParser();
      } else if( tagName == "Procedure" ) {
-          picto = new PictoProcedure( node, scene );
-
+         parser = new PictoProcedureParser();
      } else if( tagName == "Condition" ) {
-          picto = new PictoCondition( node, scene );
-
+         parser = new PictoConditionParser();
      } else if( tagName == "ConditionMultiple" ) {
-          picto = new PictoConditionMultiple( node, scene );
-
+         parser = new PictoConditionMultipleParser();
      } else if( tagName == "Sortie" ) {
-          picto = new PictoSortie( node, scene );
-
+         parser = new PictoSortieParser();
      } else if( tagName == "Iteration" ) {
-          picto = new PictoIteration( node, scene );
+         parser = new PictoIterationParser();
      }
-
-     scene->newItem( picto );
+     Pictogramme* picto = parser->parse(node, algorithm);
+     delete parser;
+     algorithm->addPictogram( picto );
      return picto;
 }/*}}}*/
 
-Pictogramme* PictoBuilder::fromMode( AlgorithmeScene::Mode mode,
-                                     AlgorithmeScene* scene )
+Pictogramme* PictoBuilder::fromMode( AlgorithmeScene::Mode mode)
 {/*{{{*/
      Pictogramme* picto = 0;
 
      if( mode == AlgorithmeScene::InsertAction ) {
-          picto = new PictoAction( "", "", "" );
+          picto = new PictoAction();
 
      } else if( mode == AlgorithmeScene::InsertLoop ) {
-          picto = new PictoIteration( "");
+          picto = new PictoIteration();
 
      } else if( mode == AlgorithmeScene::InsertProcedure ) {
-          picto = new PictoProcedure( "", "", "" );
+          picto = new PictoProcedure();
 
      } else if( mode == AlgorithmeScene::InsertCondition ) {
-          picto = new PictoCondition( "" );
+          picto = new PictoCondition("?");
 
      } else if( mode == AlgorithmeScene::InsertExit ) {
           picto = new PictoSortie();
 
      } else if( mode == AlgorithmeScene::InsertMultiCondition ) {
-          picto = new PictoConditionMultiple( "" );
+          picto = new PictoConditionMultiple("?");
      }
-
-     scene->newItem( picto );
      return picto;
 }/*}}}*/

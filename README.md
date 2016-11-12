@@ -15,7 +15,7 @@ Installation pour Windows :
     + Extraire tous les fichiers et lancer l'executable
 
 
-Installation pour Linux (Nécessite Qt d'installé et git) :
+Installation pour Linux (Nécessite Qt 5.5 d'installé et git) :
 ----------------------------------------------------------
 	
     + Ouvrez un terminal et tapez "git clone git://github.com/erebe/Tabula_rasa.git "

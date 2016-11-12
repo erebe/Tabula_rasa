@@ -19,18 +19,21 @@
 #include <QWidget>
 #include <QtXml>
 
+class Algorithm;
 class AlgorithmeScene;
 class QGraphicsView;
 class QHBoxLayout;
-class QHBoxLayout;
-class QPtrinter;
+class QPrinter;
+class QDockWidget;
+class QTableView;
+class DictionaryTableViewModel;
 
 class TabWidget : public QWidget {
 
           Q_OBJECT
 
      public:
-          TabWidget();
+          TabWidget(Algorithm *algorithm);
 
           inline AlgorithmeScene* scene() const {
                return scene_;
@@ -38,7 +41,6 @@ class TabWidget : public QWidget {
           inline QGraphicsView* view() const {
                return vue_;
           }
-
           void exportToPdf();
           void exportToSvg();
           void exportToPng();
@@ -46,16 +48,22 @@ class TabWidget : public QWidget {
           void save();
           void saveAs();
           inline void setTbrPath( QString path ) { tbrPath_ = path; }
+          inline QDockWidget * dictionaryDock() { return dictionaryDock_; }
 
 
      private slots:
           void changeHappened( );
+          void addNewRow();
+          void removeSelectedRow();
 
      private:
           AlgorithmeScene* scene_;
           QGraphicsView* vue_;
           QHBoxLayout* layout_;
           QString svgPath_, pngPath_, pdfPath_, tbrPath_;
+          DictionaryTableViewModel *dictionaryViewModel;
+          QDockWidget *dictionaryDock_;
+          QTableView *dictionaryTableView;
 };
 
 #endif // TABWIDGET_HPP

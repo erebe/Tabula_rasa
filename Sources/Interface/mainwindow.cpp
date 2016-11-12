@@ -23,24 +23,36 @@
 #include "Algorithme/Pictogramme/labelItem.hpp"
 #include "Algorithme/Pictogramme/pictogramme.hpp"
 #include "Algorithme/Pictogramme/liaisonItem.hpp"
+#include "Model/Algorithm.hpp"
+#include "Model/Dictionary.hpp"
+#include "XML/AlgorithmParser.hpp"
 #include "labeledit.hpp"
 #include "sauvegarde.hpp"
 
 #include <QFileDialog>
 #include <QtGui>
 #include <QtSvg/QSvgGenerator>
+#include <QMessageBox>
+#include <QPrinter>
+#include <QPrintPreviewDialog>
+#include <QGraphicsView>
+#include <QDockWidget>
 
 
 /*-----------------------------------------------------------------------------
  *  Constructeurs / Destructeurs
  *-----------------------------------------------------------------------------*/
 MainWindow::MainWindow( QWidget* parent )
-     : QMainWindow( parent ), ui( new Ui::MainWindow )
+     : QMainWindow( parent ), ui( new Ui::MainWindow ), currentDock_(NULL)
 {/*{{{*/
      ui->setupUi( this );
-     createNewTab();
+
      connect( ui->actionA_propos_de_Qt, SIGNAL( triggered() ), qApp, SLOT( aboutQt() ) );
+     connect(ui->tabWidget, SIGNAL(currentChanged(int)), this, SLOT(selectedTabChanged(int)));
      //connect( ui->actionQuitter, SIGNAL( triggered() ), qApp, SLOT( quit() ) );
+
+     // this must come after registering selectedTabChanged
+     createNewTab(new Algorithm("Algorithme", new Dictionary));
 }/*}}}*/
 
 MainWindow::~MainWindow()
@@ -96,19 +108,52 @@ void MainWindow::selectQAction( AlgorithmeScene::Mode mode )
      }
 }/*}}}*/
 
-TabWidget* MainWindow::createNewTab( QString name )
+TabWidget* MainWindow::createNewTab(Algorithm *algorithm)
 {/*{{{*/
-     TabWidget* tab = new TabWidget();
-     tab->scene()->setName( name );
+     TabWidget* tab = new TabWidget(algorithm);
+     tab->scene()->setName( algorithm->name() );
      connect( tab->scene(), SIGNAL( modeChanged( AlgorithmeScene::Mode ) ), this, SLOT( setMode( AlgorithmeScene::Mode ) ) );
      connect( tab->scene(), SIGNAL( itemAdded( Pictogramme* ) ), this, SLOT( itemAdded( Pictogramme* ) ) );
      connect( tab->scene(), SIGNAL( liaisonError() ), this, SLOT( liaisonError() ) );
 
-     ui->tabWidget->addTab( tab, name );
-     ui->tabWidget->setCurrentWidget( tab );
+     ui->tabWidget->addTab( tab, algorithm->name() );
+
+     // this method may call the selectedTabChanged callback
+     ui->tabWidget->setCurrentWidget(tab);
 
      return tab;
 }/*}}}*/
+
+void MainWindow::selectedTabChanged(int selectedIndex)
+{
+    removeCurrentDictionaryDock();
+    if (selectedIndex > -1) {
+        showDictionaryDock(getTabWidgetAt(selectedIndex)->dictionaryDock());
+    }
+}
+
+void MainWindow::removeCurrentDictionaryDock()
+{
+    if (this->currentDock_ != NULL) {
+        removeDockWidget(this->currentDock_);
+        ui->displayMenu->removeAction(this->currentDock_->toggleViewAction());
+        this->currentDock_ = NULL;
+    }
+}
+
+void MainWindow::showDictionaryDock(QDockWidget* dockToShow)
+{
+    this->currentDock_ = dockToShow;
+    QAction *menuAction = this->currentDock_->toggleViewAction();
+    menuAction->setIcon(QIcon(":/Icones/table.png"));
+    ui->displayMenu->addAction(menuAction);
+    addDockWidget(Qt::BottomDockWidgetArea, this->currentDock_);
+    this->currentDock_->setHidden(false);
+}
+
+TabWidget* MainWindow::getTabWidgetAt(int index) {
+    return (TabWidget*) ui->tabWidget->widget(index);
+}
 
 void MainWindow::setDisabled( bool state )
 {/*{{{*/
@@ -265,7 +310,7 @@ void MainWindow::on_actionNouveau_triggered()
           return;
      }
 
-     createNewTab( name );
+     createNewTab( new Algorithm(name, new Dictionary) );
      setDisabled( false );
 }/*}}}*/
 
@@ -353,17 +398,13 @@ void MainWindow::on_actionOuvrir_triggered()
           return;
      }
 
-     QDomElement racine = doc.documentElement();
-     QString name = racine.firstChildElement( "nom" ).firstChild().toText().data();
-     TabWidget* tab = createNewTab( name );
-     tab->scene()->loadFromXml( doc );
+     AlgorithmParser parser;
+     TabWidget* tab = createNewTab(parser.parse(doc.documentElement()));
      tab->setTbrPath( fichier );
      file.close();
      setMode( AlgorithmeScene::MoveItem );
      setDisabled( false );
 }/*}}}*/
-
-
 
 /*-----------------------------------------------------------------------------
  *  Slots divers

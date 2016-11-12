@@ -25,15 +25,14 @@
 /*-----------------------------------------------------------------------------
  *  Constructeurs / Destructeurs
  *-----------------------------------------------------------------------------*/
-AncreItem::AncreItem( QGraphicsItem* parent, QGraphicsScene* scene ):
-     QGraphicsItem( parent, 0 ), anchorType_( None ), parent_( 0 ), liaison_( 0 )
+AncreItem::AncreItem( QGraphicsItem* parent):
+     QGraphicsItem( parent), anchorType_( None ), parent_( 0 ), liaison_( 0 )
 {
-    Q_UNUSED(scene); //passing scene into the constructor is deprecated by Qt
 }
 
 
 AncreItem::AncreItem( const AncreItem& item ):
-    QGraphicsItem( item.parentItem(), 0 ),
+    QGraphicsItem( item.parentItem()),
     posBottomAnchor_(item.posBottomAnchor_), posUpAnchor_(item.posUpAnchor_),
     anchorType_( item.anchorType() ), parent_( 0 ),
     liaison_(0)

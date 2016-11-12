@@ -26,26 +26,13 @@
 /*-----------------------------------------------------------------------------
  *  Constructeurs / Destructeurs
  *-----------------------------------------------------------------------------*/
-Pictogramme::Pictogramme( QGraphicsItem* parent, QGraphicsScene* scene ):
-     AncreItem( parent, scene ), pos_( 0 )
+Pictogramme::Pictogramme( QGraphicsItem* parent ):
+     AncreItem( parent ), pos_( 0 )
 {/*{{{*/
      setFlags( QGraphicsItem::ItemIsMovable |
                QGraphicsItem::ItemIsSelectable |
                QGraphicsItem::ItemSendsGeometryChanges );
-
-     actions_["Supprimer"] = contexteMenu_.addAction( tr( "Supprimer" ) );
-     sousMenu_ = contexteMenu_.addMenu( QIcon(), "Style des liaisons" );
-
-     actions_["LSimple"] = sousMenu_->addAction( tr( "Simple" ) );
-     actions_["LDouble"] = sousMenu_->addAction( tr( "Double" ) );
-     actions_["LLineaire"] = sousMenu_->addAction( tr( "Linéaire" ) );
-     contexteMenu_.addSeparator();
-
-     actions_["DelierP"] = contexteMenu_.addAction( tr( "Délier du parent" ) );
-     actions_["DelierE"] = contexteMenu_.addAction( tr( "Délier des enfants" ) );
-     actions_["Delier"] = contexteMenu_.addAction( tr( "Délier de tous" ) );
-     contexteMenu_.addSeparator();
-
+     fillContextMenuWithDefaultActions();
 
 }/*}}}*/
 
@@ -57,19 +44,7 @@ Pictogramme::Pictogramme(const Pictogramme &item):
     setFlags( QGraphicsItem::ItemIsMovable |
               QGraphicsItem::ItemIsSelectable |
               QGraphicsItem::ItemSendsGeometryChanges );
-
-    actions_["Supprimer"] = contexteMenu_.addAction( tr( "Supprimer" ) );
-    sousMenu_ = contexteMenu_.addMenu( QIcon(), "Style des liaisons" );
-
-    actions_["LSimple"] = sousMenu_->addAction( tr( "Simple" ) );
-    actions_["LDouble"] = sousMenu_->addAction( tr( "Double" ) );
-    actions_["LLineaire"] = sousMenu_->addAction( tr( "Linéaire" ) );
-    contexteMenu_.addSeparator();
-
-    actions_["DelierP"] = contexteMenu_.addAction( tr( "Délier du parent" ) );
-    actions_["DelierE"] = contexteMenu_.addAction( tr( "Délier des enfants" ) );
-    actions_["Delier"] = contexteMenu_.addAction( tr( "Délier de tous" ) );
-    contexteMenu_.addSeparator();
+    fillContextMenuWithDefaultActions();
 
     foreach (const LabelItem* label, item.labels_) {
         LabelItem* tmp = new LabelItem(*label);
@@ -103,6 +78,75 @@ void Pictogramme::paint( QPainter* painter,
      }
 }/*}}}*/
 
+void Pictogramme::fillContextMenuWithDefaultActions() {
+    addContextMenuEntry("Supprimer", "Supprimer");
+    sousMenu_ = contexteMenu_.addMenu( QIcon(), "Style des liaisons" );
+
+    addContextMenuEntry(sousMenu_, "LSimple", "Simple");
+    addContextMenuEntry(sousMenu_, "LDouble", "Double");
+    addContextMenuEntry(sousMenu_, "LLineaire", "Linéaire");
+    contexteMenu_.addSeparator();
+
+    addContextMenuEntry("DelierP", "Délier du parent");
+    addContextMenuEntry("DelierE", "Délier des enfants");
+    addContextMenuEntry("Delier", "Délier de tous");
+    contexteMenu_.addSeparator();
+}
+
+void Pictogramme::addContextMenuEntry(QMenu *menu, QString key, const char* text, bool checkable, bool checked) {
+    QAction* action = actions_[key] = menu->addAction( tr( text ) );
+    action->setCheckable( checkable );
+    action->setChecked( checked );
+}
+
+void Pictogramme::addContextMenuEntry(QString key, const char* text, bool checkable, bool checked) {
+    addContextMenuEntry(&contexteMenu_, key, text, checkable, checked);
+}
+
+QAction *Pictogramme::getContextMenuAction(QString key) {
+    return actions_[key];
+}
+
+void Pictogramme::prepareContextMenu() {
+    if( liaison_ ) {
+         sousMenu_->setEnabled( true );
+         actions_["DelierE"]->setEnabled( true );
+
+    } else {
+         bool enabled = false;
+         foreach( LabelItem * item, labels_ ) {
+              if( item->isParent() ) {
+                   enabled = true;
+                   break;
+              }
+         }
+
+         if( enabled ) {
+              sousMenu_->setEnabled( true );
+              actions_["DelierE"]->setEnabled( true );
+
+         } else {
+              sousMenu_->setEnabled( false );
+              actions_["DelierE"]->setEnabled( false );
+         }
+    }
+
+    if( isChild() ) {
+         actions_["DelierP"]->setEnabled( true );
+
+    } else {
+         actions_["DelierP"]->setEnabled( false );
+    }
+
+    if( actions_["DelierP"]->isEnabled() ||
+        actions_["DelierE"]->isEnabled() ) {
+         actions_["Delier"]->setEnabled( true );
+
+    } else {
+         actions_["Delier"]->setEnabled( false );
+    }
+}
+
 
 
 /*-----------------------------------------------------------------------------
@@ -129,46 +173,12 @@ void Pictogramme::contextMenuEvent( QGraphicsSceneContextMenuEvent* event )
      setSelected( true );
      ungrabMouse();
 
-     if( liaison_ ) {
-          sousMenu_->setEnabled( true );
-          actions_["DelierE"]->setEnabled( true );
-
-     } else {
-          bool enabled = false;
-          foreach( LabelItem * item, labels_ ) {
-               if( item->isParent() ) {
-                    enabled = true;
-                    break;
-               }
-          }
-
-          if( enabled ) {
-               sousMenu_->setEnabled( true );
-               actions_["DelierE"]->setEnabled( true );
-
-          } else {
-               sousMenu_->setEnabled( false );
-               actions_["DelierE"]->setEnabled( false );
-          }
-     }
-
-     if( isChild() ) {
-          actions_["DelierP"]->setEnabled( true );
-
-     } else {
-          actions_["DelierP"]->setEnabled( false );
-     }
-
-     if( actions_["DelierP"]->isEnabled() ||
-         actions_["DelierE"]->isEnabled() ) {
-          actions_["Delier"]->setEnabled( true );
-
-     } else {
-          actions_["Delier"]->setEnabled( false );
-     }
-
+     prepareContextMenu();
      QAction* selectedAction = contexteMenu_.exec( event->screenPos() );
-     processAction( selectedAction, event );
+     if (selectedAction) {
+         // do not process if the menu has been closed (no selected action)
+        processAction( selectedAction, event );
+     }
 }/*}}}*/
 
 void Pictogramme::processAction( QAction* action, QGraphicsSceneContextMenuEvent* event )

@@ -23,6 +23,7 @@
 #include <QMenu>
 
 class QTextStream;
+class Algorithm;
 class Pictogramme;
 
 class AlgorithmeScene: public QGraphicsScene {
@@ -36,7 +37,7 @@ class AlgorithmeScene: public QGraphicsScene {
                       InsertCondition, InsertMultiCondition, InsertExit
                     };
 
-          AlgorithmeScene( qreal x, qreal y, qreal width, qreal height, QObject* parent = 0 );
+          AlgorithmeScene( Algorithm *algorithm, qreal x, qreal y, qreal width, qreal height, QObject* parent = 0 );
           ~AlgorithmeScene();
 
 
@@ -45,9 +46,9 @@ class AlgorithmeScene: public QGraphicsScene {
            *-----------------------------------------------------------------------------*/
           inline void setMode( Mode mode )
           { mode_ = mode; }
-          inline void setName( const QString& name )
-          { name_ = name;}
-          inline QString name() { return name_; }
+          void setName( const QString& name );
+          QString name();
+          inline Algorithm* algorithm() const { return algorithm_; }
 
           void deleteItem( Pictogramme* item );
           void deleteSelectedItem();
@@ -55,7 +56,6 @@ class AlgorithmeScene: public QGraphicsScene {
 
           //Sauvegarde et chargement au format XML
           void saveToXml( QTextStream& out ) const;
-          void loadFromXml( const QDomDocument& doc );
           void selectAll();
           void adjust( int delta = 0 );
           QList<Pictogramme *> copySelected() const;
@@ -78,10 +78,9 @@ class AlgorithmeScene: public QGraphicsScene {
            *  Attributs
            *-----------------------------------------------------------------------------*/
           Mode mode_;
-          QString name_; //Nom de l'agorithme
+          Algorithm *algorithm_;
           QGraphicsLineItem* line_; //Line créée dans le mode edition lien
           QPair<QPointF, QGraphicsRectItem*> selectionArea_;
-          QList<Pictogramme*> items_; //Liste de tous les pictogrammes de la scène (sans les liaisons)
           QMenu contexteMenu_; //appelé lors du clic droit
           QMap<QString, QAction*> actions_;
 

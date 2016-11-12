@@ -28,9 +28,8 @@ LabelItem::LabelItem( const QString& texte,
                       const int maxWidth,
                       const int minWidth,
                       const int height,
-                      QGraphicsItem* parent,
-                      QGraphicsScene* scene )
-     : AncreItem( parent, scene ),
+                      QGraphicsItem* parent)
+     : AncreItem( parent),
        height_( height ),
        maxWidth_( maxWidth ),
        minWidth_( minWidth )

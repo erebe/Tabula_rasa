@@ -9,6 +9,14 @@
 /*-----------------------------------------------------------------------------
  *  Constructeurs / Destructeurs
  *-----------------------------------------------------------------------------*/
+PictoConditionMultiple::PictoConditionMultiple() {
+    setAnchorType( AncreItem::Up );
+    posUpAnchor_.setY( 0 );
+
+    addContextMenuEntry("AjouterA", "Ajouter une condition");
+    addContextMenuEntry("SupprimerA", "Supprimer la condition");
+}
+
 PictoConditionMultiple::PictoConditionMultiple(const QString& label) :
      Pictogramme()
 {/*{{{*/
@@ -25,67 +33,22 @@ PictoConditionMultiple::PictoConditionMultiple(const QString& label) :
      posUpAnchor_.setY( 0 );
      updateDimension();
 
-     actions_["AjouterA"] = contexteMenu_.addAction( tr( "Ajouter une condition" ) );
-     actions_["SupprimerA"] = contexteMenu_.addAction( tr( "Supprimer la condition" ) );
+     addContextMenuEntry("AjouterA", "Ajouter une condition");
+     addContextMenuEntry("SupprimerA", "Supprimer la condition");
 }/*}}}*/
 
 PictoConditionMultiple::PictoConditionMultiple( const PictoConditionMultiple& item):
   Pictogramme(item)
 {}
 
-PictoConditionMultiple::PictoConditionMultiple( const QDomElement& node,
-          AlgorithmeScene* scene ):
-     Pictogramme( 0, scene )
-{/*{{{*/
-     QString label = node.firstChildElement( "Position" ).firstChild().toText().data();
-     QStringList position = label.split( QRegExp( ";" ) );
-     setPos( position.at( 0 ).toDouble(), position.at( 1 ).toDouble() );
-
-     label = node.firstChildElement( "Titre" ).firstChild().toText().data();
-     labels_ << new LabelItem( label, 150, 25, 25, this, scene );
-
-     setAnchorType( AncreItem::Up );
-     posUpAnchor_.setY( 0 );
-
-     actions_["AjouterA"] = contexteMenu_.addAction( tr( "Ajouter une condition" ) );
-     actions_["SupprimerA"] = contexteMenu_.addAction( tr( "Supprimer la condition" ) );
-
-     const QDomNodeList nodes = node.firstChildElement( "operationsLogiques" ).childNodes();
-     Pictogramme* picto = 0;
-
-     for( int i = 0; i < nodes.count(); i++ ) {
-          if( nodes.at( i ).isElement() ) {
-               label = nodes.at( i ).firstChildElement( "Titre" ).firstChild().toText().data();
-               labels_ << new LabelItem( label, 150, 25, 25, this, scene );
-               labels_.last()->setAnchorType( AncreItem::Down );
-
-
-               const QDomNodeList enfants = nodes.at( i ).firstChildElement( "Enfants" ).childNodes();
-
-               for( int j = 0; j < enfants.count(); j++ ) {
-                    if( enfants.at( j ).isElement() ) {
-                         picto = PictoBuilder::fromXml( enfants.at( j ).toElement(), scene );
-
-                         if( picto ) {
-                              labels_.last()->addChild( picto );
-                              picto = 0;
-                         }
-                    }
-               }
-
-               label = node.firstChildElement( "StyleLien" ).firstChild().toText().data();
-               labels_.last()->setLinkStyle( static_cast<LiaisonItem::Style>( label.toInt() ) );
-          }
-     }
-
-     updateDimension();
-}/*}}}*/
-
-
-
 /*-----------------------------------------------------------------------------
  *  Méthodes
  *-----------------------------------------------------------------------------*/
+void PictoConditionMultiple::addLabel(LabelItem *item) {
+    labels_ << item;
+    updateDimension();
+}
+
 void PictoConditionMultiple::paint( QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget )
 {/*{{{*/
      Q_UNUSED( option );
@@ -209,15 +172,15 @@ QVariant PictoConditionMultiple::itemChange( GraphicsItemChange change, const QV
 
 void PictoConditionMultiple::processAction( QAction* action, QGraphicsSceneContextMenuEvent* event )
 {/*{{{*/
-     if( actions_["AjouterA"] == action ) {
-          LabelItem* item = new LabelItem( "", 150, 25, 25, this, scene() );
+     if( getContextMenuAction("AjouterA") == action ) {
+          LabelItem* item = new LabelItem( "", 150, 25, 25, this );
           item->setAnchorType( AncreItem::Down );
 
           labels_.insert( labels_.size() - 1, item );
           prepareGeometryChange();
           updateDimension();
 
-     } else if( actions_["SupprimerA"] == action ) {
+     } else if( getContextMenuAction("SupprimerA") == action ) {
 
           LabelItem* tmp;
           foreach( tmp, labels_ ) {
