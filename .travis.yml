@@ -1,0 +1,7 @@
+before_install: 
+    - brew update
+    - brew install qt5
+script:
+    - cd Sources
+    - qmake
+    - make
