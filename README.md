@@ -5,6 +5,10 @@
 -----------
 
 Tabula rasa est un editeur d'algorithme conçu pour répondre aux spécifications de l'IUT de Bayonne
+<p align="center">
+  <img src="https://github.com/erebe/Tabula_rasa/raw/master/screenshot.png" alt="screenshot"/>
+</p>
+
 
 Installation pour Windows :
 ---------------------------
@@ -34,27 +38,6 @@ Fonctionnalités prévues :
     + Charger la sauvegarde XML
     + Rendre certains éléments de l'algorithme non reliable
     + Analyser la structure pour répérer des incohérences
-
-
-
-Pourquoi le C++ comme choix de langage ? :
-------------------------------------------
-	Je connais le C#, Python et Java mais le C++ reste mon langage préféré
-    (surtout avec le dernier standard C++1x) et permet de produire des applications portables.
-    C'est plus un choix de coeur que de raison.
-
-
-Pourquoi Qt ? :
---------------	
-    J'avais comme principal objectif de produire une application portable. D'un point de vue 
-    personnel je préfère GTK car il ne s'occupe que de l'interface et laisse
-    au développeur entière liberté pour implémenter le coeur métier de l'application.
-    Ayant déjà eu des problèmes à porter sous Windows des applications GTK 
-    (surtout avec les librairies tierces), je me suis tourné vers Qt.
-    Qt possède aussi des facilités de développement avec l'objet QGraphicsScene que GTK ne possède pas.
-
-
-
 
 
 Date de début du projet, le 22/07/2011
